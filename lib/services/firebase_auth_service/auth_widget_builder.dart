@@ -8,6 +8,7 @@ import 'package:prasso_app/services/prasso_api_service.dart';
 import 'package:prasso_app/models/api_user.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:prasso_app/service_locator.dart';
 
 class AuthWidgetBuilder extends StatelessWidget {
   const AuthWidgetBuilder({
@@ -28,6 +29,10 @@ class AuthWidgetBuilder extends StatelessWidget {
       stream: authService.authStateChanges(),
       builder: (context, snapshot) {
         final ApiUser user = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.active &&
+            !locator.isRegistered<ApiUser>()) {
+          setupLoggedInUser(user);
+        }
 
         if (user != null) {
           return MultiProvider(

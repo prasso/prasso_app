@@ -28,6 +28,17 @@ class PrassoApiService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
+  String appConfig = ''; //holds tabs and some user data not stored at Firebase
+  String personalAppToken = ''; //identifies this app
+
+  Future<bool> getStoredAppConfig() async {
+    await SharedPreferencesHelper.getAppData().then<String>((appconfig) {
+      // ignore: join_return_with_assignment
+      appConfig = appconfig;
+      return appConfig;
+    });
+    return true;
+  }
   //if you are using android studio emulator, change localhost to 10.0.2.2
 
   Future<dynamic> authData(String data, String apiUrl) async {
@@ -58,33 +69,50 @@ class PrassoApiService {
     final UserCredential usr = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
 
-    String _token;
-    await _firebaseMessaging.getToken().then((token) => _token = token);
-    unawaited(_firebaseMessaging.subscribeToTopic('all'));
-
     if (usr.user != null) {
+      String _pntoken;
+      await _firebaseMessaging.getToken().then((token) => _pntoken = token);
+      unawaited(_firebaseMessaging.subscribeToTopic('all'));
+
       final dynamic res = await http.post(Uri.encodeFull(_signinUrl),
           headers: _setHeaders(''),
           body: jsonEncode(<String, String>{
             'email': email,
             'password': password,
-            'pn_token': _token,
+            'pn_token': _pntoken,
             'firebase_uid': usr.user.uid
           }));
       if (res.statusCode == 200) {
         // for an example return, see prasso_api_service_test.dart
+        setupLocator();
+        changeStateNReloadUser(usr.user, res.body.toString(), personalAppToken);
         await processIntoTabs(res.body);
+      } else {
+        throw Exception(res.body);
       }
-      final ApiUser user = ApiUser.fromAPIJson(usr.user, res.body);
-      return user;
+    } else {
+      throw Exception('User name or Password was not recognized.');
     }
+
     return null;
+  }
+
+  ApiUser changeStateNReloadUser(
+      dynamic usr, String appconfig, String personalAppToken) {
+    final String newAppToken = personalAppToken.replaceAll('"', '');
+    final ApiUser user = ApiUser.fromAPIJson(usr, appconfig, newAppToken);
+
+    final FirestoreDatabase _database = FirestoreDatabase(uid: user.uid);
+    unawaited(_database.setUser(user));
+
+    setupLoggedInUser(user);
+    return user;
   }
 
   Stream<ApiUser> authStateChanges() {
     return _firebaseAuth
         .authStateChanges()
-        .map((user) => ApiUser.fromAPIJson(user, ''));
+        .map((user) => ApiUser.fromAPIJson(user, appConfig, personalAppToken));
   }
 
   Future<void> signOut() async {
@@ -97,30 +125,33 @@ class PrassoApiService {
         headers: _setHeaders(userToken.toString()),
       );
       unawaited(_firebaseAuth.signOut());
+      await locator<CupertinoHomeScaffoldViewModel>().clear();
 
       return res;
     });
   }
 
   Future<String> processIntoTabs(String returnedJson) async {
+    if (returnedJson == '') {
+      return '';
+    }
+    await locator<CupertinoHomeScaffoldViewModel>().clear();
+
     //app tabs decoded here and added to route
     final dynamic data = jsonDecode(returnedJson);
 
-    final token = data['data']['token'] as String;
-    final appdata = data['data']['app_data'] as String;
+    personalAppToken = data['data']['token'] as String;
+    appConfig = data['data']['app_data'] as String;
 
-    unawaited(SharedPreferencesHelper.saveAppData(appdata));
-
-    if (token != '') {
-      unawaited(SharedPreferencesHelper.saveUserToken(token));
-    }
+    unawaited(SharedPreferencesHelper.saveAppData(appConfig));
+    unawaited(SharedPreferencesHelper.saveUserToken(personalAppToken));
 
     locator<CupertinoHomeScaffoldViewModel>().setProperties();
-    return 'success';
+    return appConfig;
   }
 
   /// used in conjunction with updateFirebaseApps to save app info
-  Future<void> addApp(BuildContext context, AppModel widget) async {
+  Future<void> addApp(AppModel widget) async {
     final String _saveAppUrl = '$_apiServer${Strings.saveApp}';
 
     await SharedPreferencesHelper.getUserToken()
@@ -177,25 +208,19 @@ class PrassoApiService {
   }
 
   ////
-  /// this code retrieves the app tabs, these are also retrieved in record_login
+  /// this code retrieves the app tabs, these are also retrieved in signInWithEmailandPassword
   ///
-  // ignore: missing_return
-  Future<String> getAppConfig(BuildContext context) async {
+  Future<String> getAppConfig(ApiUser user, BuildContext context) async {
     await SharedPreferencesHelper.getUserToken().then((userToken) async {
       final clientAppUrl = _configUrl + userToken.toString();
       final dynamic res = await http.post(Uri.encodeFull(clientAppUrl),
           headers: _setHeaders(userToken.toString()));
       if (res.statusCode == 200) {
-        return processIntoTabs(res.body);
-
-        // locator<CupertinoHomeScaffoldViewModel>().allTabs.forEach((key, value) {
-        //  get an appmodel from the tab data
-        // var appmodel = AppModel.fromTabItemData(value);
-        //  save the appmodel like we do from edit_app_page
-        // updateFirebaseApps(context, appmodel);
-        // });
+        await processIntoTabs(res.body);
+        return changeStateNReloadUser(user, appConfig, personalAppToken);
       }
     });
+    return null;
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
@@ -209,37 +234,39 @@ class PrassoApiService {
         .createUserWithEmailAndPassword(email: email, password: password);
 
     final String _registerUrl = '${_apiServer}register';
+    final dynamic res = await http.post(Uri.encodeFull(_registerUrl),
+        headers: _setHeaders(usr.user.uid),
+        body: jsonEncode(<String, String>{
+          'name': email,
+          'email': email,
+          'password': password,
+          'c_password': password,
+          'firebase_uid': usr.user.uid
+        }));
 
-    await SharedPreferencesHelper.getUserToken()
-        .then<ApiUser>((userToken) async {
-      final dynamic res = await http.post(Uri.encodeFull(_registerUrl),
-          headers: _setHeaders(userToken.toString()),
-          body: jsonEncode(<String, String>{
-            'name': email,
-            'email': email,
-            'password': password,
-            'c_password': password,
-            'firebase_uid': usr.user.uid
-          }));
-
-      if (res.statusCode == 200) {
-        await locator<CupertinoHomeScaffoldViewModel>().clear();
-        return ApiUser.fromAPIJson(usr.user, res.body);
-      }
-      return null;
-    });
+    if (res.statusCode == 200) {
+      setupLocator();
+      await processIntoTabs(res.body);
+      return changeStateNReloadUser(usr.user, appConfig, personalAppToken);
+    } else {
+      throw Exception(res.body);
+    }
   }
 
-  // ignore: missing_return
   Future<ApiUser> saveUserProfileData(
       BuildContext context, ApiUser user) async {
-    final _database = Provider.of<FirestoreDatabase>(context, listen: false);
-    await _database.setUser(user);
-
     final String _setUserUrl = '${_apiServer}save_user/${user.uid}';
 
     await SharedPreferencesHelper.getUserToken()
         .then<ApiUser>((userToken) async {
+      if (userToken.isEmpty) {
+        await signOut();
+        return null;
+      }
+
+      final _database = Provider.of<FirestoreDatabase>(context, listen: false);
+      await _database.setUser(user);
+
       final dynamic res = await http.post(Uri.encodeFull(_setUserUrl),
           headers: _setHeaders(userToken.toString()),
           body: jsonEncode(<String, String>{
@@ -250,10 +277,12 @@ class PrassoApiService {
           }));
 
       if (res.statusCode == 200) {
-        await locator<CupertinoHomeScaffoldViewModel>().clear();
-        return ApiUser.fromAPIJson(user, res.body);
+        await processIntoTabs(res.body);
+        return changeStateNReloadUser(user, appConfig, personalAppToken);
+      } else {
+        throw Exception(res.body);
       }
-      return null;
     });
+    return null;
   }
 }

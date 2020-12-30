@@ -11,10 +11,10 @@ import 'package:prasso_app/constants/paths.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/providers/profile_pic_url_state.dart';
+import 'package:prasso_app/service_locator.dart';
 import 'package:prasso_app/services/prasso_api_service.dart';
 import 'package:prasso_app/utils/filename_helper.dart';
 import 'package:provider/provider.dart';
-import 'package:prasso_app/services/firestore_database.dart';
 import 'package:pedantic/pedantic.dart';
 
 class EditUserProfile extends StatefulWidget {
@@ -73,7 +73,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
       setState(() {
         uploadingDp = true;
       });
-      final _uid = widget.usr?.uid ?? documentIdFromCurrentDate();
+      final _uid = widget.usr?.uid;
       final filename = FilenameHelper.getFilenameFromPath(pickedFile.path);
       final destinationPath = '${Paths.profilePicturePath}$_uid/$filename';
 
@@ -115,16 +115,16 @@ class _EditUserProfileState extends State<EditUserProfile> {
 
   // ignore: avoid_void_async
   void saveUser() async {
-    final database = Provider.of<FirestoreDatabase>(context, listen: false);
+    final uneditedUser = locator<ApiUser>();
+
     final PrassoApiService auth =
         Provider.of<PrassoApiService>(context, listen: false);
-    final _uid = widget.usr?.uid ?? documentIdFromCurrentDate();
-    final usr = ApiUser(
-        uid: _uid,
-        email: _email,
-        photoURL: _photoURL,
-        displayName: _displayName);
-    await database.setUser(usr);
+    final _uid = widget.usr?.uid;
+    if (_uid != uneditedUser.uid) {
+      throw Exception('Program error');
+    }
+    final usr = ApiUser.fromLocatorUpdated(
+        uneditedUser, _email, _photoURL, _displayName);
     await auth.saveUserProfileData(context, usr);
 
     Navigator.of(context).pop();
@@ -132,6 +132,10 @@ class _EditUserProfileState extends State<EditUserProfile> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.usr.photoURL.isNotEmpty) {
+      context.watch<ProfilePicUrlState>().setProfilePicUrl(widget.usr.photoURL);
+    }
+
     profileImage = CachedNetworkImageProvider(
         context.watch<ProfilePicUrlState>().profilePicUrl);
 

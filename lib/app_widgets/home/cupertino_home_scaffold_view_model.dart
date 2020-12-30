@@ -13,6 +13,7 @@ import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/apps/apps_page.dart';
 import 'package:prasso_app/utils/shared_preferences_helper.dart';
+import 'package:prasso_app/service_locator.dart';
 
 class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   CupertinoHomeScaffoldViewModel() {
@@ -22,6 +23,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    locator.reset(dispose: true);
     super.dispose();
     isDisposed = true;
   }
@@ -59,7 +61,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   void setProperties() {
     SharedPreferencesHelper.getAppData().then((appdata) {
-      if (appdata?.isEmpty ?? true) {
+      if ((appdata?.isEmpty ?? true) || appdata.toString() == 'null') {
         _setdefaults();
         return;
       }
@@ -106,11 +108,10 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
       TabItem.positionOverflow: (_) =>
           AppRunWebView(title: '', selectedUrl: ''),
     };
-    buildTabs(false);
+    buildTabs(tryagain: false);
   }
 
-  // ignore: avoid_positional_boolean_parameters
-  void buildTabs(bool tryagain) {
+  void buildTabs({bool tryagain}) {
     try {
       final List<BottomNavigationBarItem> rt = [];
       allTabs.forEach((key, value) {
@@ -164,13 +165,12 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
         widgetBuilders[TabItem.values[position]] = actionFromString(t1);
       }
-      // ignore: invariant_booleans
       if (t1.parent > 0) {
         moreItems.add(t1);
       }
     }
 
-    buildTabs(true);
+    buildTabs(tryagain: true);
   }
 
   WidgetBuilder actionFromString(TabItemData t1) {

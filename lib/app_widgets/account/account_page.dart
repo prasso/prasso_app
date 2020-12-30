@@ -19,7 +19,8 @@ class AccountPage extends StatelessWidget {
       final PrassoApiService auth =
           Provider.of<PrassoApiService>(context, listen: false);
 
-      await auth.getAppConfig(context);
+      final user = Provider.of<ApiUser>(context);
+      await auth.getAppConfig(user, context);
     } catch (e) {
       unawaited(showExceptionAlertDialog(
         context: context,
@@ -69,8 +70,15 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<ApiUser>(context);
-
+    if (!locator.isRegistered<ApiUser>()) {
+      _signOut(context);
+      return Container();
+    }
+    final user = locator<ApiUser>();
+    if (user.appToken.isEmpty) {
+      _signOut(context);
+      return Container();
+    }
     return Scaffold(
       appBar: AppBar(title: const Text(Strings.accountPage), actions: <Widget>[
         const SizedBox(height: 8),

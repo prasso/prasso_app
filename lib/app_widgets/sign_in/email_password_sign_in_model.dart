@@ -47,6 +47,7 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
           await auth.sendPasswordResetEmail(email);
           break;
       }
+
       return true;
     } catch (e) {
       developer.log(

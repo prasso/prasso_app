@@ -12,7 +12,8 @@ class ApiUser {
       this.email,
       this.photoURL,
       this.displayName,
-      this.appConfig})
+      this.appConfig,
+      this.appToken})
       : assert(uid != null, 'User can only be created with a non-null uid');
 
   final String uid;
@@ -20,33 +21,65 @@ class ApiUser {
   final String photoURL;
   final String displayName;
   final String appConfig;
+  final String appToken; //the token which identifies this user's app
 
-  factory ApiUser.fromAPIJson(dynamic _user, String appConfig) {
+  factory ApiUser.fromLocatorUpdated(
+      ApiUser user, String _email, String _photoURL, String _displayName) {
+    return ApiUser(
+        uid: user.uid,
+        email: _email,
+        photoURL: _photoURL,
+        displayName: _displayName,
+        appConfig: user.appConfig,
+        appToken: user.appToken);
+  }
+
+  factory ApiUser.fromAPIJson(
+      dynamic _user, String appConfig, String appToken) {
     if (_user == null) {
       return null;
     }
+
     if (_user is User) {
       final User usr = _user;
-      return ApiUser(
-          uid: usr.uid,
-          email: usr.email,
-          displayName: usr.displayName,
-          photoURL: usr.photoURL,
-          appConfig: appConfig);
+
+      if (!(appConfig?.isEmpty ?? true)) {
+        final dynamic jsonAppData = jsonDecode(appConfig);
+        return ApiUser(
+            uid: usr.uid,
+            email: usr.email,
+            displayName: jsonAppData['data']['name'],
+            photoURL: jsonAppData['data']['photoURL'],
+            appConfig: appConfig,
+            appToken: jsonAppData['data']['token']);
+      } else {
+        return ApiUser(
+            uid: usr.uid,
+            email: usr.email,
+            displayName: usr.displayName,
+            photoURL: usr.photoURL,
+            appConfig: appConfig,
+            appToken: appToken);
+      }
     } else {
+      if (_user is ApiUser) {
+        return _user;
+      }
+
       final String jsonusr = jsonEncode(_user);
       return ApiUser(
           uid: _user['data']['uid'].toString(),
           email: _user['data']['email'],
           displayName: _user['data']['name'],
           photoURL: _user['data']['photoURL'].toString(),
-          appConfig: jsonusr);
+          appConfig: jsonusr,
+          appToken: _user['data']['token']);
     }
   }
 
   @override
   String toString() =>
-      'uid: $uid, email: $email, photoURL: $photoURL, displayName: $displayName, appConfig: $appConfig';
+      'uid: $uid, email: $email, photoURL: $photoURL, displayName: $displayName, appConfig: $appConfig, appToken: $appToken';
 
   Map<String, dynamic> toMap() {
     return {
@@ -54,7 +87,8 @@ class ApiUser {
       'email': email,
       'photoURL': photoURL,
       'displayName': displayName,
-      'appConfig': appConfig
+      'appConfig': appConfig,
+      'appToken': appToken
     };
   }
 }

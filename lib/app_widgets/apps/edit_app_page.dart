@@ -55,7 +55,7 @@ class _EditAppPageState extends State<EditAppPage> {
           Provider.of<PrassoApiService>(context, listen: false);
       await auth.updateFirebaseApps(context, _appInfo);
       //also update the API
-      await auth.addApp(context, _appInfo);
+      await auth.addApp(_appInfo);
 
       Navigator.of(context).pop();
     }

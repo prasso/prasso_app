@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 
 String noDpUrl = 'https://d2bj0u1jhmvqgo.cloudfront.net/default/user.png';
 
-class ProfilePicUrlState with ChangeNotifier {
+class ProfilePicUrlState extends ChangeNotifier {
   String _profilePicUrl = noDpUrl;
 
   String get profilePicUrl => _profilePicUrl;
 
   void setProfilePicUrl(String newUrl) {
-    _profilePicUrl = newUrl;
+    if (newUrl.isEmpty) {
+      _profilePicUrl = noDpUrl;
+    } else {
+      _profilePicUrl = newUrl;
+    }
     notifyListeners();
   }
 }

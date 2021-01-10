@@ -51,4 +51,6 @@ class Strings {
   // More page
   static const String more = 'More';
   static const String morePage = 'More Page';
+
+  static const String appName = 'Prasso App';
 }

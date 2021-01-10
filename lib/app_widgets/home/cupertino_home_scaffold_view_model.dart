@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dynamic_widget/dynamic_widget/icons_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -12,24 +11,38 @@ import 'package:prasso_app/app_widgets/account/account_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/apps/apps_page.dart';
-import 'package:prasso_app/utils/shared_preferences_helper.dart';
-import 'package:prasso_app/service_locator.dart';
+import 'package:prasso_app/services/shared_preferences_service.dart';
 
 class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
-  CupertinoHomeScaffoldViewModel() {
+  CupertinoHomeScaffoldViewModel(this.sharedPreferencesServiceProvider) {
     _setdefaults();
   }
   static bool isDisposed = true;
+  final SharedPreferencesService sharedPreferencesServiceProvider;
+
+  Map<TabItem, WidgetBuilder> widgetBuilders;
+  Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
+    TabItem.position1: GlobalKey<NavigatorState>(),
+    TabItem.position2: GlobalKey<NavigatorState>(),
+    TabItem.position3: GlobalKey<NavigatorState>(),
+    TabItem.position4: GlobalKey<NavigatorState>(),
+    TabItem.positionOverflow: GlobalKey<NavigatorState>(),
+  };
+
+  final formKey = GlobalKey<FormState>();
+  List<BottomNavigationBarItem> tabs;
+  List<TabItemData> moreItems;
+  Map<TabItem, TabItemData> allTabs;
 
   @override
   void dispose() {
-    locator.reset(dispose: true);
     super.dispose();
     isDisposed = true;
   }
 
-  factory CupertinoHomeScaffoldViewModel.initializeFromLocalStorage() {
-    final _vm = CupertinoHomeScaffoldViewModel();
+  factory CupertinoHomeScaffoldViewModel.initializeFromLocalStorage(
+      SharedPreferencesService sharedPreferencesService) {
+    final _vm = CupertinoHomeScaffoldViewModel(sharedPreferencesService);
     _vm.setProperties();
     isDisposed = false;
 
@@ -43,36 +56,31 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   }
 
   set currentTab(TabItem newtab) {
+    print('$_currentTab is changing to $newtab');
     _currentTab = newtab;
-    setProperties();
+    // setProperties();
+    notifyListeners();
   }
 
-  List<BottomNavigationBarItem> tabs;
-  List<TabItemData> moreItems;
-  Map<TabItem, TabItemData> allTabs;
-  Map<TabItem, WidgetBuilder> widgetBuilders;
-
   Future<bool> clear() async {
-    await SharedPreferencesHelper.saveAppData('');
+    await sharedPreferencesServiceProvider.saveAppData('');
 
     _setdefaults();
     return true;
   }
 
   void setProperties() {
-    SharedPreferencesHelper.getAppData().then((appdata) {
-      if ((appdata?.isEmpty ?? true) || appdata.toString() == 'null') {
-        _setdefaults();
-        return;
-      }
-      final restoredjson = appdata.replaceAll('&quote;', '"');
-      final dynamic alldata = jsonDecode(restoredjson);
+    final appdata = sharedPreferencesServiceProvider.getAppData();
+    if ((appdata?.isEmpty ?? true) || appdata.toString() == 'null') {
+      _setdefaults();
+      return;
+    }
+    final restoredjson = appdata.replaceAll('&quote;', '"');
+    final dynamic alldata = jsonDecode(restoredjson);
 
-      //var tabslist = alldata[0]['tabs'] as List;
-      final tabslist = alldata['tabs'] as List;
+    final tabslist = alldata['tabs'] as List;
 
-      buildAllTabs(tabslist);
-    });
+    buildAllTabs(tabslist);
   }
 
   void _setdefaults() {
@@ -102,7 +110,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     };
     widgetBuilders = {
       TabItem.position1: (_) => AppsPage(),
-      TabItem.position2: AppRunPage.create,
+      TabItem.position2: (_) => AppRunPage(),
       TabItem.position3: (_) => AccountPage(),
       TabItem.position4: (_) => AppRunWebView(title: '', selectedUrl: ''),
       TabItem.positionOverflow: (_) =>
@@ -128,8 +136,19 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void select(BuildContext context, int index, TabItem tabItem) {
+    if (tabItem == currentTab) {
+      // pop to first route
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } else {
+      currentTab = tabItem;
+    }
+    notifyListeners();
+  }
+
   BottomNavigationBarItem _buildItem(TabItem tabItem, TabItemData itemData) {
     final color = _currentTab == tabItem ? Colors.orange : Colors.grey;
+
     return BottomNavigationBarItem(
       icon: Icon(
         itemData.icon,
@@ -189,7 +208,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
             return (_) => AppsPage();
           } else {
             if (actionString == 'AppRunPage.create') {
-              return AppRunPage.create;
+              return (_) => AppRunPage();
             }
           }
         }

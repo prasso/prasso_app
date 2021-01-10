@@ -6,15 +6,9 @@ class EmailPasswordSignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PrassoApiService auth =
-        Provider.of<PrassoApiService>(context, listen: false);
-    return ChangeNotifierProvider<EmailPasswordSignInModel>(
-      create: (_) => EmailPasswordSignInModel(auth: auth),
-      child: Consumer<EmailPasswordSignInModel>(
-        builder: (_, model, __) => EmailPasswordSignInPageContents(
-            model: model, onSignedIn: onSignedIn),
-      ),
-    );
+    return EmailPasswordSignInPageContents(
+        model: useProvider(emailPasswordSigninViewModelProvider),
+        onSignedIn: () => onSignedIn);
   }
 
   @override

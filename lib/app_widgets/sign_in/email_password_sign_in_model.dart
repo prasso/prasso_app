@@ -12,6 +12,9 @@ class EmailAndPasswordValidators {
       NonEmptyStringValidator();
 }
 
+final emailPasswordSigninViewModelProvider = ChangeNotifierProvider(
+    (ref) => EmailPasswordSignInModel(auth: ref.watch(prassoApiService)));
+
 class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailPasswordSignInModel({
     @required this.auth,
@@ -21,7 +24,7 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     this.isLoading = false,
     this.submitted = false,
   });
-  final PrassoApiService auth;
+  final PrassoApiRepository auth;
 
   String email;
   String password;

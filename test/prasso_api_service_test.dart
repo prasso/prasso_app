@@ -5,9 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
 import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/services/prasso_api_service.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
+import 'package:prasso_app/services/shared_preferences_service.dart';
 
-class MockJsonService extends Mock implements PrassoApiService {}
+class MockJsonService extends Mock implements PrassoApiRepository {}
 
 void main() {
   group('PrassoApi tests', () {
@@ -32,7 +33,7 @@ void main() {
       final tabslist = alldata['tabs'] as List;
 
       final CupertinoHomeScaffoldViewModel model =
-          CupertinoHomeScaffoldViewModel();
+          CupertinoHomeScaffoldViewModel(SharedPreferencesService(null));
       model.buildAllTabs(tabslist);
     }
 

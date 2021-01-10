@@ -19,7 +19,8 @@ class Router {
         );
       case Routes.editAppPage:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EditAppPage(app: args),
+          builder: (_) =>
+              EditAppPage(key: GlobalKey<FormState>(), appinfo: args),
           settings: settings,
           fullscreenDialog: true,
         );

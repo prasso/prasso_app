@@ -25,14 +25,7 @@ class AuthWidget extends ConsumerWidget {
                 child: CircularProgressIndicator(),
               ),
             ),
-        error: (_, __) => nonSignedInBuilder(context)
-        //Scaffold(
-        //  body: EmptyContent(
-        //    title: 'Something went wrong',
-        //    message: 'Can\'t load data right now. Please contact support',
-        //  ),
-        //),
-        );
+        error: (_, __) => nonSignedInBuilder(context));
   }
 
   Widget _data(BuildContext context, ApiUser user) {

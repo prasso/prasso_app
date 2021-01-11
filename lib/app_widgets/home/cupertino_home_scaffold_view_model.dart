@@ -58,7 +58,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   set currentTab(TabItem newtab) {
     print('$_currentTab is changing to $newtab');
     _currentTab = newtab;
-    // setProperties();
+    setProperties();
     notifyListeners();
   }
 
@@ -143,7 +143,6 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     } else {
       currentTab = tabItem;
     }
-    notifyListeners();
   }
 
   BottomNavigationBarItem _buildItem(TabItem tabItem, TabItemData itemData) {

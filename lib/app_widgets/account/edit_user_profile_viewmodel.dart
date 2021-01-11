@@ -9,6 +9,8 @@ import 'package:prasso_app/constants/paths.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/providers/profile_pic_url_state.dart';
+import 'package:prasso_app/services/firestore_database.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/utils/filename_helper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +64,8 @@ class EditUserProfileViewModel extends ChangeNotifier {
         destinationpath, _awsRegion, _awsRegion);
   }
 
-  Future pickImage(BuildContext context) async {
+  Future pickImage(BuildContext context, PrassoApiRepository auth,
+      FirestoreDatabase database) async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setUploadingOn();
@@ -74,7 +77,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
       print('uploaded: $uploadedpath');
       if (uploadedpath.contains('s3')) {
         photoURL = _cloudfrontWeb + destinationPath;
-        saveUser(context);
+        saveUser(context, auth, database);
       }
       setUploadingOff();
     }
@@ -89,10 +92,11 @@ class EditUserProfileViewModel extends ChangeNotifier {
     return false;
   }
 
-  Future<bool> submit(BuildContext context) async {
+  Future<bool> submit(BuildContext context, PrassoApiRepository auth,
+      FirestoreDatabase database) async {
     if (_validateAndSaveForm()) {
       try {
-        saveUser(context);
+        saveUser(context, auth, database);
       } catch (e) {
         unawaited(showExceptionAlertDialog(
           context: context,
@@ -105,9 +109,8 @@ class EditUserProfileViewModel extends ChangeNotifier {
   }
 
   // ignore: avoid_void_async
-  void saveUser(BuildContext context) async {
-    final auth = useProvider(prassoApiService);
-    final database = useProvider(databaseProvider);
+  void saveUser(BuildContext context, PrassoApiRepository auth,
+      FirestoreDatabase database) async {
     final uneditedUser = auth.currentUser;
 
     if (usr?.uid != uneditedUser.uid) {

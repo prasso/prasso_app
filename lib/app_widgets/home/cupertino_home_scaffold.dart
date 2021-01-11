@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,11 +8,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 
 @immutable
-class CupertinoHomeScaffold extends HookWidget {
+class CupertinoHomeScaffold extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final cupertinoVM = useProvider(cupertinoHomeScaffoldVMProvider);
-
+  Widget build(BuildContext context, ScopedReader watch) {
+    final cupertinoVM = watch(cupertinoHomeScaffoldVMProvider);
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         key: const Key(Keys.tabBar),

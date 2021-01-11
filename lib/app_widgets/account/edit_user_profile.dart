@@ -2,9 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:prasso_app/services/firestore_database.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 
 class EditUserProfile extends HookWidget {
   const EditUserProfile({Key key}) : super(key: key);
@@ -19,6 +22,8 @@ class EditUserProfile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final _viewmodel = useProvider(editUserProfileViewModel);
+    final auth = useProvider(prassoApiService);
+    final database = useProvider(databaseProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,42 +35,49 @@ class EditUserProfile extends HookWidget {
               'Save',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
-            onPressed: () => _viewmodel.submit(context),
+            onPressed: () => _viewmodel.submit(context, auth, database),
           ),
         ],
       ),
-      body: _buildContents(_viewmodel, context),
+      body: _buildContents(_viewmodel, context, auth, database),
       backgroundColor: Colors.grey[200],
     );
   }
 
   Widget _buildContents(
-      EditUserProfileViewModel _viewmodel, BuildContext context) {
+      EditUserProfileViewModel _viewmodel,
+      BuildContext context,
+      PrassoApiRepository auth,
+      FirestoreDatabase database) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: _buildForm(_viewmodel, context),
+            child: _buildForm(_viewmodel, context, auth, database),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context) {
+  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context,
+      PrassoApiRepository auth, FirestoreDatabase database) {
     return Form(
       key: _viewmodel.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: _buildFormChildren(_viewmodel, context),
+        children: _buildFormChildren(_viewmodel, context, auth, database),
       ),
     );
   }
 
   List<Widget> _buildFormChildren(
-      EditUserProfileViewModel _viewmodel, BuildContext context) {
+      EditUserProfileViewModel _viewmodel,
+      BuildContext context,
+      PrassoApiRepository auth,
+      FirestoreDatabase database) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double algo = screenWidth / perfectWidth;
 
@@ -98,7 +110,7 @@ class EditUserProfile extends HookWidget {
             right: algo * 10.0,
             child: GestureDetector(
               onTap: () {
-                _viewmodel.pickImage(context);
+                _viewmodel.pickImage(context, auth, database);
               },
               child: CircleAvatar(
                 backgroundColor: Colors.grey[200],

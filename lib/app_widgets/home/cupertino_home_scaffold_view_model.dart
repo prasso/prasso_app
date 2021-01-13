@@ -58,8 +58,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   set currentTab(TabItem newtab) {
     print('$_currentTab is changing to $newtab');
     _currentTab = newtab;
-    setProperties();
     notifyListeners();
+    setProperties();
   }
 
   Future<bool> clear() async {

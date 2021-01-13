@@ -1,6 +1,6 @@
 part of email_password_sign_in_ui;
 
-class EmailPasswordSignInPage extends StatelessWidget {
+class EmailPasswordSignInPage extends HookWidget {
   const EmailPasswordSignInPage({Key key, this.onSignedIn}) : super(key: key);
   final VoidCallback onSignedIn;
 

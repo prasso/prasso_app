@@ -13,7 +13,7 @@ class HomePage extends ConsumerWidget {
       onWillPop: () async => !await cupertinoVM
           .navigatorKeys[cupertinoVM.currentTab].currentState
           .maybePop(),
-      child: CupertinoHomeScaffold(),
+      child: const CupertinoHomeScaffold(),
     );
   }
 }

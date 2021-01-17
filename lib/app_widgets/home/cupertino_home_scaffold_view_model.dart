@@ -1,16 +1,23 @@
+// Dart imports:
 import 'dart:convert';
-import 'package:dynamic_widget/dynamic_widget/icons_helper.dart';
+
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:prasso_app/app_widgets/more/more_page.dart';
-import 'package:prasso_app/models/tab_item.dart';
-import 'package:prasso_app/constants/keys.dart';
-import 'package:prasso_app/constants/strings.dart';
+
+// Package imports:
+import 'package:dynamic_widget/dynamic_widget/icons_helper.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/account/account_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/apps/apps_page.dart';
+import 'package:prasso_app/app_widgets/more/more_page.dart';
+import 'package:prasso_app/constants/keys.dart';
+import 'package:prasso_app/constants/strings.dart';
+import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 
 class CupertinoHomeScaffoldViewModel extends ChangeNotifier {

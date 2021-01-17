@@ -1,9 +1,14 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/apps/app_run_list_tile.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final appRunViewModel = ChangeNotifierProvider(
     (ref) => AppRunViewModel(database: ref.read(databaseProvider)));

@@ -1,9 +1,14 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_driver/driver_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/main.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_driver/driver_extension.dart';
 import '../test/mocks.dart';
 
 // Run with:

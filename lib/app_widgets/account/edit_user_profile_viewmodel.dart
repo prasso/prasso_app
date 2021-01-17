@@ -1,10 +1,17 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:amazon_s3_cognito/amazon_s3_cognito.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:pedantic/pedantic.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
+import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:prasso_app/constants/paths.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/api_user.dart';
@@ -12,8 +19,6 @@ import 'package:prasso_app/providers/profile_pic_url_state.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/utils/filename_helper.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter/material.dart';
 
 final editUserProfileViewModel = ChangeNotifierProvider((ref) =>
     EditUserProfileViewModel(
@@ -77,7 +82,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
       print('uploaded: $uploadedpath');
       if (uploadedpath.contains('s3')) {
         photoURL = _cloudfrontWeb + destinationPath;
-        saveUser(context, auth, database);
+        await saveUser(context, auth, database);
       }
       setUploadingOff();
     }
@@ -96,7 +101,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
       FirestoreDatabase database) async {
     if (_validateAndSaveForm()) {
       try {
-        saveUser(context, auth, database);
+        await saveUser(context, auth, database);
       } catch (e) {
         unawaited(showExceptionAlertDialog(
           context: context,
@@ -109,7 +114,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
   }
 
   // ignore: avoid_void_async
-  void saveUser(BuildContext context, PrassoApiRepository auth,
+  Future<bool> saveUser(BuildContext context, PrassoApiRepository auth,
       FirestoreDatabase database) async {
     final uneditedUser = auth.currentUser;
 
@@ -120,5 +125,6 @@ class EditUserProfileViewModel extends ChangeNotifier {
     await auth.saveUserProfileData(context, usr, database);
 
     Navigator.of(context).pop();
+    return true;
   }
 }

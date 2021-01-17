@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/apps/edit_app_page.dart';
 import 'package:prasso_app/app_widgets/sign_in/email_password_sign_in_ui.dart';
 
@@ -13,7 +16,7 @@ class Router {
     switch (settings.name) {
       case Routes.emailPasswordSignInPage:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EmailPasswordSignInPage(onSignedIn: args),
+          builder: (_) => EmailPasswordSignInPage.create(onSignedIn: args),
           settings: settings,
           fullscreenDialog: true,
         );

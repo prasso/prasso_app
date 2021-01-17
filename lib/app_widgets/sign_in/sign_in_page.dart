@@ -1,14 +1,20 @@
+// Dart imports:
 import 'dart:math';
 
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/app_widgets/sign_in/sign_in_view_model.dart';
-import 'package:prasso_app/app_widgets/sign_in/sign_in_button.dart';
-import 'package:prasso_app/constants/keys.dart';
-import 'package:prasso_app/constants/strings.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// Project imports:
+import 'package:prasso_app/app_widgets/sign_in/sign_in_button.dart';
+import 'package:prasso_app/app_widgets/sign_in/sign_in_view_model.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
+import 'package:prasso_app/common_widgets/alert_dialogs.dart';
+import 'package:prasso_app/constants/keys.dart';
+import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/routing/router.dart';
 
 final signInModelProvider = ChangeNotifierProvider<SignInViewModel>(
@@ -107,12 +113,12 @@ class SignInPageContents extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
               ),
               const SizedBox(height: 8),
-              const Text(
+              /*const Text(
                 Strings.or,
                 style: TextStyle(fontSize: 14.0, color: Colors.black87),
                 textAlign: TextAlign.center,
               ),
-              /*const SizedBox(height: 8),
+              const SizedBox(height: 8),
               SignInButton(
                 key: anonymousButtonKey,
                 text: Strings.goAnonymous,

@@ -1,8 +1,13 @@
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-import 'package:pedantic/pedantic.dart';
-import 'package:prasso_app/models/app.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pedantic/pedantic.dart';
+
+// Project imports:
+import 'package:prasso_app/common_widgets/alert_dialogs.dart';
+import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 

@@ -1,18 +1,26 @@
+// Dart imports:
+import 'dart:async';
 import 'dart:convert';
+
+// Flutter imports:
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+// Package imports:
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:http/http.dart' as http;
+import 'package:pedantic/pedantic.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
 import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:prasso_app/constants/strings.dart';
+import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/services/firestore_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
-import 'package:pedantic/pedantic.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:flutter_config/flutter_config.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 
 class PrassoApiRepository {
@@ -20,14 +28,28 @@ class PrassoApiRepository {
       this.sharedPreferencesServiceProvider, this.cupertinoHomeScaffoldVM);
   final SharedPreferencesService sharedPreferencesServiceProvider;
   final CupertinoHomeScaffoldViewModel cupertinoHomeScaffoldVM;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   final String _apiServer = FlutterConfig.get(Strings.apiUrl).toString();
   final String _configUrl = '${FlutterConfig.get(Strings.apiUrl)}app/';
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  static PrassoApiRepository _prassoApiInstance;
 
   String appConfig = ''; //holds tabs and some user data not stored at Firebase
   String personalAppToken = ''; //identifies this app
+
+  factory PrassoApiRepository.empty(
+      SharedPreferencesService sharedPreferencesServiceProvider,
+      CupertinoHomeScaffoldViewModel cupertinoHomeScaffoldVM) {
+    _prassoApiInstance = _prassoApiInstance ??
+        PrassoApiRepository(
+            sharedPreferencesServiceProvider, cupertinoHomeScaffoldVM);
+    return PrassoApiRepository.instance;
+  }
+  static PrassoApiRepository /*!*/ get instance {
+    return _prassoApiInstance;
+  }
 
   ApiUser get currentUser {
     if (_firebaseAuth.currentUser != null) {
@@ -59,6 +81,8 @@ class PrassoApiRepository {
         'Authorization': 'Bearer$usertoken'
       };
 
+  void signInAnonymously() {}
+
   Future<ApiUser> signInWithEmailAndPassword(
       String email, String password) async {
     final String _signinUrl = _apiServer + Strings.signinUrl;
@@ -82,6 +106,8 @@ class PrassoApiRepository {
       if (res.statusCode == 200) {
         // for an example return, see prasso_api_service_test.dart
         changeStateNReloadUser(usr.user, res.body.toString(), personalAppToken);
+
+        //this is after the user is loaded to get the new app configuration which user login brought in
         await processIntoTabs(res.body);
       } else {
         throw Exception(res.body);
@@ -90,21 +116,57 @@ class PrassoApiRepository {
       throw Exception('User name or Password was not recognized.');
     }
 
-    return null;
+    return currentUser;
   }
 
   ApiUser changeStateNReloadUser(
-      dynamic usr, String appconfig, String personalAppToken) {
-    final String newAppToken = personalAppToken.replaceAll('"', '');
-    final ApiUser user = ApiUser.fromAPIJson(usr, appconfig, newAppToken);
+      dynamic usr, String appconfignew, String passedAppToken) {
+    final String newAppToken = passedAppToken.replaceAll('"', '');
+    personalAppToken = newAppToken;
+    appConfig = appconfignew;
 
+    final user = ApiUser.fromAPIJson(usr, appConfig, personalAppToken);
+    if (user != null) {
+      final firestoreDatabase = FirestoreDatabase(uid: user.uid);
+      unawaited(firestoreDatabase.setUser(user));
+    }
     return user;
   }
 
+  /// Notifies about changes to the user's sign-in state (such as sign-in or
+  /// sign-out).
   Stream<ApiUser> authStateChanges() {
+    return _pipeStreamChanges(_firebaseAuth.authStateChanges());
+  }
+
+  /// Notifies about changes to the user's data
+//  Stream<ApiUser> userChanges() {
+//    return _pipeStreamChanges(_firebaseAuth.userChanges());
+//  }
+  Stream<ApiUser> userChanges() {
     return _firebaseAuth
-        .authStateChanges()
+        .userChanges()
         .map((user) => ApiUser.fromAPIJson(user, appConfig, personalAppToken));
+  }
+
+  Stream<ApiUser> _pipeStreamChanges(Stream<User> stream) {
+    final Stream<ApiUser> streamSync = stream.map((delegateUser) {
+      if (delegateUser == null) {
+        return null;
+      }
+
+      return ApiUser.fromAPIJson(delegateUser, appConfig, personalAppToken);
+    });
+
+    StreamController<ApiUser> streamController;
+    streamController = StreamController<ApiUser>.broadcast(onListen: () {
+      // Fire an event straight away
+      streamController.add(currentUser);
+      // Pipe events of the broadcast stream into this stream
+      streamSync.pipe(streamController);
+    });
+
+    return streamController.stream;
   }
 
   Future<void> signOut() async {
@@ -199,16 +261,16 @@ class PrassoApiRepository {
   ////
   /// this code retrieves the app tabs, these are also retrieved in signInWithEmailandPassword
   ///
-  Future<ApiUser> getAppConfig(ApiUser user, BuildContext context) async {
+  Future<bool> getAppConfig(ApiUser user) async {
     final userToken = sharedPreferencesServiceProvider.getUserToken();
     final clientAppUrl = _configUrl + userToken.toString();
     final dynamic res = await http.post(Uri.encodeFull(clientAppUrl),
         headers: _setHeaders(userToken.toString()));
     if (res.statusCode == 200) {
       await processIntoTabs(res.body);
-      return changeStateNReloadUser(user, appConfig, personalAppToken);
+      changeStateNReloadUser(user, appConfig, personalAppToken);
     }
-    return null;
+    return true;
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
@@ -216,7 +278,7 @@ class PrassoApiRepository {
   }
 
   // ignore: missing_return
-  Future<ApiUser> createUserWithEmailAndPassword(
+  Future<bool> createUserWithEmailAndPassword(
       String email, String password) async {
     final UserCredential usr = await _firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password);
@@ -234,13 +296,14 @@ class PrassoApiRepository {
 
     if (res.statusCode == 200) {
       await processIntoTabs(res.body);
-      return changeStateNReloadUser(usr.user, appConfig, personalAppToken);
+      changeStateNReloadUser(usr.user, appConfig, personalAppToken);
     } else {
       throw Exception(res.body);
     }
+    return true;
   }
 
-  Future<ApiUser> saveUserProfileData(
+  Future<bool> saveUserProfileData(
       BuildContext context, ApiUser user, FirestoreDatabase database) async {
     final String _setUserUrl = '${_apiServer}save_user/${user.uid}';
 
@@ -263,9 +326,10 @@ class PrassoApiRepository {
 
     if (res.statusCode == 200) {
       await processIntoTabs(res.body);
-      return changeStateNReloadUser(user, appConfig, personalAppToken);
+      changeStateNReloadUser(user, appConfig, personalAppToken);
     } else {
       throw Exception(res.body);
     }
+    return true;
   }
 }

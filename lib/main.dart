@@ -1,16 +1,20 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
-import 'package:prasso_app/app_widgets/auth_widget.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:prasso_app/app_widgets/home/home_page.dart';
-import 'package:prasso_app/routing/router.dart' as _rtr;
 import 'package:flutter/material.dart';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+// Package imports:
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// Project imports:
+import 'package:prasso_app/app_widgets/auth_widget.dart';
+import 'package:prasso_app/app_widgets/home/home_page.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
+import 'package:prasso_app/routing/router.dart' as _rtr;
+import 'package:prasso_app/services/shared_preferences_service.dart';
+import 'app_widgets/sign_in/sign_in_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

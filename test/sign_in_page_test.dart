@@ -1,13 +1,18 @@
+// Dart imports:
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:prasso_app/routing/router.dart' as _rtr;
 
+// Project imports:
+import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
+import 'package:prasso_app/routing/router.dart' as _rtr;
 import 'mocks.dart';
 
 void main() {

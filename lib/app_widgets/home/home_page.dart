@@ -14,6 +14,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final cupertinoVM = watch(cupertinoHomeScaffoldVMProvider);
+
     return WillPopScope(
       onWillPop: () async => !await cupertinoVM
           .navigatorKeys[cupertinoVM.currentTab].currentState

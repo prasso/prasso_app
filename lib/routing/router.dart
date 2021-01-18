@@ -16,7 +16,7 @@ class Router {
     switch (settings.name) {
       case Routes.emailPasswordSignInPage:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EmailPasswordSignInPage.create(onSignedIn: args),
+          builder: (_) => EmailPasswordSignInPage(onSignedIn: args),
           settings: settings,
           fullscreenDialog: true,
         );

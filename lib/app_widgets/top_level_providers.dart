@@ -25,8 +25,8 @@ final prassoApiService = Provider<PrassoApiRepository>((ref) =>
 final profilePicUrlState =
     ChangeNotifierProvider<ProfilePicUrlState>((ref) => ProfilePicUrlState());
 
-final authStateChangesProvider = StreamProvider<ApiUser>(
-    (ref) => ref.watch(prassoApiService).authStateChanges());
+//final authStateChangesProvider = StreamProvider<ApiUser>(
+//    (ref) => ref.watch(prassoApiService).authStateChanges());
 
 final userChangesProvider =
     StreamProvider<ApiUser>((ref) => ref.watch(prassoApiService).userChanges());

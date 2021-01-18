@@ -104,11 +104,10 @@ class PrassoApiRepository {
             'firebase_uid': usr.user.uid
           }));
       if (res.statusCode == 200) {
+        await processIntoTabs(res.body);
+
         // for an example return, see prasso_api_service_test.dart
         changeStateNReloadUser(usr.user, res.body.toString(), personalAppToken);
-
-        //this is after the user is loaded to get the new app configuration which user login brought in
-        await processIntoTabs(res.body);
       } else {
         throw Exception(res.body);
       }
@@ -188,7 +187,7 @@ class PrassoApiRepository {
     if (returnedJson == '') {
       return '';
     }
-    await cupertinoHomeScaffoldVM.clear();
+    //maybe wasting cycles  await cupertinoHomeScaffoldVM.clear();
 
     //app tabs decoded here and added to route
     final dynamic data = jsonDecode(returnedJson);

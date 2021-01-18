@@ -44,6 +44,7 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
   @override
   Widget build(BuildContext context) {
     final vm = useProvider(cupertinoHomeScaffoldVMProvider);
+
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         key: const Key(Keys.tabBar),

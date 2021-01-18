@@ -12,12 +12,14 @@ class EmailAndPasswordValidators {
       NonEmptyStringValidator();
 }
 
+final emailPasswordSigninViewModelProvider = ChangeNotifierProvider(
+    (ref) => EmailPasswordSignInModel(auth: ref.watch(prassoApiService)));
+
 class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailPasswordSignInModel({
     @required this.auth,
     this.email = '',
     this.password = '',
-    this.formType = EmailPasswordSignInFormType.signIn,
     this.isLoading = false,
     this.submitted = false,
   });
@@ -25,9 +27,17 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
 
   String email;
   String password;
-  EmailPasswordSignInFormType formType;
   bool isLoading;
   bool submitted;
+
+  EmailPasswordSignInFormType _formType = EmailPasswordSignInFormType.signIn;
+
+  EmailPasswordSignInFormType get formType => _formType;
+
+  set formType(EmailPasswordSignInFormType value) {
+    _formType = value;
+    notifyListeners();
+  }
 
   Future<bool> submit() async {
     try {

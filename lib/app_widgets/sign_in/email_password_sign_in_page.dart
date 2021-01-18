@@ -1,23 +1,14 @@
 part of email_password_sign_in_ui;
 
 class EmailPasswordSignInPage extends HookWidget {
-  const EmailPasswordSignInPage(
-      {Key key, @required this.model, this.onSignedIn})
-      : super(key: key);
+  const EmailPasswordSignInPage({Key key, this.onSignedIn}) : super(key: key);
   final VoidCallback onSignedIn;
-  final EmailPasswordSignInModel model;
-
-  factory EmailPasswordSignInPage.create({@required VoidCallback onSignedIn}) {
-    return EmailPasswordSignInPage(
-      model: EmailPasswordSignInModel(auth: PrassoApiRepository.instance),
-      onSignedIn: onSignedIn,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return EmailPasswordSignInPageContents(
-        model: model, onSignedIn: onSignedIn);
+        model: useProvider(emailPasswordSigninViewModelProvider),
+        onSignedIn: onSignedIn);
   }
 
   @override
@@ -25,8 +16,6 @@ class EmailPasswordSignInPage extends HookWidget {
     super.debugFillProperties(properties);
     properties
         .add(ObjectFlagProperty<VoidCallback>.has('onSignedIn', onSignedIn));
-    properties
-        .add(DiagnosticsProperty<EmailPasswordSignInModel>('model', model));
   }
 }
 

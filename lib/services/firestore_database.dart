@@ -1,8 +1,12 @@
+// Dart imports:
 import 'dart:async';
 
+// Package imports:
 import 'package:meta/meta.dart';
-import 'package:prasso_app/models/app.dart';
+
+// Project imports:
 import 'package:prasso_app/models/api_user.dart';
+import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/services/firebase_auth_service/firestore_service.dart';
 import 'package:prasso_app/services/firestore_path.dart';
 

@@ -1,24 +1,34 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
 import 'package:meta/meta.dart';
+
+// Project imports:
 import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/services/prasso_api_service.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 
 class SignInViewModel with ChangeNotifier {
   SignInViewModel({@required this.auth});
-  final PrassoApiService auth;
+  final PrassoApiRepository auth;
   bool isLoading = false;
+  dynamic error;
 
   // ignore: unused_element
   Future<ApiUser> _signIn(Future<ApiUser> Function() signInMethod) async {
     try {
       isLoading = true;
       notifyListeners();
-      return await signInMethod();
+      await signInMethod();
+      error = null;
     } catch (e) {
+      error = e;
+      rethrow;
+    } finally {
       isLoading = false;
       notifyListeners();
-      rethrow;
     }
+    return null;
   }
   /*
 Future<ApiUser> signInAnonymously() async {

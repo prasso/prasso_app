@@ -1,9 +1,12 @@
-import 'package:prasso_app/app_widgets/sign_in/email_password_sign_in_ui.dart';
-import 'package:mockito/mockito.dart';
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:prasso_app/services/prasso_api_service.dart';
+import 'package:mockito/mockito.dart';
 
-class MockAuthService extends Mock implements PrassoApiService {}
+// Project imports:
+import 'package:prasso_app/app_widgets/sign_in/email_password_sign_in_ui.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
+
+class MockAuthService extends Mock implements PrassoApiRepository {}
 
 void main() {
   MockAuthService mockAuthService;

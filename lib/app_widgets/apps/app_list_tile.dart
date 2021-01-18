@@ -1,5 +1,8 @@
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:prasso_app/models/app.dart';
 
 class AppListTile extends StatelessWidget {

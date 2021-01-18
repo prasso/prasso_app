@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/apps/edit_app_page.dart';
 import 'package:prasso_app/app_widgets/sign_in/email_password_sign_in_ui.dart';
 
@@ -19,7 +22,8 @@ class Router {
         );
       case Routes.editAppPage:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EditAppPage(app: args),
+          builder: (_) =>
+              EditAppPage(key: GlobalKey<FormState>(), appinfo: args),
           settings: settings,
           fullscreenDialog: true,
         );

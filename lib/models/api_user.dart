@@ -1,8 +1,13 @@
 // import 'dart:developer';
+
+// Dart imports:
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -45,22 +50,23 @@ class ApiUser {
 
       if (!(appConfig?.isEmpty ?? true)) {
         final dynamic jsonAppData = jsonDecode(appConfig);
-        return ApiUser(
-            uid: usr.uid,
-            email: usr.email,
-            displayName: jsonAppData['data']['name'],
-            photoURL: jsonAppData['data']['photoURL'],
-            appConfig: appConfig,
-            appToken: jsonAppData['data']['token']);
-      } else {
-        return ApiUser(
-            uid: usr.uid,
-            email: usr.email,
-            displayName: usr.displayName,
-            photoURL: usr.photoURL,
-            appConfig: appConfig,
-            appToken: appToken);
+        if (jsonAppData.containsKey('data') == true) {
+          return ApiUser(
+              uid: usr.uid,
+              email: usr.email,
+              displayName: jsonAppData['data']['name'],
+              photoURL: jsonAppData['data']['photoURL'],
+              appConfig: appConfig,
+              appToken: jsonAppData['data']['token']);
+        }
       }
+      return ApiUser(
+          uid: usr.uid,
+          email: usr.email,
+          displayName: usr.displayName,
+          photoURL: usr.photoURL,
+          appConfig: appConfig,
+          appToken: appToken);
     } else {
       if (_user is ApiUser) {
         return _user;

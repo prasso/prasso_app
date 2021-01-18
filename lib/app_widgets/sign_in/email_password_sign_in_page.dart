@@ -1,20 +1,14 @@
 part of email_password_sign_in_ui;
 
-class EmailPasswordSignInPage extends StatelessWidget {
+class EmailPasswordSignInPage extends HookWidget {
   const EmailPasswordSignInPage({Key key, this.onSignedIn}) : super(key: key);
   final VoidCallback onSignedIn;
 
   @override
   Widget build(BuildContext context) {
-    final PrassoApiService auth =
-        Provider.of<PrassoApiService>(context, listen: false);
-    return ChangeNotifierProvider<EmailPasswordSignInModel>(
-      create: (_) => EmailPasswordSignInModel(auth: auth),
-      child: Consumer<EmailPasswordSignInModel>(
-        builder: (_, model, __) => EmailPasswordSignInPageContents(
-            model: model, onSignedIn: onSignedIn),
-      ),
-    );
+    return EmailPasswordSignInPageContents(
+        model: useProvider(emailPasswordSigninViewModelProvider),
+        onSignedIn: onSignedIn);
   }
 
   @override

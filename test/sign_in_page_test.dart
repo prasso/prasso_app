@@ -1,46 +1,44 @@
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
-import 'package:prasso_app/services/prasso_api_service.dart';
-import 'package:provider/provider.dart';
-import 'package:prasso_app/routing/router.dart' as _rtr;
-import 'package:prasso_app/models/api_user.dart';
 
+// Project imports:
+import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
+import 'package:prasso_app/routing/router.dart' as _rtr;
 import 'mocks.dart';
 
 void main() {
   group('sign-in page', () {
+    MockPrassoAuth mockPrassoAuth;
     MockNavigatorObserver mockNavigatorObserver;
-    StreamController<ApiUser> onAuthStateChangedController;
-
-    PrassoApiService Function(BuildContext context) apiBuilder;
 
     setUp(() {
+      mockPrassoAuth = MockPrassoAuth();
       mockNavigatorObserver = MockNavigatorObserver();
-      onAuthStateChangedController = StreamController<ApiUser>();
-      apiBuilder = (_) => PrassoApiService();
-    });
-
-    tearDown(() {
-      onAuthStateChangedController.close();
     });
 
     Future<void> pumpSignInPage(WidgetTester tester) async {
       await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            Provider<PrassoApiService>(
-              create: apiBuilder,
-            ),
+        ProviderScope(
+          overrides: [
+            prassoApiService
+                .overrideWithProvider(Provider((ref) => mockPrassoAuth)),
           ],
-          child: MaterialApp(
-            home: SignInPageBuilder(),
-            onGenerateRoute: _rtr.Router.onGenerateRoute,
-            navigatorObservers: [mockNavigatorObserver],
-          ),
+          child: Consumer(builder: (context, watch, __) {
+            return MaterialApp(
+              home: SignInPage(),
+              onGenerateRoute: _rtr.Router.onGenerateRoute,
+              navigatorObservers: [mockNavigatorObserver],
+            );
+          }),
         ),
       );
       // didPush is called once when the widget is first built
@@ -50,7 +48,8 @@ void main() {
     testWidgets('email & password navigation', (tester) async {
       await pumpSignInPage(tester);
 
-      final emailPasswordButton = find.byKey(SignInPage.emailPasswordButtonKey);
+      final emailPasswordButton =
+          find.byKey(SignInPageContents.emailPasswordButtonKey);
       expect(emailPasswordButton, findsOneWidget);
 
       await tester.tap(emailPasswordButton);

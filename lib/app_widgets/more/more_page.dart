@@ -1,23 +1,29 @@
-import 'package:flutter/foundation.dart';
-import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
-import 'package:prasso_app/constants/strings.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:prasso_app/service_locator.dart';
 
-class MorePage extends StatelessWidget {
-  final CupertinoHomeScaffoldViewModel model =
-      locator<CupertinoHomeScaffoldViewModel>();
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
+
+// Project imports:
+import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
+import 'package:prasso_app/constants/strings.dart';
+
+class MorePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final model = useProvider(cupertinoHomeScaffoldVMProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text(Strings.morePage),
       ),
-      body: _buildMoreInfo(context),
+      body: _buildMoreInfo(context, model),
     );
   }
 
-  Widget _buildMoreInfo(BuildContext context) {
+  Widget _buildMoreInfo(
+      BuildContext context, CupertinoHomeScaffoldViewModel model) {
     return ListView.builder(
       // Let the ListView know how many items it needs to build.
       itemCount: model.moreItems.length,
@@ -38,12 +44,5 @@ class MorePage extends StatelessWidget {
         );
       },
     );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-        DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('model', model));
   }
 }

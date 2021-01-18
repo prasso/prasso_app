@@ -1,12 +1,16 @@
 # Prasso App - no-code mobile app development
 
-## originally forked from  Demo for Flutter & Firebase Realtime Apps
+## Project Timeline
+#### originally forked from  Demo for Flutter & Firebase Realtime Apps
 
 This project, Prasso App, started out as a fork of the **reference architecture demo** that can be used as a **starting point** for apps using Flutter & Firebase. The code is modified to support running web apps which can be built from various no-code sites around the web.
 
 *Also see the marvelous [codewithandrea_flutter_packages repo](https://github.com/bizz84/codewithandrea_flutter_packages), which contains the most reusable parts of this project as packages.*
 
-Setup instructions such as they are:
+Then the code was migrated into a format closer to what you would see in MVVM architecture. And then Riverpod Hooks has been added.
+Now we are cooking with gas!
+
+## Setup instructions such as they are:
 
 ## AWS
 ### Image storage

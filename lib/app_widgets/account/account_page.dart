@@ -1,26 +1,29 @@
+// Dart imports:
 import 'dart:async';
 
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pedantic/pedantic.dart';
+
+// Project imports:
 import 'package:prasso_app/app_widgets/account/edit_user_profile.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
+import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:prasso_app/common_widgets/avatar.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
-import 'package:flutter/material.dart';
 import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/service_locator.dart';
-import 'package:prasso_app/services/prasso_api_service.dart';
-import 'package:provider/provider.dart';
-import 'package:pedantic/pedantic.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends HookWidget {
   // for reloading config after it changes
-  Future<void> _reloadConfig(BuildContext context) async {
+  Future<void> _reloadConfig(BuildContext context, ApiUser user) async {
     try {
-      final PrassoApiService auth =
-          Provider.of<PrassoApiService>(context, listen: false);
-
-      final user = Provider.of<ApiUser>(context);
-      await auth.getAppConfig(user, context);
+      await PrassoApiRepository.instance.getAppConfig(user);
     } catch (e) {
       unawaited(showExceptionAlertDialog(
         context: context,
@@ -32,11 +35,7 @@ class AccountPage extends StatelessWidget {
 
   Future<void> _signOut(BuildContext context) async {
     try {
-      final PrassoApiService auth =
-          Provider.of<PrassoApiService>(context, listen: false);
-      await auth.signOut();
-
-      await locator.reset(dispose: true);
+      await PrassoApiRepository.instance.signOut();
     } catch (e) {
       unawaited(showExceptionAlertDialog(
         context: context,
@@ -63,22 +62,15 @@ class AccountPage extends StatelessWidget {
   static Future<void> _showProfileEditor(
       BuildContext context, ApiUser user) async {
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-      builder: (context) => EditUserProfile(usr: user),
+      builder: (context) => const EditUserProfile(),
       fullscreenDialog: true,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!locator.isRegistered<ApiUser>()) {
-      _signOut(context);
-      return Container();
-    }
-    final user = locator<ApiUser>();
-    if (user.appToken.isEmpty) {
-      _signOut(context);
-      return Container();
-    }
+    final authService = context.read(prassoApiService);
+    final user = authService.currentUser;
     return Scaffold(
       appBar: AppBar(title: const Text(Strings.accountPage), actions: <Widget>[
         const SizedBox(height: 8),
@@ -91,7 +83,7 @@ class AccountPage extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          onPressed: () => _reloadConfig(context),
+          onPressed: () => _reloadConfig(context, user),
         ),
         TextButton(
           key: const Key(Keys.logout),

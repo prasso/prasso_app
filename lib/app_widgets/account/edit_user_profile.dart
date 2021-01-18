@@ -1,188 +1,88 @@
-import 'package:amazon_s3_cognito/amazon_s3_cognito.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:flutter_config/flutter_config.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
+import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/constants.dart';
-import 'package:prasso_app/constants/paths.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/providers/profile_pic_url_state.dart';
-import 'package:prasso_app/service_locator.dart';
-import 'package:prasso_app/services/prasso_api_service.dart';
-import 'package:prasso_app/utils/filename_helper.dart';
-import 'package:provider/provider.dart';
-import 'package:pedantic/pedantic.dart';
+import 'package:prasso_app/services/firestore_database.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 
-class EditUserProfile extends StatefulWidget {
-  const EditUserProfile({Key key, this.usr}) : super(key: key);
-  final ApiUser usr;
+class EditUserProfile extends HookWidget {
+  const EditUserProfile({Key key}) : super(key: key);
 
-  static Future<void> show(BuildContext context, {ApiUser usr}) async {
+  static Future<void> show(BuildContext context) async {
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-      builder: (context) => EditUserProfile(usr: usr),
+      builder: (context) => const EditUserProfile(),
       fullscreenDialog: true,
     ));
   }
 
   @override
-  _EditUserProfileState createState() => _EditUserProfileState();
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ApiUser>('usr', usr));
-  }
-}
-
-class _EditUserProfileState extends State<EditUserProfile> {
-  final _formKey = GlobalKey<FormState>();
-  final String _awsRegion = FlutterConfig.get(Strings.awsRegion).toString();
-  final String _awsIdentityPool =
-      FlutterConfig.get(Strings.awsIdentityPool).toString();
-  final String _cloudfrontWeb =
-      FlutterConfig.get(Strings.cloudFrontID).toString();
-  final picker = ImagePicker();
-  ImageProvider profileImage;
-  bool uploadingDp = false;
-
-  String _email;
-  String _photoURL;
-  String _displayName;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.usr != null) {
-      _email = widget.usr.email;
-      _photoURL = widget.usr.photoURL;
-      _displayName = widget.usr.displayName;
-    }
-  }
-
-  Future<String> uploadFile(String filepath, String destinationpath) async {
-    return AmazonS3Cognito.upload(filepath, Strings.awsBucket, _awsIdentityPool,
-        destinationpath, _awsRegion, _awsRegion);
-  }
-
-  Future pickImage(BuildContext context) async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        uploadingDp = true;
-      });
-      final _uid = widget.usr?.uid;
-      final filename = FilenameHelper.getFilenameFromPath(pickedFile.path);
-      final destinationPath = '${Paths.profilePicturePath}$_uid/$filename';
-
-      final uploadedpath = await uploadFile(pickedFile.path, destinationPath);
-      print('uploaded: $uploadedpath');
-      if (uploadedpath.contains('s3')) {
-        _photoURL = _cloudfrontWeb + destinationPath;
-        saveUser();
-      }
-      setState(() {
-        uploadingDp = false;
-      });
-    }
-  }
-
-  bool _validateAndSaveForm() {
-    final form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
-  }
-
-  Future<bool> _submit(BuildContext context) async {
-    if (_validateAndSaveForm()) {
-      try {
-        saveUser();
-      } catch (e) {
-        unawaited(showExceptionAlertDialog(
-          context: context,
-          title: 'Operation failed',
-          exception: e,
-        ));
-      }
-    }
-    return true;
-  }
-
-  // ignore: avoid_void_async
-  void saveUser() async {
-    final uneditedUser = locator<ApiUser>();
-
-    final PrassoApiService auth =
-        Provider.of<PrassoApiService>(context, listen: false);
-    final _uid = widget.usr?.uid;
-    if (_uid != uneditedUser.uid) {
-      throw Exception('Program error');
-    }
-    final usr = ApiUser.fromLocatorUpdated(
-        uneditedUser, _email, _photoURL, _displayName);
-    await auth.saveUserProfileData(context, usr);
-
-    Navigator.of(context).pop();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.usr.photoURL.isNotEmpty) {
-      context.watch<ProfilePicUrlState>().setProfilePicUrl(widget.usr.photoURL);
-    }
-
-    profileImage = CachedNetworkImageProvider(
-        context.watch<ProfilePicUrlState>().profilePicUrl);
+    final _viewmodel = useProvider(editUserProfileViewModel);
+    final auth = useProvider(prassoApiService);
+    final database = useProvider(databaseProvider);
 
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(widget.usr == null ? 'New User' : 'Edit User'),
+        title: Text(_viewmodel.usr == null ? 'New User' : 'Edit User'),
         actions: <Widget>[
           FlatButton(
             child: const Text(
               'Save',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
-            onPressed: () => _submit(context),
+            onPressed: () => _viewmodel.submit(context, auth, database),
           ),
         ],
       ),
-      body: _buildContents(),
+      body: _buildContents(_viewmodel, context, auth, database),
       backgroundColor: Colors.grey[200],
     );
   }
 
-  Widget _buildContents() {
+  Widget _buildContents(
+      EditUserProfileViewModel _viewmodel,
+      BuildContext context,
+      PrassoApiRepository auth,
+      FirestoreDatabase database) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: _buildForm(),
+            child: _buildForm(_viewmodel, context, auth, database),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildForm() {
+  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context,
+      PrassoApiRepository auth, FirestoreDatabase database) {
     return Form(
-      key: _formKey,
+      key: _viewmodel.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: _buildFormChildren(),
+        children: _buildFormChildren(_viewmodel, context, auth, database),
       ),
     );
   }
 
-  List<Widget> _buildFormChildren() {
+  List<Widget> _buildFormChildren(
+      EditUserProfileViewModel _viewmodel,
+      BuildContext context,
+      PrassoApiRepository auth,
+      FirestoreDatabase database) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double algo = screenWidth / perfectWidth;
 
@@ -190,20 +90,20 @@ class _EditUserProfileState extends State<EditUserProfile> {
       Stack(
         children: [
           Opacity(
-            opacity: uploadingDp ? 0.5 : 1.0,
+            opacity: _viewmodel.uploadingDp ? 0.5 : 1.0,
             child: Hero(
               tag: 'myProfile',
               child: CircleAvatar(
                 radius: algo * 120.0,
                 backgroundColor: Colors.white,
-                backgroundImage: profileImage,
+                backgroundImage: _viewmodel.profileImage,
               ),
             ),
           ),
           Positioned.fill(
             child: Align(
               alignment: Alignment.center,
-              child: uploadingDp
+              child: _viewmodel.uploadingDp
                   ? const CircularProgressIndicator(
                       backgroundColor: Colors.white,
                     )
@@ -215,7 +115,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
             right: algo * 10.0,
             child: GestureDetector(
               onTap: () {
-                pickImage(context);
+                _viewmodel.pickImage(context, auth, database);
               },
               child: CircleAvatar(
                 backgroundColor: Colors.grey[200],
@@ -233,21 +133,21 @@ class _EditUserProfileState extends State<EditUserProfile> {
       TextFormField(
         decoration: const InputDecoration(labelText: 'Email'),
         keyboardAppearance: Brightness.light,
-        initialValue: _email,
+        initialValue: _viewmodel.email,
         validator: (value) => value.isNotEmpty ? null : 'Email can\'t be empty',
-        onSaved: (value) => _email = value,
+        onSaved: (value) => _viewmodel.email = value,
       ),
       TextFormField(
         decoration: const InputDecoration(labelText: 'Photo Url'),
         keyboardAppearance: Brightness.light,
-        initialValue: _photoURL,
-        onSaved: (value) => _photoURL = value,
+        initialValue: _viewmodel.photoURL,
+        onSaved: (value) => _viewmodel.photoURL = value,
       ),
       TextFormField(
         decoration: const InputDecoration(labelText: 'Name'),
         keyboardAppearance: Brightness.light,
-        initialValue: _displayName,
-        onSaved: (value) => _displayName = value,
+        initialValue: _viewmodel.displayName,
+        onSaved: (value) => _viewmodel.displayName = value,
       ),
     ];
   }
@@ -255,9 +155,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ImagePicker>('picker', picker));
-    properties.add(DiagnosticsProperty<ImageProvider<Object>>(
-        'profileImage', profileImage));
-    properties.add(DiagnosticsProperty<bool>('uploadingDp', uploadingDp));
+    properties.add(DiagnosticsProperty(
+        'editUserProfileViewModel', editUserProfileViewModel));
   }
 }

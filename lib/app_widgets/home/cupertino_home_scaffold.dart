@@ -25,6 +25,7 @@ class CupertinoHomeScaffold extends StatefulHookWidget {
 
 class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
+  CupertinoHomeScaffoldViewModel vm;
 
   void _select(CupertinoHomeScaffoldViewModel vm, int index, TabItem tabItem) {
     if (tabItem == vm.currentTab) {
@@ -36,14 +37,26 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
     }
   }
 
+  /// onChangedApplication is here to update the tabs when the user changes Jan18
+  void _onChangedApplication() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
   }
 
   @override
+  void dispose() {
+    vm?.removeListener(_onChangedApplication);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final vm = useProvider(cupertinoHomeScaffoldVMProvider);
+    vm = useProvider(cupertinoHomeScaffoldVMProvider);
+    vm.addListener(_onChangedApplication);
 
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
@@ -60,5 +73,12 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
         );
       },
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
   }
 }

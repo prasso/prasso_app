@@ -58,6 +58,7 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
           break;
       }
 
+      updateWith(isLoading: false);
       return true;
     } catch (e) {
       developer.log(

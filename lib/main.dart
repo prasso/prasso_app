@@ -18,8 +18,8 @@ import 'app_widgets/sign_in/sign_in_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterConfig.loadEnvVariables();
   await Firebase.initializeApp();
+  await FlutterConfig.loadEnvVariables();
   final sharedPreferences = await SharedPreferences.getInstance();
   runApp(ProviderScope(
     overrides: [

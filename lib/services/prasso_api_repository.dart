@@ -30,7 +30,9 @@ class PrassoApiRepository {
   final CupertinoHomeScaffoldViewModel cupertinoHomeScaffoldVM;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  final String _apiServer = FlutterConfig.get(Strings.apiUrl).toString();
+  final String _apiServer = ('' == FlutterConfig.get(Strings.apiUrl).toString())
+      ? FlutterConfig.get(Strings.apiUrl).toString()
+      : Strings.prodUrl;
   final String _configUrl = '${FlutterConfig.get(Strings.apiUrl)}app/';
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 

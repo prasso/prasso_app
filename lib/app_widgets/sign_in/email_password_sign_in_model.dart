@@ -194,11 +194,6 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   String toString() {
     return 'email: $email, password: $password, formType: $formType, isLoading: $isLoading, submitted: $submitted';
   }

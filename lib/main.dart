@@ -1,5 +1,5 @@
 // Flutter imports:
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -42,10 +42,5 @@ class PrassoCore extends StatelessWidget {
           signedInBuilder: (_) => const HomePage(),
         ),
         onGenerateRoute: _rtr.Router.onGenerateRoute);
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
   }
 }

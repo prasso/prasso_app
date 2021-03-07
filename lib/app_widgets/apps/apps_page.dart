@@ -39,7 +39,7 @@ class AppsPage extends HookWidget {
 
     return StreamBuilder<List<AppModel>>(
       stream: _viewModel.database.appsStream(),
-      builder: (context, snapshot) {
+      builder: (dynamic context, dynamic snapshot) {
         logprovider
             .d('Apps StreamBuilder rebuild: ${snapshot.connectionState}');
         return ListItemsBuilder<AppModel>(

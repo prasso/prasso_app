@@ -25,7 +25,7 @@ class EditAppPage extends HookWidget {
         title: Text(
             _viewModel.appInfo.documentId == null ? 'New App' : 'Edit App'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text(
               'Save',
               style: TextStyle(fontSize: 18, color: Colors.white),

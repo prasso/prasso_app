@@ -22,7 +22,7 @@ class AppsPageViewModel extends ChangeNotifier {
 
   Future<void> show({BuildContext context, AppModel app}) async {
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-      builder: (context) =>
+      builder: (dynamic context) =>
           EditAppPage(key: GlobalKey<FormState>(), appinfo: app),
       fullscreenDialog: true,
     ));

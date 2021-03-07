@@ -70,7 +70,7 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
         items: vm.tabs,
         onTap: (index) => _select(vm, index, TabItem.values[index]),
       ),
-      tabBuilder: (context, index) {
+      tabBuilder: (dynamic context, dynamic index) {
         final item = TabItem.values[index];
         return CupertinoTabView(
           navigatorKey: vm.navigatorKeys[item],

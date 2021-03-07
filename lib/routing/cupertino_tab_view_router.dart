@@ -15,7 +15,7 @@ class CupertinoTabViewRouter {
       case CupertinoTabViewRoutes.webViewPage:
         final AppModel app = settings.arguments as AppModel;
         return CupertinoPageRoute(
-          builder: (_) =>
+          builder: (dynamic _) =>
               AppRunWebView(title: app.pageTitle, selectedUrl: app.pageUrl),
           settings: settings,
           fullscreenDialog: false,

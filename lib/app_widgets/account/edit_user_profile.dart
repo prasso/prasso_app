@@ -19,7 +19,7 @@ class EditUserProfile extends HookWidget {
 
   static Future<void> show(BuildContext context) async {
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-      builder: (context) => const EditUserProfile(),
+      builder: (dynamic context) => const EditUserProfile(),
       fullscreenDialog: true,
     ));
   }
@@ -35,7 +35,7 @@ class EditUserProfile extends HookWidget {
         elevation: 2.0,
         title: Text(_viewmodel.usr == null ? 'New User' : 'Edit User'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: const Text(
               'Save',
               style: TextStyle(fontSize: 18, color: Colors.white),

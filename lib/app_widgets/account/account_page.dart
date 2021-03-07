@@ -74,7 +74,7 @@ class AccountPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(title: const Text(Strings.accountPage), actions: <Widget>[
         const SizedBox(height: 8),
-        TextButton(
+        FlatButton(
           key: const Key(Keys.reload),
           child: const Text(
             Strings.reload,
@@ -85,7 +85,7 @@ class AccountPage extends HookWidget {
           ),
           onPressed: () => _reloadConfig(context, user),
         ),
-        TextButton(
+        FlatButton(
           key: const Key(Keys.logout),
           child: const Text(
             Strings.logout,

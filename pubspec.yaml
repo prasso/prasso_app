@@ -1,8 +1,8 @@
 name: prasso_app
-description: A new Flutter project.
+description: or To Get It Done
 publish_to: 'none' 
 
-version: 1.0.8+10
+version: 1.0.8+11
 
 environment:
   sdk: ">=2.8.4 <3.0.0"

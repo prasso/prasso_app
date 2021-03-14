@@ -62,8 +62,8 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
       return true;
     } catch (e) {
       developer.log(
-        'log data',
-        name: 'prasso.app.tabs',
+        'email password log data',
+        name: 'prasso.app.email_password_sign_in',
         error: e.toString(),
       );
       updateWith(isLoading: false);

@@ -50,7 +50,7 @@ class ApiUser {
 
       if (!(appConfig?.isEmpty ?? true)) {
         final dynamic jsonAppData = jsonDecode(appConfig);
-        if (jsonAppData.containsKey('data') == true) {
+        if (jsonAppData != null && jsonAppData.containsKey('data') == true) {
           return ApiUser(
               uid: usr.uid,
               email: usr.email,

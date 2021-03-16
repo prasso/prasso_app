@@ -22,12 +22,22 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>The pdf viewer added the permission request and may use it internally</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>The pdf viewer added the permission request and may use it internally</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We will be updating profile images</string>
+	<key>NSContactsUsageDescription</key>
+	<string>The pdf viewer added the permission request and may use it internally</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The pdf viewer added the permission request and may use it internally</string>
+	<key>NSMotionUsageDescription</key>
+	<string>The pdf viewer added the permission request and may use it internally</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We will be updating profile images</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Please grant permission to access contacts because the app functions that way</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>The pdf viewer added the permission request and may use it internally</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

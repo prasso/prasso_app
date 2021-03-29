@@ -182,7 +182,9 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         pageUrl: tabsFromAPI[i]['page_url'],
         pageTitle: tabsFromAPI[i]['page_title'],
         sortOrder: tabsFromAPI[i]['sort_order'].toString(),
-        parent: tabsFromAPI[i]['parent'],
+        parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
+            ? 0
+            : tabsFromAPI[i]['parent'],
       );
 
       final int position = allTabs.length;
@@ -209,10 +211,10 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         return (_) => AppRunWebView(title: t1.title, selectedUrl: actionString);
       }
     } else {
-      if (actionString == 'AccountPage()') {
+      if (actionString == Strings.accountPageUrl) {
         return (_) => AccountPage();
       } else {
-        if (actionString == 'More()') {
+        if (actionString == Strings.morePageUrl) {
           return (_) => MorePage();
         } else {
           if (actionString == 'AppsPage()') {

@@ -30,7 +30,7 @@ class AppRunListTile extends StatelessWidget {
       String pageTitle, String pageUrl, BuildContext context) async {
     //show the webview with this url.
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-        builder: (context) => AppRunWebView(
+        builder: (dynamic context) => AppRunWebView(
               title: pageTitle,
               selectedUrl: pageUrl,
             )));
@@ -52,7 +52,7 @@ class AppRunListTile extends StatelessWidget {
           Expanded(child: Container()),
           SizedBox(
             width: 90.0,
-            child: FlatButton(
+            child: TextButton(
               child: const Text('Open'),
               onPressed: model.isLoading
                   ? null

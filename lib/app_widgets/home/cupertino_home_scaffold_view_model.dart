@@ -11,6 +11,7 @@ import 'package:dynamic_widget/dynamic_widget/icons_helper.dart';
 
 // Project imports:
 import 'package:prasso_app/app_widgets/account/account_page.dart';
+import 'package:prasso_app/app_widgets/apps/app_pdf_view.dart';
 import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/apps/apps_page.dart';
@@ -181,7 +182,9 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         pageUrl: tabsFromAPI[i]['page_url'],
         pageTitle: tabsFromAPI[i]['page_title'],
         sortOrder: tabsFromAPI[i]['sort_order'].toString(),
-        parent: tabsFromAPI[i]['parent'],
+        parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
+            ? 0
+            : tabsFromAPI[i]['parent'],
       );
 
       final int position = allTabs.length;
@@ -202,12 +205,16 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     final String actionString = t1.pageUrl;
     // if pageurl isn't https it is a page in this code
     if (actionString.startsWith('http')) {
-      return (_) => AppRunWebView(title: t1.title, selectedUrl: actionString);
+      if (actionString.endsWith('.pdf')) {
+        return (_) => AppRunPdfView(title: t1.title, urlPDFPath: actionString);
+      } else {
+        return (_) => AppRunWebView(title: t1.title, selectedUrl: actionString);
+      }
     } else {
-      if (actionString == 'AccountPage()') {
+      if (actionString == Strings.accountPageUrl) {
         return (_) => AccountPage();
       } else {
-        if (actionString == 'More()') {
+        if (actionString == Strings.morePageUrl) {
           return (_) => MorePage();
         } else {
           if (actionString == 'AppsPage()') {

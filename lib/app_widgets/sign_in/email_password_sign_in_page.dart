@@ -168,7 +168,7 @@ class _EmailPasswordSignInPageContentsState
             onPressed: model.isLoading ? null : _submit,
           ),
           const SizedBox(height: 8.0),
-          FlatButton(
+          TextButton(
             key: const Key('secondary-button'),
             child: Text(model.secondaryButtonText),
             onPressed: model.isLoading
@@ -176,7 +176,7 @@ class _EmailPasswordSignInPageContentsState
                 : () => _updateFormType(model.secondaryActionFormType),
           ),
           if (model.formType == EmailPasswordSignInFormType.signIn)
-            FlatButton(
+            TextButton(
               key: const Key('tertiary-button'),
               child:
                   const Text(EmailPasswordSignInStrings.forgotPasswordQuestion),

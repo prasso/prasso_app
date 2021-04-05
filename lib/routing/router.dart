@@ -16,13 +16,13 @@ class Router {
     switch (settings.name) {
       case Routes.emailPasswordSignInPage:
         return MaterialPageRoute<dynamic>(
-          builder: (_) => EmailPasswordSignInPage(onSignedIn: args),
+          builder: (dynamic _) => EmailPasswordSignInPage(onSignedIn: args),
           settings: settings,
           fullscreenDialog: true,
         );
       case Routes.editAppPage:
         return MaterialPageRoute<dynamic>(
-          builder: (_) =>
+          builder: (dynamic _) =>
               EditAppPage(key: GlobalKey<FormState>(), appinfo: args),
           settings: settings,
           fullscreenDialog: true,

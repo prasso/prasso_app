@@ -62,7 +62,7 @@ class AccountPage extends HookWidget {
   static Future<void> _showProfileEditor(
       BuildContext context, ApiUser user) async {
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-      builder: (context) => const EditUserProfile(),
+      builder: (dynamic context) => const EditUserProfile(),
       fullscreenDialog: true,
     ));
   }
@@ -74,7 +74,7 @@ class AccountPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(title: const Text(Strings.accountPage), actions: <Widget>[
         const SizedBox(height: 8),
-        TextButton(
+        /*TextButton(
           key: const Key(Keys.reload),
           child: const Text(
             Strings.reload,
@@ -84,7 +84,7 @@ class AccountPage extends HookWidget {
             ),
           ),
           onPressed: () => _reloadConfig(context, user),
-        ),
+        ),*/
         TextButton(
           key: const Key(Keys.logout),
           child: const Text(
@@ -131,7 +131,7 @@ class AccountPage extends HookWidget {
             style: const TextStyle(color: Colors.black),
           ),
         const SizedBox(height: 8),
-        FlatButton(
+        TextButton(
           child: const Text(
             'Edit Profile',
             style: TextStyle(fontSize: 14, color: Colors.black),

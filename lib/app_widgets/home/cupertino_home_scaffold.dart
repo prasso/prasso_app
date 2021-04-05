@@ -30,16 +30,22 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
   void _select(CupertinoHomeScaffoldViewModel vm, int index, TabItem tabItem) {
     if (tabItem == vm.currentTab) {
       // pop to first route
-      setState(() => vm.navigatorKeys[tabItem].currentState
-          .popUntil((route) => route.isFirst));
+      if (mounted) {
+        setState(() => vm.navigatorKeys[tabItem].currentState
+            .popUntil((route) => route.isFirst));
+      }
     } else {
-      setState(() => vm.currentTab = tabItem);
+      if (mounted) {
+        setState(() => vm.currentTab = tabItem);
+      }
     }
   }
 
   /// onChangedApplication is here to update the tabs when the user changes Jan18
   void _onChangedApplication() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -64,7 +70,7 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
         items: vm.tabs,
         onTap: (index) => _select(vm, index, TabItem.values[index]),
       ),
-      tabBuilder: (context, index) {
+      tabBuilder: (dynamic context, dynamic index) {
         final item = TabItem.values[index];
         return CupertinoTabView(
           navigatorKey: vm.navigatorKeys[item],

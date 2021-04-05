@@ -6,6 +6,9 @@ class Strings {
 
   //env Flutter Config strings
   static const String apiUrl = 'API_URL';
+  static const String appId = 'appId';
+  static const String prodUrl = 'https://api.prasso.io/api/';
+  //static const String prodUrl = 'http://localhost:8000/api/';
   static const String awsIdentityPool = 'AWS_IDENTITY_POOL';
   static const String awsRegion = 'AWS_REGION';
   static const String cloudFrontID = 'CLOUDFRONT_WEB';
@@ -50,7 +53,9 @@ class Strings {
 
   // More page
   static const String more = 'More';
+  static const String morePageUrl = 'More()';
   static const String morePage = 'More Page';
 
   static const String appName = 'Prasso App';
+  static const String accountPageUrl = 'AccountPage()';
 }

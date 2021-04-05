@@ -30,7 +30,7 @@ class AppRunPage extends HookWidget {
     final logprovider = useProvider(loggerProvider);
     return StreamBuilder<List<AppRunListTileModel>>(
       stream: _viewModel.dynamicTileModelStream,
-      builder: (context, snapshot) {
+      builder: (dynamic context, dynamic snapshot) {
         logprovider
             .d('AppRun StreamBuilder rebuild: ${snapshot.connectionState}');
         return ListItemsBuilder<AppRunListTileModel>(

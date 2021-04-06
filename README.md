@@ -1,4 +1,6 @@
-# Prasso App - no-code mobile app development
+# Prasso App - A Rapid Prototyping Tool
+
+no-code mobile app development
 
 ## Project Timeline
 #### originally forked from  Demo for Flutter & Firebase Realtime Apps

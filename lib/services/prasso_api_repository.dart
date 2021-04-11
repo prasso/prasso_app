@@ -66,24 +66,13 @@ class PrassoApiRepository {
 
   dynamic authData(String data, String apiUrl) {
     final fullUrl = _apiServer + apiUrl;
-    final userToken = sharedPreferencesServiceProvider.getUserToken();
-    return http.post(fullUrl,
-        body: jsonEncode(data), headers: _setHeaders(userToken));
+    return http.post(fullUrl, body: jsonEncode(data), headers: _setHeaders());
   }
 
   Future<dynamic> getData(String apiUrl) async {
     final fullUrl = _apiServer + apiUrl;
-    final userToken = sharedPreferencesServiceProvider.getUserToken();
-    return http.get(fullUrl, headers: _setHeaders(userToken.toString()));
+    return http.get(fullUrl, headers: _setHeaders());
   }
-
-  dynamic _setHeaders(String usertoken) => {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer$usertoken'
-      };
-
-  void signInAnonymously() {}
 
   Future<ApiUser> signInWithEmailAndPassword(
       String email, String password) async {
@@ -98,7 +87,7 @@ class PrassoApiRepository {
       unawaited(_firebaseMessaging.subscribeToTopic('all'));
 
       final dynamic res = await http.post(Uri.encodeFull(_signinUrl),
-          headers: _setHeaders(''),
+          headers: _setHeaders(),
           body: jsonEncode(<String, String>{
             'email': email,
             'password': password,
@@ -144,6 +133,7 @@ class PrassoApiRepository {
 //  Stream<ApiUser> userChanges() {
 //    return _pipeStreamChanges(_firebaseAuth.userChanges());
 //  }
+
   Stream<ApiUser> userChanges() {
     return _firebaseAuth
         .userChanges()
@@ -173,10 +163,9 @@ class PrassoApiRepository {
   Future<void> signOut() async {
     final String _signoutUrl = '$_apiServer${Strings.logoutUrl}';
 
-    final userToken = sharedPreferencesServiceProvider.getUserToken();
     final dynamic res = await http.post(
       Uri.encodeFull(_signoutUrl),
-      headers: _setHeaders(userToken.toString()),
+      headers: _setHeaders(),
     );
     unawaited(_firebaseAuth.signOut());
 
@@ -208,9 +197,8 @@ class PrassoApiRepository {
   Future<void> addApp(AppModel widget) async {
     final String _saveAppUrl = '$_apiServer${Strings.saveApp}';
 
-    final userToken = sharedPreferencesServiceProvider.getUserToken();
     final dynamic res = await http.post(Uri.encodeFull(_saveAppUrl),
-        headers: _setHeaders(userToken.toString()),
+        headers: _setHeaders(),
         body: jsonEncode(<String, String>{
           'team_id': Strings.teamId,
           'appicon': widget.tabIcon,
@@ -264,9 +252,10 @@ class PrassoApiRepository {
   ///
   Future<bool> getAppConfig(ApiUser user) async {
     final userToken = sharedPreferencesServiceProvider.getUserToken();
+
     final clientAppUrl = _configUrl + userToken.toString();
-    final dynamic res = await http.post(Uri.encodeFull(clientAppUrl),
-        headers: _setHeaders(userToken.toString()));
+    final dynamic res =
+        await http.post(Uri.encodeFull(clientAppUrl), headers: _setHeaders());
     if (res.statusCode == 200) {
       await processIntoTabs(res.body);
       changeStateNReloadUser(user, appConfig, personalAppToken);
@@ -286,7 +275,7 @@ class PrassoApiRepository {
 
     final String _registerUrl = '${_apiServer}register';
     final dynamic res = await http.post(Uri.encodeFull(_registerUrl),
-        headers: _setHeaders(usr.user.uid),
+        headers: _setHeaders(),
         body: jsonEncode(<String, String>{
           'name': email,
           'email': email,
@@ -307,8 +296,8 @@ class PrassoApiRepository {
   Future<bool> saveUserProfileData(
       BuildContext context, ApiUser user, FirestoreDatabase database) async {
     final String _setUserUrl = '${_apiServer}save_user/${user.uid}';
-
     final userToken = sharedPreferencesServiceProvider.getUserToken();
+
     if (userToken.isEmpty) {
       await signOut();
       return null;
@@ -317,7 +306,7 @@ class PrassoApiRepository {
     await database.setUser(user);
 
     final dynamic res = await http.post(Uri.encodeFull(_setUserUrl),
-        headers: _setHeaders(userToken.toString()),
+        headers: _setHeaders(),
         body: jsonEncode(<String, String>{
           'name': user.displayName,
           'email': user.email,
@@ -332,5 +321,15 @@ class PrassoApiRepository {
       throw Exception(res.body);
     }
     return true;
+  }
+
+  Map<String, String> _setHeaders() {
+    final userToken = sharedPreferencesServiceProvider.getUserToken();
+
+    return {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer$userToken'
+    };
   }
 }

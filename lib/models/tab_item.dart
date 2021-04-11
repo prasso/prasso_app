@@ -14,6 +14,7 @@ class TabItemData {
       @required this.icon,
       @required this.pageUrl,
       @required this.pageTitle,
+      this.extraHeaderInfo,
       this.sortOrder,
       this.parent});
 
@@ -22,6 +23,7 @@ class TabItemData {
   final IconData icon;
   final String pageUrl;
   final String pageTitle;
-  final String sortOrder;
+  final String extraHeaderInfo;
+  final int sortOrder;
   final int parent;
 }

@@ -11,13 +11,17 @@ class SignInButton extends CustomRaisedButton {
     @required Color color,
     @required VoidCallback onPressed,
     Color textColor = Colors.black87,
-    double height = 50.0,
+    double height = 70.0,
   }) : super(
-          key: key,
-          child: Text(text, style: TextStyle(color: textColor, fontSize: 16.0)),
-          color: color,
-          textColor: textColor,
-          height: height,
-          onPressed: onPressed,
-        );
+            key: key,
+            child: Text(text,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    fontSize: 20.0)),
+            color: color,
+            textColor: textColor,
+            height: height,
+            onPressed: onPressed,
+            borderRadius: 15);
 }

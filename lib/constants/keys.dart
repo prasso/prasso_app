@@ -1,5 +1,7 @@
 class Keys {
   static const String emailPassword = 'email-password';
+
+  static const String emailSignup = 'email-signup';
   static const String anonymous = 'anonymous';
   static const String tabBar = 'tabBar';
   static const String appsTab = 'appsTab';

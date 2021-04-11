@@ -100,6 +100,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           icon: Icons.work,
           pageUrl: 'AppsPage()',
           pageTitle: Strings.apps,
+          extraHeaderInfo: '',
           parent: 0),
       TabItem.position2: TabItemData(
           key: Keys.asdefinedTab,
@@ -107,6 +108,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           icon: Icons.star,
           pageUrl: 'AppRunPage.create',
           pageTitle: Strings.appsTabTitle,
+          extraHeaderInfo: '',
           parent: 0),
       TabItem.position3: TabItemData(
           key: Keys.accountTab,
@@ -114,15 +116,23 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           icon: Icons.person,
           pageUrl: 'AccountPage()',
           pageTitle: Strings.account,
+          extraHeaderInfo: '',
           parent: 0),
     };
     widgetBuilders = {
       TabItem.position1: (_) => AppsPage(),
       TabItem.position2: (_) => AppRunPage(),
       TabItem.position3: (_) => AccountPage(),
-      TabItem.position4: (_) => AppRunWebView(title: '', selectedUrl: ''),
-      TabItem.positionOverflow: (_) =>
-          AppRunWebView(title: '', selectedUrl: ''),
+      TabItem.position4: (_) => AppRunWebView(
+            title: '',
+            selectedUrl: '',
+            extraHeaderInfo: '{}',
+          ),
+      TabItem.positionOverflow: (_) => AppRunWebView(
+            title: '',
+            selectedUrl: '',
+            extraHeaderInfo: '{}',
+          ),
     };
     buildTabs(tryagain: false);
   }
@@ -181,7 +191,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']),
         pageUrl: tabsFromAPI[i]['page_url'],
         pageTitle: tabsFromAPI[i]['page_title'],
-        sortOrder: tabsFromAPI[i]['sort_order'].toString(),
+        extraHeaderInfo: tabsFromAPI[i]['extra_header_info'],
+        sortOrder: tabsFromAPI[i]['sort_order'],
         parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
             ? 0
             : tabsFromAPI[i]['parent'],
@@ -203,12 +214,18 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   WidgetBuilder actionFromString(TabItemData t1) {
     final String actionString = t1.pageUrl;
+    final String extraHeaderInfo = t1.extraHeaderInfo;
+
     // if pageurl isn't https it is a page in this code
     if (actionString.startsWith('http')) {
       if (actionString.endsWith('.pdf')) {
         return (_) => AppRunPdfView(title: t1.title, urlPDFPath: actionString);
       } else {
-        return (_) => AppRunWebView(title: t1.title, selectedUrl: actionString);
+        return (_) => AppRunWebView(
+              title: t1.title,
+              selectedUrl: actionString,
+              extraHeaderInfo: extraHeaderInfo,
+            );
       }
     } else {
       if (actionString == Strings.accountPageUrl) {

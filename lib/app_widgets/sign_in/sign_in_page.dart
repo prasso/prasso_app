@@ -52,6 +52,7 @@ class SignInPageContents extends StatelessWidget {
   final String title;
 
   static const Key emailPasswordButtonKey = Key(Keys.emailPassword);
+  static const Key emailSignupButtonKey = Key(Keys.emailSignup);
   static const Key anonymousButtonKey = Key(Keys.anonymous);
 
   Future<void> _showEmailPasswordSignInPage(BuildContext context) async {
@@ -80,10 +81,11 @@ class SignInPageContents extends StatelessWidget {
         child: CircularProgressIndicator(),
       );
     }
-    return const Text(
-      Strings.signIn,
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w600),
+    return Image.asset(
+      'media/prasso_logo.png',
+      width: 152.0,
+      height: 152.0,
+      fit: BoxFit.cover,
     );
   }
 
@@ -99,8 +101,18 @@ class SignInPageContents extends StatelessWidget {
             children: <Widget>[
               const SizedBox(height: 32.0),
               SizedBox(
-                height: 50.0,
+                height: 180.0,
                 child: _buildHeader(),
+              ),
+              const SizedBox(height: 32.0),
+              SignInButton(
+                key: emailSignupButtonKey,
+                text: Strings.signUpWithEmailPassword,
+                onPressed: viewModel.isLoading
+                    ? null
+                    : () => _showEmailPasswordSignInPage(context),
+                textColor: Colors.black,
+                color: Colors.white,
               ),
               const SizedBox(height: 32.0),
               SignInButton(

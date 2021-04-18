@@ -20,7 +20,7 @@ import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 
 class AccountPage extends HookWidget {
-  // for reloading config after it changes
+/*  // for reloading config after it changes
   Future<void> _reloadConfig(BuildContext context, ApiUser user) async {
     try {
       await PrassoApiRepository.instance.getAppConfig(user);
@@ -32,6 +32,7 @@ class AccountPage extends HookWidget {
       ));
     }
   }
+*/
 
   Future<void> _signOut(BuildContext context) async {
     try {

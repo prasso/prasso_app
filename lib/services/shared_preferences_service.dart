@@ -9,11 +9,8 @@ class SharedPreferencesService {
   static const appDataKey = 'appData';
 
   String getUserToken() {
-    var userToken = sharedPreferences.getString(userTokenKey);
-    if (userToken?.isEmpty ?? true) {
-      userToken =
-          '458eb0aedc4e38901255246a9352ba7b1aab2eee3d1537ecb23f2539b7a3efdf';
-    }
+    final String userToken = sharedPreferences.getString(userTokenKey);
+
     return userToken;
   }
 

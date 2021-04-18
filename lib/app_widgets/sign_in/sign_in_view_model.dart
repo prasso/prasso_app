@@ -31,9 +31,6 @@ class SignInViewModel with ChangeNotifier {
     return null;
   }
   /*
-Future<ApiUser> signInAnonymously() async {
-    return _signIn(auth.signInAnonymously);
-  }
 
   Future<void> signInWithGoogle() async {
     return await _signIn(auth.signInWithGoogle);

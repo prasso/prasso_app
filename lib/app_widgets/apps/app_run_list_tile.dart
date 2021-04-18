@@ -10,12 +10,14 @@ class AppRunListTileModel {
       {@required this.leadingText,
       @required this.pageUrl,
       this.pageTitle,
+      this.extraHeaderInfo,
       this.sortOrder,
       this.isHeader = false,
       this.isLoading = false});
   final String leadingText;
   final String pageUrl;
   final String pageTitle;
+  final String extraHeaderInfo;
   final int sortOrder;
   final bool isHeader;
   final bool isLoading;
@@ -26,13 +28,14 @@ class AppRunListTile extends StatelessWidget {
 
   final AppRunListTileModel model;
 
-  Future<void> _showWebViewWithUrl(
-      String pageTitle, String pageUrl, BuildContext context) async {
+  Future<void> _showWebViewWithUrl(String pageTitle, String pageUrl,
+      String extraHeaderInfo, BuildContext context) async {
     //show the webview with this url.
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
         builder: (dynamic context) => AppRunWebView(
               title: pageTitle,
               selectedUrl: pageUrl,
+              extraHeaderInfo: extraHeaderInfo,
             )));
   }
 
@@ -57,7 +60,10 @@ class AppRunListTile extends StatelessWidget {
               onPressed: model.isLoading
                   ? null
                   : () => _showWebViewWithUrl(
-                      model.pageTitle ?? '', model.pageUrl ?? '', context),
+                      model.pageTitle ?? '',
+                      model.pageUrl ?? '',
+                      model.extraHeaderInfo ?? '{}',
+                      context),
             ),
           ),
         ],

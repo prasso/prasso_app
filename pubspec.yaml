@@ -22,11 +22,11 @@ dependencies:
     sdk: flutter  
   flutter_cached_pdfview: any
   flutter_config: ^1.0.7
-  flutter_hooks: ^0.14.0
+  flutter_hooks: ^0.16.0
   flutter_image_compress: ^0.7.0
   # https://stackoverflow.com/questions/62476108/how-to-load-and-present-a-pdf-file-from-the-web-in-flutter
   flutter_pdfview: ^1.0.1
-  hooks_riverpod: ^0.12.1
+  hooks_riverpod: ^0.14.0+1
   http: ^0.12.2
   icons_helper: ^1.0.4
   image_picker: ^0.6.7+15
@@ -38,8 +38,8 @@ dependencies:
   # For asking permission to load the pdf
   rxdart: ^0.24.1
   shared_preferences: ^0.5.12+2
-  state_notifier: ^0.6.0
-  webview_flutter: ^0.3.14+1
+  state_notifier: ^0.7.0
+  webview_flutter: ^2.0.4
 
 # this is to fix an exception in Android on launch
 dependency_overrides:
@@ -59,8 +59,8 @@ flutter:
 
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  assets:
+    - media/prasso_logo_horizontal.png
+    - media/prasso_logo.png
  
 

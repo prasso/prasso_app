@@ -14,11 +14,12 @@ void main() {
       final app = AppModel.fromMap(const {
         'pageTitle': 'Blogging',
         'pageUrl': 'https://www/google.com',
+        'extraHeaderInfo': '{\'test_header\': \'flutter_test_header\'}'
       }, 'abc');
       expect(
           app,
-          AppModel(
-              'abc', 'Blogging', 'https://www/google.com', 'icon', 'label', 1));
+          AppModel('abc', 'Blogging', 'https://www/google.com', 'icon', 'label',
+              '{\'test_header\': \'flutter_test_header\'}', 1));
     });
 
     test('missing name', () {
@@ -31,8 +32,8 @@ void main() {
 
   group('toMap', () {
     test('valid pageTitle, pageUrl', () {
-      final AppModel app = AppModel(
-          'abc', 'Blogging', 'https://www/google.com', 'icon', 'label', 1);
+      final AppModel app = AppModel('abc', 'Blogging', 'https://www/google.com',
+          'icon', 'label', '{\'test_header\': \'flutter_test_header\'}', 1);
       expect(app.toMap(), {
         'pageTitle': 'Blogging',
         'pageUrl': 10,

@@ -29,11 +29,10 @@ class Strings {
   static const String refreshFailed = 'Refresh failed';
 
   // Sign In Page
+
   static const String signIn = 'Sign in';
-  static const String signInWithEmailPassword =
-      'Sign in with email and password';
-  static const String goAnonymous = 'Go anonymous';
-  static const String or = 'or';
+  static const String signInWithEmailPassword = 'Log In';
+  static const String signUpWithEmailPassword = 'Sign Up';
   static const String signInFailed = 'Sign in failed';
 
   // Home page

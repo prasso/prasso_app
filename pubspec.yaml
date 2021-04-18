@@ -1,8 +1,8 @@
 name: prasso_app
 description: or To Get It Done
-publish_to: 'none' 
+publish_to: 'none'
 
-version: 1.0.8+16
+version: 1.0.8+19
 
 environment:
   sdk: ">=2.8.4 <3.0.0"
@@ -19,7 +19,7 @@ dependencies:
   firebase_core: ^0.5.0+1
   firebase_messaging: ^7.0.3
   flutter:
-    sdk: flutter  
+    sdk: flutter
   flutter_cached_pdfview: any
   flutter_config: ^1.0.7
   flutter_hooks: ^0.16.0
@@ -34,7 +34,7 @@ dependencies:
   logger: ^0.9.2
   path_provider: any
   pedantic: any
-  permission_handler: 4.4.0  
+  permission_handler: 4.4.0
   # For asking permission to load the pdf
   rxdart: ^0.24.1
   shared_preferences: ^0.5.12+2
@@ -62,5 +62,3 @@ flutter:
   assets:
     - media/prasso_logo_horizontal.png
     - media/prasso_logo.png
- 
-

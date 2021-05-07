@@ -14,6 +14,8 @@ Now we are cooking with gas!
 
 ## Setup instructions such as they are:
 
+## Firebase
+  Add a Firebase project. Enable Authentication with Email and Password.  Enable Cloud Firestore and create a database. 
 ## AWS
 ### Image storage
 #### this app uses AWS Cognito and S3 to provide image upload and storage

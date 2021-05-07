@@ -1,19 +1,44 @@
 {
   "images" : [
     {
-      "filename" : "blue-butterfly1024.png",
+      "filename" : "LaunchImage.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "blue-butterfly1024@2x.png",
+      "filename" : "prasso_splash-1024.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "blue-butterfly1024@3x.png",
+      "filename" : "prasso_splash-4096.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "filename" : "LaunchImage~iphone-320x480.png",
+      "idiom" : "iphone",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "LaunchImage-568h@2x~iphone_640x1136.png",
+      "idiom" : "iphone",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "LaunchImage-1242@3x~iphone6s-landscape_2208x1242.png",
+      "idiom" : "iphone",
+      "scale" : "3x"
+    },
+    {
+      "filename" : "LaunchImage-Landscape~ipad_1024x748.png",
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "LaunchImage-Landscape@2x~ipad_2048x1496.png",
+      "idiom" : "ipad",
+      "scale" : "2x"
     }
   ],
   "info" : {

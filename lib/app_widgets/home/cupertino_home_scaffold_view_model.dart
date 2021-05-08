@@ -53,6 +53,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     final _vm = CupertinoHomeScaffoldViewModel(sharedPreferencesService);
     _vm.setProperties();
     isDisposed = false;
+    _vm.currentTab = TabItem.position1;
 
     return _vm;
   }

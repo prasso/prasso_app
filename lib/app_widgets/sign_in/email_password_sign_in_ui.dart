@@ -18,6 +18,7 @@ import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'package:prasso_app/common_widgets/string_validators.dart';
+import 'package:prasso_app/routing/router.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 
 part 'email_password_sign_in_model.dart';

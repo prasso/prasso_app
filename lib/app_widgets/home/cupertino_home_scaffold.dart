@@ -10,7 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Project imports:
 import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/constants/keys.dart';
+//import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/routing/cupertino_tab_view_router.dart';
 
@@ -66,14 +66,13 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
 
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        key: const Key(Keys.tabBar),
         items: vm.tabs,
         onTap: (index) => _select(vm, index, TabItem.values[index]),
       ),
       tabBuilder: (dynamic context, dynamic index) {
         final item = TabItem.values[index];
         return CupertinoTabView(
-          navigatorKey: vm.navigatorKeys[item],
+          // navigatorKey: vm.navigatorKeys[item],
           builder: (context) => vm.widgetBuilders[item](context),
           onGenerateRoute: CupertinoTabViewRouter.generateRoute,
         );

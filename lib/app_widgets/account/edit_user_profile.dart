@@ -11,6 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/constants.dart';
+import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 
@@ -33,11 +34,12 @@ class EditUserProfile extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(_viewmodel.usr == null ? 'New User' : 'Edit User'),
+        title: Text(_viewmodel.usr == null ? Strings.newuser : Strings.edituser,
+            style: TextStyle(color: Colors.grey[200])),
         actions: <Widget>[
           TextButton(
             child: const Text(
-              'Save',
+              Strings.save,
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             onPressed: () => _viewmodel.submit(context, auth, database),
@@ -57,11 +59,9 @@ class EditUserProfile extends HookWidget {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _buildForm(_viewmodel, context, auth, database),
-          ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(bottom: 15),
+          child: _buildForm(_viewmodel, context, auth, database),
         ),
       ),
     );
@@ -131,20 +131,21 @@ class EditUserProfile extends HookWidget {
         ],
       ),
       TextFormField(
-        decoration: const InputDecoration(labelText: 'Email'),
+        decoration: const InputDecoration(labelText: Strings.emailLabel),
         keyboardAppearance: Brightness.light,
         initialValue: _viewmodel.email,
-        validator: (value) => value.isNotEmpty ? null : 'Email can\'t be empty',
+        validator: (value) =>
+            value.isNotEmpty ? null : Strings.emailCantbeEmpty,
         onSaved: (value) => _viewmodel.email = value,
       ),
       TextFormField(
-        decoration: const InputDecoration(labelText: 'Photo Url'),
+        decoration: const InputDecoration(labelText: Strings.photoUrl),
         keyboardAppearance: Brightness.light,
         initialValue: _viewmodel.photoURL,
         onSaved: (value) => _viewmodel.photoURL = value,
       ),
       TextFormField(
-        decoration: const InputDecoration(labelText: 'Name'),
+        decoration: const InputDecoration(labelText: Strings.nameLabel),
         keyboardAppearance: Brightness.light,
         initialValue: _viewmodel.displayName,
         onSaved: (value) => _viewmodel.displayName = value,

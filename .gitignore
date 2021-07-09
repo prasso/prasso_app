@@ -48,6 +48,7 @@ app.*.map.json
 
 GoogleService-Info.plist
 google-services.json
+faxtdistribution.p12
 
 web/firebase-config.js
 .env

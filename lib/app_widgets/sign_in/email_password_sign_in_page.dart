@@ -1,14 +1,18 @@
 part of email_password_sign_in_ui;
 
 class EmailPasswordSignInPage extends HookWidget {
-  const EmailPasswordSignInPage({Key key, this.onSignedIn}) : super(key: key);
+  const EmailPasswordSignInPage({Key key, this.onSignedIn, this.formType})
+      : super(key: key);
   final VoidCallback onSignedIn;
+  final EmailPasswordSignInFormType formType;
 
   @override
   Widget build(BuildContext context) {
+    final EmailPasswordSignInModel _thismodel =
+        useProvider(emailPasswordSigninViewModelProvider);
+
     return EmailPasswordSignInPageContents(
-        model: useProvider(emailPasswordSigninViewModelProvider),
-        onSignedIn: onSignedIn);
+        model: _thismodel, onSignedIn: onSignedIn);
   }
 
   @override
@@ -16,6 +20,8 @@ class EmailPasswordSignInPage extends HookWidget {
     super.debugFillProperties(properties);
     properties
         .add(ObjectFlagProperty<VoidCallback>.has('onSignedIn', onSignedIn));
+    properties
+        .add(EnumProperty<EmailPasswordSignInFormType>('formType', formType));
   }
 }
 
@@ -65,6 +71,14 @@ class _EmailPasswordSignInPageContentsState
     }
   }
 
+  Future<void> navigateToHome() async {
+    final navigator = Navigator.of(context);
+    await navigator.pushNamed(
+      Routes.homePage,
+      arguments: () => navigator.pop(),
+    );
+  }
+
   Future<void> _submit() async {
     try {
       final bool success = await model.submit();
@@ -79,6 +93,7 @@ class _EmailPasswordSignInPageContentsState
         } else {
           if (widget.onSignedIn != null && mounted) {
             widget.onSignedIn();
+            await navigateToHome();
           }
         }
       }
@@ -153,21 +168,22 @@ class _EmailPasswordSignInPageContentsState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 10.0),
           _buildEmailField(),
           if (model.formType !=
               EmailPasswordSignInFormType.forgotPassword) ...<Widget>[
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 10.0),
             _buildPasswordField(),
           ],
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 10.0),
           FormSubmitButton(
             key: const Key('primary-button'),
+            color: Theme.of(context).accentColor,
             text: model.primaryButtonText,
             loading: model.isLoading,
             onPressed: model.isLoading ? null : _submit,
           ),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 10.0),
           TextButton(
             key: const Key('secondary-button'),
             child: Text(model.secondaryButtonText),
@@ -194,10 +210,13 @@ class _EmailPasswordSignInPageContentsState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2.0,
-        title: Text(model.title),
-      ),
-      backgroundColor: Colors.grey[200],
+          elevation: 2.0,
+          centerTitle: true,
+          title: Text(
+            model.title,
+            style: TextStyle(color: Theme.of(context).backgroundColor),
+          )),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         child: Center(
           child: LayoutBuilder(builder: (context, constraints) {

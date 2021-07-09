@@ -19,7 +19,9 @@ class AppRunPdfView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        centerTitle: true,
+        title: Text(title,
+            style: TextStyle(color: Theme.of(context).backgroundColor)),
       ),
       body: const PDF().cachedFromUrl(
         urlPDFPath,

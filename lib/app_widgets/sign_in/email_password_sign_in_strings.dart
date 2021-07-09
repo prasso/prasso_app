@@ -3,7 +3,7 @@ part of email_password_sign_in_ui;
 class EmailPasswordSignInStrings {
   static const String ok = 'OK';
   // Email & Password page
-  static const String signIn = 'Sign in';
+  static const String signInTitle = 'Sign in';
   static const String register = 'Register';
   static const String forgotPassword = 'Forgot password';
   static const String forgotPasswordQuestion = 'Forgot password?';
@@ -26,4 +26,14 @@ class EmailPasswordSignInStrings {
   static const String invalidEmailEmpty = 'Email can\'t be empty';
   static const String invalidPasswordTooShort = 'Password is too short';
   static const String invalidPasswordEmpty = 'Password can\'t be empty';
+  // Sign In Page
+  static const String signIn = 'Sign in';
+  static const String signInWithEmailPassword = 'Sign In';
+  static const String signUpWithEmailPassword = 'Sign Up';
+  static const String goAnonymous = 'Go anonymous';
+  static const String or = 'or';
+  static const String createAPlan = 'Let\'s Get Started';
+  static const String yourStatus =
+      'Your status and progress will be shown here';
+  static const String noPlan = 'YOU HAVEN\'T CUSTOMIZED YOUR APP';
 }

@@ -21,6 +21,7 @@ class AppsPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(Strings.apps),
         actions: <Widget>[
           IconButton(

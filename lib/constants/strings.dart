@@ -2,6 +2,7 @@ class Strings {
   // Generic strings
   static const String ok = 'OK';
   static const String cancel = 'Cancel';
+  static const String done = 'Done';
   static const String teamId = '1';
 
   //env Flutter Config strings
@@ -19,6 +20,9 @@ class Strings {
   static const String signinUrl = 'record_login';
   static const String logoutUrl = 'logout';
   static const String saveApp = 'save_app';
+  static const String save = 'Save';
+  static const String shortEditProfileText = 'Update Your Info';
+  static const String editProfileText = 'Setup Your Reminders too.';
 
   // Logout
   static const String logout = 'Logout';
@@ -33,6 +37,8 @@ class Strings {
   static const String signIn = 'Sign in';
   static const String signInWithEmailPassword = 'Log In';
   static const String signUpWithEmailPassword = 'Sign Up';
+  static const String goAnonymous = 'Go anonymous';
+  static const String or = 'or';
   static const String signInFailed = 'Sign in failed';
 
   // Home page
@@ -57,4 +63,15 @@ class Strings {
 
   static const String appName = 'Prasso App';
   static const String accountPageUrl = 'AccountPage()';
+
+  // Profile page
+  static const String newuser = 'New User';
+  static const String edituser = 'Edit User';
+  static const String emailLabel = 'Email';
+  static const String emailCantbeEmpty = 'Email can\'t be empty';
+  static const String photoUrl = 'Photo Url';
+  static const String nameLabel = 'Name';
+  static const String blankTimezone = 'Unknown';
+
+  static const String emergencyDefaultTabs = '';
 }

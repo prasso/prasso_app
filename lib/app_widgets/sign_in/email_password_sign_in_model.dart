@@ -77,8 +77,8 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
 
   void updateFormType(EmailPasswordSignInFormType formType) {
     updateWith(
-      email: '',
-      password: '',
+      email: '', 
+      password: '', 
       formType: formType,
       isLoading: false,
       submitted: false,
@@ -112,7 +112,8 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     return <EmailPasswordSignInFormType, String>{
       EmailPasswordSignInFormType.register:
           EmailPasswordSignInStrings.createAnAccount,
-      EmailPasswordSignInFormType.signIn: EmailPasswordSignInStrings.signIn,
+      EmailPasswordSignInFormType.signIn:
+          EmailPasswordSignInStrings.signInTitle,
       EmailPasswordSignInFormType.forgotPassword:
           EmailPasswordSignInStrings.sendResetLink,
     }[formType];
@@ -152,7 +153,8 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   String get title {
     return <EmailPasswordSignInFormType, String>{
       EmailPasswordSignInFormType.register: EmailPasswordSignInStrings.register,
-      EmailPasswordSignInFormType.signIn: EmailPasswordSignInStrings.signIn,
+      EmailPasswordSignInFormType.signIn:
+          EmailPasswordSignInStrings.signInTitle,
       EmailPasswordSignInFormType.forgotPassword:
           EmailPasswordSignInStrings.forgotPassword,
     }[formType];

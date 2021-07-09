@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,9 @@ class EditUserProfileViewModel extends ChangeNotifier {
     if (photoURL != null && photoURL.isNotEmpty) {
       photoviewmodel.setProfilePicUrl(photoURL);
     }
-    profileImage = CachedNetworkImageProvider(photoviewmodel.profilePicUrl);
+    profileImage = photoviewmodel.profilePicUrl.isNotEmpty
+        ? CachedNetworkImageProvider(photoviewmodel.profilePicUrl)
+        : null;
   }
 
   final ApiUser usr;
@@ -65,8 +68,19 @@ class EditUserProfileViewModel extends ChangeNotifier {
   }
 
   Future<String> uploadFile(String filepath, String destinationpath) async {
-    return AmazonS3Cognito.upload(filepath, Strings.awsBucket, _awsIdentityPool,
-        destinationpath, _awsRegion, _awsRegion);
+    print('upload info ${Strings.awsBucket} $destinationpath');
+    print('_awsIdentityPool: $_awsIdentityPool');
+    try {
+      return AmazonS3Cognito.upload(filepath, Strings.awsBucket,
+          _awsIdentityPool, destinationpath, _awsRegion, _awsRegion);
+    } catch (e) {
+      developer.log(
+        'email password log data',
+        name: 'prasso.app.email_password_sign_in',
+        error: e.toString(),
+      );
+    }
+    return 'an error occurred';
   }
 
   Future pickImage(BuildContext context, PrassoApiRepository auth,
@@ -77,7 +91,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
       final _uid = usr?.uid;
       final filename = FilenameHelper.getFilenameFromPath(pickedFile.path);
       final destinationPath = '${Paths.profilePicturePath}$_uid/$filename';
-
+      print('destinationPath: $destinationPath');
       final uploadedpath = await uploadFile(pickedFile.path, destinationPath);
       print('uploaded: $uploadedpath');
       if (uploadedpath.contains('s3')) {
@@ -113,7 +127,6 @@ class EditUserProfileViewModel extends ChangeNotifier {
     return true;
   }
 
-  // ignore: avoid_void_async
   Future<bool> saveUser(BuildContext context, PrassoApiRepository auth,
       FirestoreDatabase database) async {
     final uneditedUser = auth.currentUser;
@@ -121,9 +134,9 @@ class EditUserProfileViewModel extends ChangeNotifier {
     if (usr?.uid != uneditedUser.uid) {
       throw Exception('Program error');
     }
-    ApiUser.fromLocatorUpdated(uneditedUser, email, photoURL, displayName);
-    await auth.saveUserProfileData(context, usr, database);
-
+    final ApiUser newusr = ApiUser.fromLocatorUpdated(uneditedUser, this);
+    await auth.saveUserProfileData(context, newusr, database);
+    notifyListeners();
     Navigator.of(context).pop();
     return true;
   }

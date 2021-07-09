@@ -19,6 +19,7 @@ class AppRunPage extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(Strings.dynamicPageTitle),
         elevation: 2.0,
       ),

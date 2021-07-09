@@ -212,10 +212,13 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - amazon_s3_cognito (0.2.4):
+  - amazon_s3_cognito (0.3.0):
+    - AWSCognito
     - AWSCore
     - AWSS3
     - Flutter
+  - AWSCognito (2.19.1):
+    - AWSCore (= 2.19.1)
   - AWSCore (2.19.1)
   - AWSS3 (2.19.1):
     - AWSCore (= 2.19.1)
@@ -412,6 +415,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
+    - AWSCognito
     - AWSCore
     - AWSS3
     - BoringSSL-GRPC
@@ -472,7 +476,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
-  amazon_s3_cognito: 8e28717f71e9ea482e210a974bc4ecad3894cf68
+  amazon_s3_cognito: 65b8458599a1e9307d74c461a03e71d34b4e7b77
+  AWSCognito: f50de600804941d083af37a7568905f31a774727
   AWSCore: 55c154ae27efc5c98bdc30a0eeea5a35d10a2ab5
   AWSS3: 2272253b098d07803af8dd20ce6ce7302bcffb47
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
@@ -511,8 +516,8 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: c359317c2e7cfec85d7ea137521c7a36ed239674
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  webview_flutter: 9f491a9b5a66f2573946a389b2677987b0ff8c0b
+  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
-PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
+PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
 COCOAPODS: 1.10.1

@@ -34,6 +34,15 @@ void main() {
           ],
           child: Consumer(builder: (context, watch, __) {
             return MaterialApp(
+              theme: ThemeData(
+                brightness: Brightness.light,
+                primarySwatch: Colors.blue,
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black87,
+                  elevation: 0,
+                ),
+              ),
               home: SignInPage(),
               onGenerateRoute: _rtr.Router.onGenerateRoute,
               navigatorObservers: [mockNavigatorObserver],

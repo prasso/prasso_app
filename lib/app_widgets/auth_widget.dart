@@ -11,6 +11,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/models/api_user.dart';
 
+import 'home/cupertino_home_scaffold_view_model.dart';
+
 class AuthWidget extends ConsumerWidget {
   const AuthWidget({
     Key key,
@@ -22,9 +24,11 @@ class AuthWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    final cupertinoVM = watch(cupertinoHomeScaffoldVMProvider);
+
     final authStateChanges = watch(userChangesProvider);
     return authStateChanges.when(
-        data: (user) => _data(context, user),
+        data: (user) => _data(context, user, cupertinoVM),
         loading: () => const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
@@ -33,8 +37,9 @@ class AuthWidget extends ConsumerWidget {
         error: (_, __) => nonSignedInBuilder(context));
   }
 
-  Widget _data(BuildContext context, ApiUser user) {
-    if (user != null) {
+  Widget _data(BuildContext context, ApiUser user,
+      CupertinoHomeScaffoldViewModel cupertinoVM) {
+    if (user != null && cupertinoVM.tabs != null) {
       return signedInBuilder(context);
     }
     return nonSignedInBuilder(context);

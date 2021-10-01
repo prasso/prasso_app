@@ -3,8 +3,21 @@ import 'dart:async';
 import 'dart:convert';
 
 // Flutter imports:
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+//import 'package:hooks_riverpod/hooks_riverpod.dart';
+//import 'package:pedantic/pedantic.dart';
+
+// Project imports:
+//import 'package:prasso_app/app_widgets/top_level_providers.dart';
+//import 'package:prasso_app/common_widgets/alert_dialogs.dart';
+//import 'package:prasso_app/constants/keys.dart';
+//import 'package:prasso_app/constants/strings.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
+
+// Flutter imports:
+import 'package:flutter/foundation.dart';
 
 // Package imports:
 import 'package:webview_flutter/webview_flutter.dart';
@@ -29,17 +42,55 @@ class AppRunWebView extends StatelessWidget {
     await controller.loadUrl(selectedUrl, headers: headers);
   }
 
+  /* for reloading config after it changes 
+  Future<void> _reloadConfig(BuildContext context) async {
+    try {
+      final authService = context.read(prassoApiService);
+      final user = authService.currentUser;
+      await authService.getAppConfig(user);
+    } catch (e) {
+      unawaited(showExceptionAlertDialog(
+        context: context,
+        title: Strings.refreshFailed,
+        exception: e,
+      ));
+    }
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(title, //'$selectedUrl $
+              style: const TextStyle(color: PrassoColors.lightGray)),
+          elevation: 2.0,
+          /* actions: <Widget>[
+              const SizedBox(height: 8),
+            TextButton(
+                key: const Key(Keys.reload),
+                child: const Text(
+                  Strings.reload,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: PrassoColors.lightGray,
+                  ),
+                ),
+                onPressed: () => _reloadConfig(context),
+              ),
+            ]*/
+        ),
         body: WebView(
           initialUrl: selectedUrl,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (webViewController) {
-            final Map<String, String> headers =
-                Map.from(json.decode(extraHeaderInfo ?? '{}'));
-            webViewController.loadUrl(selectedUrl, headers: headers);
+            if (extraHeaderInfo != '') {
+              final Map<String, String> headers =
+                  Map.from(json.decode(extraHeaderInfo ?? '{}'));
+              webViewController.loadUrl(selectedUrl, headers: headers);
+            } else {
+              webViewController.loadUrl(selectedUrl, headers: null);
+            }
             controllerCompleter.complete(webViewController);
           },
         ));

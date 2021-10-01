@@ -11,6 +11,7 @@ import 'package:prasso_app/app_widgets/apps/app_run_view_model.dart';
 import 'package:prasso_app/app_widgets/apps/list_items_builder.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/strings.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
 
 class AppRunPage extends HookWidget {
   @override
@@ -20,7 +21,8 @@ class AppRunPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(Strings.dynamicPageTitle),
+        title: const Text(Strings.dynamicPageTitle,
+            style: TextStyle(color: PrassoColors.lightGray)),
         elevation: 2.0,
       ),
       body: _buildContents(context, _viewModel),

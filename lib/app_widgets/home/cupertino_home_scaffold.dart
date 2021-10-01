@@ -13,6 +13,7 @@ import 'package:prasso_app/app_widgets/top_level_providers.dart';
 //import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/routing/cupertino_tab_view_router.dart';
+import 'package:prasso_app/routing/router.dart';
 
 @immutable
 class CupertinoHomeScaffold extends StatefulHookWidget {
@@ -56,13 +57,46 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
   @override
   void dispose() {
     vm?.removeListener(_onChangedApplication);
+    vm?.hasChangedEvent = false;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authService = context.read(prassoApiService);
+    final usr = authService.currentUser;
+
+    if (usr == null) {
+      if (authService.userIsRegistering) {
+        final navigator = Navigator.of(context);
+        navigator.pushNamed(
+          Routes.introPages,
+          arguments: () => navigator.pop(),
+        );
+      } else {
+        //take it back we missed something
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop(); //takes you back to the sign in screen.
+        }
+      }
+    }
+
+    //if we haven't transitioned to the sign in screen after loading the user
+    //then we need to make sure the tabs are built
     vm = useProvider(cupertinoHomeScaffoldVMProvider);
-    vm.addListener(_onChangedApplication);
+
+    if (!vm.hasChangedEvent) {
+      vm.addListener(_onChangedApplication);
+      vm.hasChangedEvent = true;
+    }
+
+    if (vm.tabs.length < 2) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(

@@ -20,15 +20,69 @@ import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
 
 class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   CupertinoHomeScaffoldViewModel(this.sharedPreferencesServiceProvider) {
+    final appdata = sharedPreferencesServiceProvider.getAppData();
+    if (appdata == null) {
+      //new app install. we need to make sure nothing left over from
+      //previous build
+      return;
+    }
+
+    defaultTabsJson = appdata;
     _setdefaults();
   }
   static bool isDisposed = true;
+  bool hasChangedEvent = false;
+  bool isInitializing = false;
+
   final SharedPreferencesService sharedPreferencesServiceProvider;
 
-  Map<TabItem, WidgetBuilder> widgetBuilders;
+  List<TabItemData> moreItems = [];
+  Map<TabItem, TabItemData> allTabs = {
+    TabItem.position1: TabItemData(
+        key: Keys.appsTab,
+        title: Strings.apps,
+        icon: Icons.work,
+        pageUrl: 'AppsPage()',
+        pageTitle: Strings.apps,
+        extraHeaderInfo: '',
+        parent: 0),
+    TabItem.position2: TabItemData(
+        key: Keys.asdefinedTab,
+        title: Strings.appsTabTitle,
+        icon: Icons.star,
+        pageUrl: 'AppRunPage.create',
+        pageTitle: Strings.appsTabTitle,
+        extraHeaderInfo: '',
+        parent: 0),
+    TabItem.position3: TabItemData(
+        key: Keys.accountTab,
+        title: Strings.account,
+        icon: Icons.person,
+        pageUrl: 'AccountPage()',
+        pageTitle: Strings.account,
+        extraHeaderInfo: '',
+        parent: 0),
+  };
+  Map<TabItem, WidgetBuilder> widgetBuilders = {
+    TabItem.position1: (_) => AppsPage(),
+    TabItem.position2: (_) => AppRunPage(),
+    TabItem.position3: (_) => AccountPage(),
+    TabItem.position4: (_) => AppRunWebView(
+          title: '',
+          selectedUrl: '',
+          extraHeaderInfo: '{}',
+        ),
+    TabItem.positionOverflow: (_) => AppRunWebView(
+          title: '',
+          selectedUrl: '',
+          extraHeaderInfo: '{}',
+        ),
+  };
+
   Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
     TabItem.position1: GlobalKey<NavigatorState>(),
     TabItem.position2: GlobalKey<NavigatorState>(),
@@ -37,10 +91,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     TabItem.positionOverflow: GlobalKey<NavigatorState>(),
   };
 
-  final formKey = GlobalKey<FormState>();
-  List<BottomNavigationBarItem> tabs;
-  List<TabItemData> moreItems;
-  Map<TabItem, TabItemData> allTabs;
+  List<BottomNavigationBarItem> tabs = [];
+  String _defaulttabsjson = Strings.emergencyDefaultTabs;
 
   @override
   void dispose() {
@@ -51,10 +103,10 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   factory CupertinoHomeScaffoldViewModel.initializeFromLocalStorage(
       SharedPreferencesService sharedPreferencesService) {
     final _vm = CupertinoHomeScaffoldViewModel(sharedPreferencesService);
-    _vm.setProperties();
+    _vm.isInitializing = true;
     isDisposed = false;
     _vm.currentTab = TabItem.position1;
-
+    _vm.isInitializing = false;
     return _vm;
   }
 
@@ -65,77 +117,54 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   }
 
   set currentTab(TabItem newtab) {
+    if (defaultTabsJson == '') {
+      return;
+    }
     print('$_currentTab is changing to $newtab');
     _currentTab = newtab;
+
+    if (isInitializing) {
+      return;
+    }
     notifyListeners();
-    setProperties();
+    _setdefaults();
+  }
+
+  String get defaultTabsJson {
+    return _defaulttabsjson;
+  }
+
+  //this should set to the value passed in unless it's empty
+  //if passed value is empty then set to the emergency values
+  set defaultTabsJson(String newtabsJson) {
+    if ((newtabsJson?.isEmpty ?? true) || newtabsJson.toString() == 'null') {
+      _defaulttabsjson = Strings.emergencyDefaultTabs;
+    } else {
+      _defaulttabsjson = newtabsJson;
+    }
+  }
+
+  Future<bool> signingout() async {
+    _currentTab = TabItem.position1;
+    return true;
   }
 
   Future<bool> clear() async {
     await sharedPreferencesServiceProvider.saveAppData('');
 
     _setdefaults();
+
+    _currentTab = TabItem.position1;
     return true;
   }
 
-  void setProperties() {
-    final appdata = sharedPreferencesServiceProvider.getAppData();
-    if ((appdata?.isEmpty ?? true) || appdata.toString() == 'null') {
-      _setdefaults();
+  void _setdefaults() {
+    if (isInitializing || defaultTabsJson == '') {
       return;
     }
-    final restoredjson = appdata.replaceAll('&quote;', '"');
-    final dynamic alldata = jsonDecode(restoredjson);
-
+    final dynamic alldata = jsonDecode(defaultTabsJson);
     final tabslist = alldata['tabs'] as List;
-
     buildAllTabs(tabslist);
-  }
-
-  void _setdefaults() {
-    moreItems = [];
-    allTabs = {
-      TabItem.position1: TabItemData(
-          key: Keys.appsTab,
-          title: Strings.apps,
-          icon: Icons.work,
-          pageUrl: 'AppsPage()',
-          pageTitle: Strings.apps,
-          extraHeaderInfo: '',
-          parent: 0),
-      TabItem.position2: TabItemData(
-          key: Keys.asdefinedTab,
-          title: Strings.appsTabTitle,
-          icon: Icons.star,
-          pageUrl: 'AppRunPage.create',
-          pageTitle: Strings.appsTabTitle,
-          extraHeaderInfo: '',
-          parent: 0),
-      TabItem.position3: TabItemData(
-          key: Keys.accountTab,
-          title: Strings.account,
-          icon: Icons.person,
-          pageUrl: 'AccountPage()',
-          pageTitle: Strings.account,
-          extraHeaderInfo: '',
-          parent: 0),
-    };
-    widgetBuilders = {
-      TabItem.position1: (_) => AppsPage(),
-      TabItem.position2: (_) => AppRunPage(),
-      TabItem.position3: (_) => AccountPage(),
-      TabItem.position4: (_) => AppRunWebView(
-            title: '',
-            selectedUrl: '',
-            extraHeaderInfo: '{}',
-          ),
-      TabItem.positionOverflow: (_) => AppRunWebView(
-            title: '',
-            selectedUrl: '',
-            extraHeaderInfo: '{}',
-          ),
-    };
-    buildTabs(tryagain: false);
   }
 
   void buildTabs({bool tryagain}) {
@@ -165,7 +194,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   }
 
   BottomNavigationBarItem _buildItem(TabItem tabItem, TabItemData itemData) {
-    final color = _currentTab == tabItem ? Colors.orange : Colors.grey;
+    final color =
+        _currentTab == tabItem ? PrassoColors.brightBlue : Colors.grey;
 
     return BottomNavigationBarItem(
       icon: Icon(
@@ -187,12 +217,12 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
     for (int i = 0; i < tabsFromAPI.length; i++) {
       final TabItemData t1 = TabItemData(
-        key: tabsFromAPI[i]['id'].toString(),
+        key: UniqueKey().toString(),
         title: tabsFromAPI[i]['label'],
         icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']),
         pageUrl: tabsFromAPI[i]['page_url'],
         pageTitle: tabsFromAPI[i]['page_title'],
-        extraHeaderInfo: tabsFromAPI[i]['extra_header_info'],
+        extraHeaderInfo: tabsFromAPI[i]['request_header'],
         sortOrder: tabsFromAPI[i]['sort_order'],
         parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
             ? 0

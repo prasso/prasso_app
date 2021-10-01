@@ -7,7 +7,7 @@ class CustomRaisedButton extends StatelessWidget {
     @required this.child,
     this.color,
     this.textColor,
-    this.height = 50.0,
+    this.height = 40.0,
     this.borderRadius = 4.0,
     this.loading = false,
     this.onPressed,

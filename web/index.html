@@ -10,11 +10,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="prasso_app">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
   <!-- Favicon -->
   <link rel="shortcut icon" type="image/png" href="favicon.png"/>
 
-  <title>prasso_app</title>
+  <title>Prasso</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -29,17 +28,27 @@
     }
   </script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
       https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-analytics.js"></script>
-  <script src="./firebase-config.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
 
   <!-- https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file -->
   <script type="module">
+    var firebaseConfig = {
+      apiKey: "AIzaSyD-dA6WeTVXsxsGJYXro9EUqHf1LHcL7J8",
+      authDomain: "prasso-app.firebaseapp.com",
+      databaseURL: "https://prasso-app.firebaseio.com",
+      projectId: "prasso-app",
+      storageBucket: "prasso-app.appspot.com",
+      messagingSenderId: "535566369970",
+      appId: "1:535566369970:web:f39cb9e1b6dc4cd8fcb5ab",
+      measurementId: "G-S1300EP1BZ"
+    };
     // Your web app's Firebase configuration
     import { firebaseConfig } from './firebase-config.js';
     // Initialize Firebase

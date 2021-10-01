@@ -13,6 +13,7 @@ import 'package:prasso_app/app_widgets/apps/list_items_builder.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/app.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
 
 class AppsPage extends HookWidget {
   @override
@@ -22,7 +23,8 @@ class AppsPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(Strings.apps),
+        title: const Text(Strings.apps,
+            style: TextStyle(color: PrassoColors.lightGray)),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),

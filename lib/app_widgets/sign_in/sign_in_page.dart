@@ -120,7 +120,7 @@ class SignInPageContents extends StatelessWidget {
                 Expanded(
                     child: FractionallySizedBox(
                   widthFactor: 0.7,
-                  child: SvgPicture.asset('media/Calendar-cuate.svg'),
+                  child: SvgPicture.asset('media/Phonemaintenance-rafiki.svg'),
                 )),
                 const Text(
                   EmailPasswordSignInStrings.yourStatus,

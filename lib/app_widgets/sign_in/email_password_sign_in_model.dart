@@ -77,8 +77,8 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
 
   void updateFormType(EmailPasswordSignInFormType formType) {
     updateWith(
-      email: '',
-      password: '',
+      email: '', 
+      password: '', 
       formType: formType,
       isLoading: false,
       submitted: false,

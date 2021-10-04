@@ -56,15 +56,18 @@ class SharedPreferencesService {
         userTokenKey, userToken.replaceAll('"', ''));
     return true;
   }
+
   Future<bool> saveAccessToken(String accessToken) async {
     await sharedPreferences.setString(
         accessTokenKey, accessToken.replaceAll('"', ''));
     return true;
   }
+
   String getAccessToken() {
     final String accessToken = sharedPreferences.getString(accessTokenKey);
     return accessToken;
   }
+
   Future<void> setOnboardingComplete() async {
     await sharedPreferences.setBool(onboardingCompleteKey, true);
   }

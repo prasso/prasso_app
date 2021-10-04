@@ -6,7 +6,10 @@ import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+<<<<<<< HEAD
 import 'package:prasso_app/utils/prasso_themedata.dart';
+=======
+>>>>>>> master
 
 import 'onboarding_viewmodel.dart';
 
@@ -37,22 +40,21 @@ class OnboardingPage extends HookWidget {
 
   final List<SliderModel> slides = [
     SliderModel(
-        description:
-            'Rapid Prototyping\n. Plug Your Designs In.\n Play Your App\n',
+        description: 'create your own mobile app from scratch\n',
         title: 'Why Prasso?',
-        localImageSrc: 'media/Screen1-Movingforward-pana.svg',
-        backgroundColor: PrassoColors.lightGray),
+        localImageSrc: 'media/Mobilewireframe-rafiki.svg',
+        backgroundColor: Colors.grey[200]),
     SliderModel(
         description:
-            'Take the framework basics.\nTurn your prototype into an app.\n',
-        title: 'Good Prototype?',
-        localImageSrc: 'media/Screen2-Teaching-cuate.svg',
-        backgroundColor: PrassoColors.lightGray),
+            'Create your prototype.\nReview the results in the Prasso app.\n',
+        title: 'Rapid Prototype',
+        localImageSrc: 'media/Operatingsystemupgrade-pana.svg',
+        backgroundColor: Colors.grey[200]),
     SliderModel(
-        description: 'Easy to change screens.\nHelps you make your decisions\n',
-        title: 'The Information You Need',
-        localImageSrc: 'media/Screen3-Onlinecalendar-bro.svg',
-        backgroundColor: PrassoColors.lightGray),
+        description: 'Personalize your mobile app with branding and content.\n',
+        title: 'Full Control',
+        localImageSrc: 'media/Phonemaintenance-rafiki.svg',
+        backgroundColor: Colors.grey[200]),
   ];
 
   @override

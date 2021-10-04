@@ -44,7 +44,6 @@ dependencies:
   rxdart: ^0.24.1
   shared_preferences: ^0.5.12+2
   state_notifier: any
-  syncfusion_flutter_calendar: ^18.4.46
   toggle_switch: ^1.2.0
   video_player: ^2.1.14
   webview_flutter: ^0.3.14+1
@@ -74,9 +73,6 @@ flutter:
    - media/Operatingsystemupgrade-pana.svg
    - media/Phonemaintenance-rafiki.svg
    - media/Optamize.mov
-   - media/Screen1-Movingforward-pana.svg
-   - media/Screen2-Teaching-cuate.svg
-   - media/Screen3-Onlinecalendar-bro.svg
    - media/Calendar-cuate.svg
   #  - images/a_dot_ham.jpeg
  

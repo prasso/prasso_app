@@ -17,7 +17,10 @@ import 'package:prasso_app/app_widgets/home/home_page.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/routing/router.dart' as _rtr;
 import 'package:prasso_app/services/shared_preferences_service.dart';
+<<<<<<< HEAD
 import 'app_widgets/onboarding/intro_viewmodel.dart';
+=======
+>>>>>>> master
 import 'app_widgets/onboarding/onboarding_page.dart';
 import 'app_widgets/onboarding/onboarding_viewmodel.dart';
 import 'app_widgets/sign_in/sign_in_page.dart';
@@ -55,6 +58,7 @@ class PrassoCore extends StatelessWidget {
               return didCompleteOnboarding ? SignInPage() : OnboardingPage();
             },
           ),
+<<<<<<< HEAD
 
           /// Signed In Builder will show intro pages ( video and profile editor ) if the user is newly registered
           signedInBuilder: (_) => Consumer(
@@ -64,6 +68,9 @@ class PrassoCore extends StatelessWidget {
               return didCompleteProfile ? const HomePage() : IntroPage();
             },
           ),
+=======
+          signedInBuilder: (_) => const HomePage(),
+>>>>>>> master
         ),
         onGenerateRoute: _rtr.Router.onGenerateRoute);
   }

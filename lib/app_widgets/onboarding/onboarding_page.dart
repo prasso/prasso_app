@@ -6,10 +6,7 @@ import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-<<<<<<< HEAD
 import 'package:prasso_app/utils/prasso_themedata.dart';
-=======
->>>>>>> master
 
 import 'onboarding_viewmodel.dart';
 

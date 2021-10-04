@@ -43,13 +43,14 @@ class OnboardingPage extends HookWidget {
         localImageSrc: 'media/Screen1-Movingforward-pana.svg',
         backgroundColor: PrassoColors.lightGray),
     SliderModel(
-        description: 'Communicate with your coach.\nStore progress photos.\n',
-        title: 'Personal coaching',
+        description:
+            'Take the framework basics.\nTurn your prototype into an app.\n',
+        title: 'Good Prototype?',
         localImageSrc: 'media/Screen2-Teaching-cuate.svg',
         backgroundColor: PrassoColors.lightGray),
     SliderModel(
-        description: 'Keep a food journal.\nPlan your menu.\n',
-        title: 'Food Journal and Menu Planning',
+        description: 'Easy to change screens.\nHelps you make your decisions\n',
+        title: 'The Information You Need',
         localImageSrc: 'media/Screen3-Onlinecalendar-bro.svg',
         backgroundColor: PrassoColors.lightGray),
   ];

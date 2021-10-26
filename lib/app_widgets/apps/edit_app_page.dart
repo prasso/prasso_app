@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Project imports:
 import 'package:prasso_app/app_widgets/apps/edit_app_view_model.dart';
 import 'package:prasso_app/models/app.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
 
 class EditAppPage extends HookWidget {
   const EditAppPage({Key key, this.appinfo}) : super(key: key);
@@ -23,7 +24,8 @@ class EditAppPage extends HookWidget {
       appBar: AppBar(
         elevation: 2.0,
         title: Text(
-            _viewModel.appInfo.documentId == null ? 'New App' : 'Edit App'),
+            _viewModel.appInfo.documentId == null ? 'New App' : 'Edit App',
+            style: const TextStyle(color: PrassoColors.lightGray)),
         actions: <Widget>[
           TextButton(
             child: const Text(

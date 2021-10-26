@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,20 +9,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Project imports:
 import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
-import 'package:prasso_app/app_widgets/account/profile_form_children.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 import 'package:prasso_app/constants/constants.dart';
+import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
 
-class EditUserProfile extends HookWidget {
-  const EditUserProfile({Key key}) : super(key: key);
+class ProfileFormChildren extends HookWidget {
+  const ProfileFormChildren({Key key}) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-      builder: (dynamic context) => const EditUserProfile(),
+      builder: (dynamic context) => const ProfileFormChildren(),
       fullscreenDialog: true,
     ));
   }
@@ -32,31 +32,6 @@ class EditUserProfile extends HookWidget {
     final auth = useProvider(prassoApiService);
     final database = useProvider(databaseProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 2.0,
-        title: Text(_viewmodel.usr == null ? Strings.newuser : Strings.edituser,
-            style: TextStyle(color: Theme.of(context).backgroundColor)),
-        actions: <Widget>[
-          TextButton(
-            child: const Text(
-              Strings.save,
-              style: TextStyle(fontSize: 18, color: PrassoColors.lightGray),
-            ),
-            onPressed: () => _viewmodel.submit(context, auth, database),
-          ),
-        ],
-      ),
-      body: const ProfileFormChildren(),
-      backgroundColor: Theme.of(context).backgroundColor,
-    );
-  }
-
-  Widget _buildContents(
-      EditUserProfileViewModel _viewmodel,
-      BuildContext context,
-      PrassoApiRepository auth,
-      FirestoreDatabase database) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -119,11 +94,11 @@ class EditUserProfile extends HookWidget {
                 _viewmodel.pickImage(context, auth, database);
               },
               child: CircleAvatar(
-                backgroundColor: Colors.grey[200],
+                backgroundColor: PrassoColors.lightGray,
                 radius: algo * 30.0,
                 child: Icon(
                   Icons.camera_alt,
-                  color: Colors.blueGrey,
+                  color: PrassoColors.olive,
                   size: algo * 33.0,
                 ),
               ),
@@ -151,13 +126,17 @@ class EditUserProfile extends HookWidget {
         initialValue: _viewmodel.displayName,
         onSaved: (value) => _viewmodel.displayName = value,
       ),
+      TextFormField(
+        decoration: const InputDecoration(labelText: Strings.appNameLabel),
+        keyboardAppearance: Brightness.light,
+        initialValue: _viewmodel.appName,
+        onSaved: (value) => _viewmodel.appName = value,
+      ),
     ];
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty(
-        'editUserProfileViewModel', editUserProfileViewModel));
   }
 }

@@ -11,7 +11,7 @@ class SignInButton extends CustomRaisedButton {
     @required Color color,
     @required VoidCallback onPressed,
     Color textColor = Colors.black87,
-    double height = 70.0,
+    double height = 50.0,
   }) : super(
             key: key,
             child: Text(text,

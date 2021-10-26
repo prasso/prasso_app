@@ -2,7 +2,7 @@ name: prasso_app
 description: or To Get It Done
 publish_to: 'none' 
 
-version: 1.0.0+10
+version: 1.0.0+20
 
 environment:
   sdk: ">=2.8.4 <3.0.0"
@@ -12,6 +12,7 @@ dependencies:
   amazon_s3_cognito: ^0.6.0
   cached_network_image: ^2.2.0+1
   cloud_firestore: ^0.14.1+3
+  cloud_functions: ^0.7.2
   cupertino_icons: ^0.1.2
   dynamic_widget: ^3.0.1
   #firebase_analytics: any
@@ -19,6 +20,7 @@ dependencies:
   firebase_core: ^0.5.0+1
   #firebase_crashlytics: ^0.4.0+1
   firebase_messaging: ^7.0.3
+  firebase_storage: ^5.0.1
   flutter:
     sdk: flutter  
   flutter_cached_pdfview: any
@@ -26,6 +28,7 @@ dependencies:
   flutter_hooks: any
   flutter_image_compress: any
   # https://stackoverflow.com/questions/62476108/how-to-load-and-present-a-pdf-file-from-the-web-in-flutter
+  flutter_native_timezone: ^1.0.10
   flutter_pdfview: ^1.0.1
   flutter_svg: ^0.19.1
   hooks_riverpod: ^0.14.0+3
@@ -41,6 +44,8 @@ dependencies:
   rxdart: ^0.24.1
   shared_preferences: ^0.5.12+2
   state_notifier: any
+  toggle_switch: ^1.2.0
+  video_player: ^2.1.14
   webview_flutter: ^0.3.14+1
 
 # this is to fix an exception in Android on launch
@@ -67,6 +72,8 @@ flutter:
    - media/Mobilewireframe-rafiki.svg
    - media/Operatingsystemupgrade-pana.svg
    - media/Phonemaintenance-rafiki.svg
- 
+   - media/Optamize.mov
+   - media/Calendar-cuate.svg
+  #  - images/a_dot_ham.jpeg
  
 

@@ -8,12 +8,13 @@ class Strings {
   //env Flutter Config strings
   static const String apiUrl = 'API_URL';
   static const String appId = 'appId';
-  static const String prodUrl = 'https://api.prasso.io/api/';
-  //static const String prodUrl = 'http://localhost:8000/api/';
+  //static const String prodUrl = 'https://prasso.io/api/';
+  static const String prodUrl = 'http://localhost:8000/api/';
+  // static const String prodUrl = 'http://10.0.2.2:8000/api/';
   static const String awsIdentityPool = 'AWS_IDENTITY_POOL';
   static const String awsRegion = 'AWS_REGION';
   static const String cloudFrontID = 'CLOUDFRONT_WEB';
-  static const String awsBucket = 'prassouploads';
+  static const String awsBucket = 'barimorphosisuploads';
 
   // api route definitions
   static const String updateProfile = 'user/profile-information';
@@ -22,7 +23,6 @@ class Strings {
   static const String saveApp = 'save_app';
   static const String save = 'Save';
   static const String shortEditProfileText = 'Update Your Info';
-  static const String editProfileText = 'Setup Your Reminders too.';
 
   // Logout
   static const String logout = 'Logout';
@@ -43,6 +43,7 @@ class Strings {
 
   // Home page
   static const String homePage = 'Home Page';
+  static const String introPages = 'Welcome and Info';
 
   // Jobs page
   static const String apps = 'Apps';
@@ -61,7 +62,7 @@ class Strings {
   static const String morePageUrl = 'More()';
   static const String morePage = 'More Page';
 
-  static const String appName = 'Prasso App';
+  static const String appName = 'Prasso';
   static const String accountPageUrl = 'AccountPage()';
 
   // Profile page
@@ -71,7 +72,11 @@ class Strings {
   static const String emailCantbeEmpty = 'Email can\'t be empty';
   static const String photoUrl = 'Photo Url';
   static const String nameLabel = 'Name';
-  static const String blankTimezone = 'Unknown';
+  static const String appNameLabel = 'App Name';
+
+  // InputTypes
+  static const String inputTypeText = 'text';
+  static const String inputTypeNumber = 'number';
 
   static const String emergencyDefaultTabs = '';
 }

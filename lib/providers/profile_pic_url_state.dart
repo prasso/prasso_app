@@ -14,6 +14,6 @@ class ProfilePicUrlState extends ChangeNotifier {
     } else {
       _profilePicUrl = newUrl;
     }
-    notifyListeners();
+    // notifyListeners();
   }
 }

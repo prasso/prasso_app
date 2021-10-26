@@ -43,13 +43,14 @@ class AppRunListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     const fontSize = 16.0;
     return Container(
-      color: model.isHeader ? Colors.orange[100] : null,
+      color: model.isHeader ? Theme.of(context).backgroundColor : null,
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Row(
         children: <Widget>[
           Text(
             model.pageTitle ?? 'no page title',
-            style: TextStyle(color: Colors.green[700], fontSize: fontSize),
+            style: TextStyle(
+                color: Theme.of(context).primaryColorDark, fontSize: fontSize),
             textAlign: TextAlign.left,
           ),
           Expanded(child: Container()),

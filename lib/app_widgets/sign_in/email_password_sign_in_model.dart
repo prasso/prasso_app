@@ -51,7 +51,7 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
           await auth.signInWithEmailAndPassword(email, password);
           break;
         case EmailPasswordSignInFormType.register:
-          await auth.createUserWithEmailAndPassword(email, password);
+          unawaited(auth.createUserWithEmailAndPassword(email, password));
           break;
         case EmailPasswordSignInFormType.forgotPassword:
           await auth.sendPasswordResetEmail(email);

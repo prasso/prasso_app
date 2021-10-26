@@ -71,6 +71,14 @@ class _EmailPasswordSignInPageContentsState
     }
   }
 
+  Future<void> navigateIntroPages() async {
+    final navigator = Navigator.of(context);
+    await navigator.pushNamed(
+      Routes.introPages,
+      arguments: () => navigator.pop(),
+    );
+  }
+
   Future<void> navigateToHome() async {
     final navigator = Navigator.of(context);
     await navigator.pushNamed(
@@ -91,6 +99,9 @@ class _EmailPasswordSignInPageContentsState
             defaultActionText: EmailPasswordSignInStrings.ok,
           );
         } else {
+          if (model.formType == EmailPasswordSignInFormType.register) {
+            await navigateIntroPages();
+          }
           if (widget.onSignedIn != null && mounted) {
             widget.onSignedIn();
             await navigateToHome();

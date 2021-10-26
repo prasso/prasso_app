@@ -6,9 +6,11 @@ class SharedPreferencesService {
   final SharedPreferences sharedPreferences;
 
   static const userTokenKey = 'userToken';
+  static const accessTokenKey = 'accessToken';
   static const appDataKey = 'appData';
   static const userDataKey = 'userData';
   static const onboardingCompleteKey = 'onboardingComplete';
+  static const introCompleteKey = 'introComplete';
 
   String getUserData() {
     final String userData = sharedPreferences.getString(userDataKey);
@@ -20,8 +22,12 @@ class SharedPreferencesService {
   }
 
   Future<bool> saveUserData(String userData) async {
-    await sharedPreferences.setString(
-        userDataKey, userData.replaceAll('"', '&quote;'));
+    if (userData == null) {
+      await sharedPreferences.setString(userDataKey, null);
+    } else {
+      await sharedPreferences.setString(
+          userDataKey, userData?.replaceAll('"', '&quote;'));
+    }
     return true;
   }
 
@@ -42,7 +48,6 @@ class SharedPreferencesService {
 
   String getUserToken() {
     final String userToken = sharedPreferences.getString(userTokenKey);
-
     return userToken;
   }
 
@@ -52,10 +57,36 @@ class SharedPreferencesService {
     return true;
   }
 
+  Future<bool> saveAccessToken(String accessToken) async {
+    await sharedPreferences.setString(
+        accessTokenKey, accessToken.replaceAll('"', ''));
+    return true;
+  }
+
+  String getAccessToken() {
+    final String accessToken = sharedPreferences.getString(accessTokenKey);
+    return accessToken;
+  }
+
   Future<void> setOnboardingComplete() async {
     await sharedPreferences.setBool(onboardingCompleteKey, true);
   }
 
+  Future<void> unSetOnboardingComplete() async {
+    await sharedPreferences.setBool(onboardingCompleteKey, false);
+  }
+
   bool isOnboardingComplete() =>
       sharedPreferences.getBool(onboardingCompleteKey) ?? false;
+
+  Future<void> setIntroComplete() async {
+    await sharedPreferences.setBool(introCompleteKey, true);
+  }
+
+  Future<void> unSetIntroComplete() async {
+    await sharedPreferences.setBool(introCompleteKey, false);
+  }
+
+  bool isIntroComplete() =>
+      sharedPreferences.getBool(introCompleteKey) ?? false;
 }

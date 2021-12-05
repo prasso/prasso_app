@@ -1,6 +1,6 @@
-# Prasso App - A Rapid Prototyping Tool
+# Prasso App - A Rapid Prototyping Tool.
 
-no-code mobile app development
+An app framework for your no-code web site. Or a springboard for your Flutter mobile app. 
 
 ## Project Timeline
 #### originally forked from  Demo for Flutter & Firebase Realtime Apps

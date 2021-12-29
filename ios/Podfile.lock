@@ -212,16 +212,6 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - amazon_s3_cognito (0.3.0):
-    - AWSCognito
-    - AWSCore
-    - AWSS3
-    - Flutter
-  - AWSCognito (2.19.1):
-    - AWSCore (= 2.19.1)
-  - AWSCore (2.19.1)
-  - AWSS3 (2.19.1):
-    - AWSCore (= 2.19.1)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -456,7 +446,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - amazon_s3_cognito (from `.symlinks/plugins/amazon_s3_cognito/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
   - Firebase/Analytics
@@ -482,9 +471,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
-    - AWSCognito
-    - AWSCore
-    - AWSS3
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
@@ -515,8 +501,6 @@ SPEC REPOS:
     - SDWebImageWebPCoder
 
 EXTERNAL SOURCES:
-  amazon_s3_cognito:
-    :path: ".symlinks/plugins/amazon_s3_cognito/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_functions:
@@ -556,10 +540,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
-  amazon_s3_cognito: 65b8458599a1e9307d74c461a03e71d34b4e7b77
-  AWSCognito: f50de600804941d083af37a7568905f31a774727
-  AWSCore: 55c154ae27efc5c98bdc30a0eeea5a35d10a2ab5
-  AWSS3: 2272253b098d07803af8dd20ce6ce7302bcffb47
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: b8c0e15fa49dfff87c2817d288b577e5dca2df13
   cloud_functions: 322f7aacaf0d6736d4365a0d33eb93e74c0469a6

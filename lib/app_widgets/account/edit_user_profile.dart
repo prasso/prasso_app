@@ -12,9 +12,6 @@ import 'package:prasso_app/app_widgets/account/profile_form_children.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
-import 'package:prasso_app/constants/constants.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
 
 class EditUserProfile extends HookWidget {
   const EditUserProfile({Key key}) : super(key: key);
@@ -50,108 +47,6 @@ class EditUserProfile extends HookWidget {
       body: const ProfileFormChildren(),
       backgroundColor: Theme.of(context).backgroundColor,
     );
-  }
-
-  Widget _buildContents(
-      EditUserProfileViewModel _viewmodel,
-      BuildContext context,
-      PrassoApiRepository auth,
-      FirestoreDatabase database) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.only(bottom: 15),
-          child: _buildForm(_viewmodel, context, auth, database),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context,
-      PrassoApiRepository auth, FirestoreDatabase database) {
-    return Form(
-      key: _viewmodel.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: _buildFormChildren(_viewmodel, context, auth, database),
-      ),
-    );
-  }
-
-  List<Widget> _buildFormChildren(
-      EditUserProfileViewModel _viewmodel,
-      BuildContext context,
-      PrassoApiRepository auth,
-      FirestoreDatabase database) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double algo = screenWidth / perfectWidth;
-
-    return [
-      Stack(
-        children: [
-          Opacity(
-            opacity: _viewmodel.uploadingDp ? 0.5 : 1.0,
-            child: Hero(
-              tag: 'myProfile',
-              child: CircleAvatar(
-                radius: algo * 120.0,
-                backgroundColor: Colors.white,
-                backgroundImage: _viewmodel.profileImage,
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: _viewmodel.uploadingDp
-                  ? const CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                    )
-                  : Container(),
-            ),
-          ),
-          Positioned(
-            bottom: algo * 5.0,
-            right: algo * 10.0,
-            child: GestureDetector(
-              onTap: () {
-                _viewmodel.pickImage(context, auth, database);
-              },
-              child: CircleAvatar(
-                backgroundColor: Colors.grey[200],
-                radius: algo * 30.0,
-                child: Icon(
-                  Icons.camera_alt,
-                  color: Colors.blueGrey,
-                  size: algo * 33.0,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: Strings.emailLabel),
-        keyboardAppearance: Brightness.light,
-        initialValue: _viewmodel.email,
-        validator: (value) =>
-            value.isNotEmpty ? null : Strings.emailCantbeEmpty,
-        onSaved: (value) => _viewmodel.email = value,
-      ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: Strings.photoUrl),
-        keyboardAppearance: Brightness.light,
-        initialValue: _viewmodel.photoURL,
-        onSaved: (value) => _viewmodel.photoURL = value,
-      ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: Strings.nameLabel),
-        keyboardAppearance: Brightness.light,
-        initialValue: _viewmodel.displayName,
-        onSaved: (value) => _viewmodel.displayName = value,
-      ),
-    ];
   }
 
   @override

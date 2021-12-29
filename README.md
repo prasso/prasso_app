@@ -18,9 +18,7 @@ Now we are cooking with gas!
   Add a Firebase project. Enable Authentication with Email and Password.  Enable Cloud Firestore and create a database. 
 ## AWS
 ### Image storage
-#### this app uses AWS Cognito and S3 to provide image upload and storage
-The plugin used to accomplish this, amazon_s3_cognito, has been forked from https://pub.dev/packages/amazon_s3_cognito
-In the fork, available here: https://github.com/prasso/amazon_s3_cognito, the ios uploads are now using AWSTransferUtility. In the original code AWSTransferManager was used. But it would not work in XCode 12, uploads did not complete. I also had some issues getting the region in from my configuration since Android used a different enum value than ios.
+#### 
 
 ### env file
 This app uses a configuration similar to what you would see in a web app. The configuration file is excluded from source control since it contains information specific to private installations.
@@ -31,7 +29,6 @@ flutter_config
 Two .env files are required, and a pointer to them. These are detailed at the pub.dev location for flutter_config. https://pub.dev/packages/flutter_config
 #### example env contents
 API_URL=YOUR_API_URL
-AWS_IDENTITY_POOL='YOUR_COGNITO_IDENTITY_POOL_ID'
 AWS_REGION='YOUR_AWS_REGION'
 CLOUDFRONT_WEB='YOUR_IMAGE_SERVING_URL'
 

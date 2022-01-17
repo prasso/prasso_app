@@ -19,7 +19,9 @@ String _message(dynamic exception) {
   if (exception is PlatformException) {
     return exception.message;
   }
-  return exception.toString();
+  print(exception.toString());
+
+  return exception.message.toString();
 }
 
 // TODO: Revisit this

@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:intl/intl.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class Format {
   static String hours(double hours) {
     final hoursNotNegative = hours < 0.0 ? 0.0 : hours;

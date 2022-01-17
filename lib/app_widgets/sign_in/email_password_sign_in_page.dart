@@ -51,6 +51,13 @@ class _EmailPasswordSignInPageContentsState
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  bool _obscureText = true;
+  void _passwordToggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   EmailPasswordSignInModel get model => widget.model;
 
   @override
@@ -81,10 +88,13 @@ class _EmailPasswordSignInPageContentsState
 
   Future<void> navigateToHome() async {
     final navigator = Navigator.of(context);
-    await navigator.pushNamed(
-      Routes.homePage,
-      arguments: () => navigator.pop(),
-    );
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      // fetch data
+      navigator.pushNamed(
+        Routes.homePage,
+        arguments: () => navigator.pop(),
+      );
+    });
   }
 
   Future<void> _submit() async {
@@ -163,8 +173,18 @@ class _EmailPasswordSignInPageContentsState
         labelText: model.passwordLabelText,
         errorText: model.passwordErrorText,
         enabled: !model.isLoading,
+        suffixIcon: InkWell(
+          onTap: _passwordToggle,
+          child: Icon(
+            _obscureText
+                ? Icons.remove_red_eye_outlined
+                : Icons.remove_red_eye_sharp,
+            size: 15.0,
+            color: Colors.black,
+          ),
+        ),
       ),
-      obscureText: true,
+      obscureText: _obscureText,
       autocorrect: false,
       textInputAction: TextInputAction.done,
       keyboardAppearance: Brightness.light,
@@ -189,7 +209,7 @@ class _EmailPasswordSignInPageContentsState
           const SizedBox(height: 10.0),
           FormSubmitButton(
             key: const Key('primary-button'),
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).secondaryHeaderColor,
             text: model.primaryButtonText,
             loading: model.isLoading,
             onPressed: model.isLoading ? null : _submit,

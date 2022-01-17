@@ -1,9 +1,6 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 
-// Package imports:
-import 'package:meta/meta.dart';
-
 // Project imports:
 import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';

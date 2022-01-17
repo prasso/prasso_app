@@ -1,16 +1,14 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 // Project imports:
 import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockAuthService extends Mock implements PrassoApiRepository {}
 

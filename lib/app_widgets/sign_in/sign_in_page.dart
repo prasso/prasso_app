@@ -4,6 +4,7 @@ import 'dart:math';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,9 +15,8 @@ import 'package:prasso_app/app_widgets/sign_in/sign_in_view_model.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:prasso_app/common_widgets/custom_buttons.dart';
-//import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'package:prasso_app/constants/keys.dart';
-import 'package:prasso_app/constants/Strings.dart';
+import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/routing/router.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
@@ -58,17 +58,19 @@ class SignInPageContents extends StatelessWidget {
 
   static const Key emailPasswordButtonKey = Key(Keys.emailPassword);
   static const Key emailSignupButtonKey = Key(Keys.emailSignup);
-  //static const Key anonymousButtonKey = Key(Keys.anonymous);
 
   Future<void> _showEmailPasswordSignInPage(BuildContext context) async {
     final EmailPasswordSignInModel _thismodel =
         context.read(emailPasswordSigninViewModelProvider);
     _thismodel.formType = EmailPasswordSignInFormType.signIn;
     final navigator = Navigator.of(context);
-    await navigator.pushNamed(
-      Routes.emailPasswordSignInPage,
-      arguments: () => navigator.pop(),
-    );
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      // fetch data
+      navigator.pushNamed(
+        Routes.emailPasswordSignInPage,
+        arguments: () => navigator.pop(),
+      );
+    });
   }
 
   Future<void> _showEmailPasswordRegisterPage(BuildContext context) async {
@@ -148,7 +150,7 @@ class SignInPageContents extends StatelessWidget {
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).secondaryHeaderColor,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

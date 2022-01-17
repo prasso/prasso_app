@@ -3,11 +3,10 @@
 // Dart imports:
 import 'dart:convert';
 
-// Flutter imports:
-import 'package:flutter/foundation.dart';
-
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
+// Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
 import 'package:prasso_app/models/role_model.dart';
@@ -22,13 +21,15 @@ class ApiUser {
       this.displayName,
       this.appConfig,
       this.appToken,
+      this.thirdPartyToken,
       this.initialized,
       this.roles,
       this.personalTeamId,
       this.teamCoachId,
       this.teamMembers,
       this.pnToken,
-      this.appName})
+      this.coachUid,
+      this.unreadmessages})
       : assert(uid != null, 'User can only be created with a non-null uid');
 
   final String uid;
@@ -37,13 +38,15 @@ class ApiUser {
   final String displayName;
   final String appConfig;
   final String appToken; //the token which identifies this user's app
+  final String thirdPartyToken;
   final bool initialized;
   final List<RoleModel> roles;
   final int personalTeamId;
   final int teamCoachId;
   final List<TeamMemberModel> teamMembers;
   final String pnToken;
-  final String appName;
+  final String coachUid;
+  final bool unreadmessages;
 
   factory ApiUser.fromLocatorUpdated(
       ApiUser user, EditUserProfileViewModel vm) {
@@ -53,13 +56,15 @@ class ApiUser {
         photoURL: vm.photoURL,
         displayName: vm.displayName,
         appToken: user.appToken,
+        thirdPartyToken: user.thirdPartyToken,
         initialized: true,
         roles: vm.roles,
         personalTeamId: vm.personalTeamId,
         teamCoachId: vm.teamCoachId,
         teamMembers: vm.teamMembers,
         pnToken: vm.pnToken,
-        appName: vm.appName);
+        coachUid: vm.coachUid,
+        unreadmessages: vm.unreadmessages);
   }
 
   factory ApiUser.fromAPIJson(
@@ -81,6 +86,7 @@ class ApiUser {
               photoURL: jsonAppData['data']['photoURL'],
               appConfig: appConfig,
               appToken: jsonAppData['data']['token'],
+              thirdPartyToken: jsonAppData['data']['your_health_token'] ?? '',
               initialized: true,
               roles: RoleModel.convertFromJson(jsonAppData['data']['roles'])
                       .toString() ??
@@ -92,7 +98,8 @@ class ApiUser {
                       .toString() ??
                   defaultTeamMembers(),
               pnToken: jsonAppData['data']['pn_token'],
-              appName: jsonAppData['data']['appName']);
+              coachUid: jsonAppData['data']['coach_uid'],
+              unreadmessages: jsonAppData['data']['unreadmessages']);
         }
       }
       return ApiUser(
@@ -102,13 +109,15 @@ class ApiUser {
           photoURL: usr.photoURL,
           appConfig: appConfig,
           appToken: appToken,
+          thirdPartyToken: '',
           initialized: false,
           roles: RoleModel.defaultRole(),
           personalTeamId: 0,
           teamCoachId: 0,
           teamMembers: defaultTeamMembers(),
           pnToken: '',
-          appName: '');
+          coachUid: '',
+          unreadmessages: false);
     } else {
       if (_user is ApiUser) {
         return _user;
@@ -124,6 +133,7 @@ class ApiUser {
             photoURL: _user['data']['photoURL'].toString(),
             appConfig: jsonusr,
             appToken: _user['data']['token'],
+            thirdPartyToken: _user['data']['your_health_token'] ?? '',
             initialized: true,
             roles:
                 RoleModel.convertFromJson(_user['data']['roles']).toString() ??
@@ -134,7 +144,8 @@ class ApiUser {
                     _user['data']['team_members'].toString()) ??
                 defaultTeamMembers(),
             pnToken: _user['data']['pn_token'],
-            appName: _user['data']['appName']);
+            coachUid: _user['data']['coach_uid'],
+            unreadmessages: _user['data']['unreadmessages'] ?? false);
       } else {
         return ApiUser(
             uid: jsonResponse['uid'].toString(),
@@ -143,6 +154,7 @@ class ApiUser {
             photoURL: jsonResponse['photoURL'],
             appConfig: jsonResponse['appConfig'] ?? appConfig,
             appToken: jsonResponse['appToken'] ?? appToken,
+            thirdPartyToken: jsonResponse['thirdPartyToken'] ?? '',
             initialized: true,
             roles:
                 RoleModel.convertFromJson(jsonResponse['roles'].toString()) ??
@@ -153,7 +165,8 @@ class ApiUser {
                     jsonResponse['team_members'].toString()) ??
                 defaultTeamMembers(),
             pnToken: jsonResponse['pn_token'],
-            appName: jsonResponse['appName']);
+            coachUid: jsonResponse['coach_uid'] ?? '',
+            unreadmessages: jsonResponse['unreadmessages'] ?? false);
       }
     }
   }
@@ -167,6 +180,7 @@ class ApiUser {
         photoURL: userFromStorage['photoURL'],
         appConfig: appConfig,
         appToken: appToken,
+        thirdPartyToken: userFromStorage['thirdPartyToken'],
         initialized: true,
         roles: RoleModel.convertFromJson(userFromStorage['roles'].toString()) ??
             RoleModel.defaultRole(),
@@ -176,7 +190,8 @@ class ApiUser {
                 userFromStorage['teamMembers'].toString()) ??
             defaultTeamMembers(),
         pnToken: userFromStorage['pnToken'],
-        appName: userFromStorage['appName']);
+        coachUid: userFromStorage['coachUid'],
+        unreadmessages: userFromStorage['unreadmessages'] ?? false);
   }
 
   static List<TeamMemberModel> defaultTeamMembers() {
@@ -198,12 +213,14 @@ class ApiUser {
       'displayName': displayName,
       'appConfig': appConfig,
       'appToken': appToken?.replaceAll('"', ''),
+      'thirdPartyToken': thirdPartyToken,
       'roles': jsonEncode(roles),
       'personalTeamId': personalTeamId,
       'teamCoachId': teamCoachId,
       'teamMembers': jsonEncode(teamMembers),
       'pnToken': jsonEncode(pnToken),
-      'appName': jsonEncode(appName)
+      'coachUid': coachUid,
+      'unreadmessages': unreadmessages
     };
   }
 }

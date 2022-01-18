@@ -3,12 +3,7 @@ import 'dart:convert';
 
 // Flutter imports:
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-// Package imports:
-import 'package:dynamic_widget/dynamic_widget/icons_helper.dart';
-
 // Project imports:
 import 'package:prasso_app/app_widgets/account/account_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_pdf_view.dart';
@@ -16,11 +11,13 @@ import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/apps/apps_page.dart';
 import 'package:prasso_app/app_widgets/more/more_page.dart';
+import 'package:prasso_app/app_widgets/subscriptions/subscribe.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
+// Package imports:
+import 'package:prasso_app/utils/icons_helper.dart';
 
 class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   CupertinoHomeScaffoldViewModel(this.sharedPreferencesServiceProvider) {
@@ -37,7 +34,9 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   static bool isDisposed = true;
   bool hasChangedEvent = false;
   bool isInitializing = false;
-
+  bool doBuildTabs = false;
+  
+  final CupertinoTabController tabController = CupertinoTabController();
   final SharedPreferencesService sharedPreferencesServiceProvider;
 
   List<TabItemData> moreItems = [];
@@ -49,7 +48,11 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         pageUrl: 'AppsPage()',
         pageTitle: Strings.apps,
         extraHeaderInfo: '',
-        parent: 0),
+        iconImageFileName: 'add_circle',
+        isActive: true,
+        sortOrder: 1,
+        parent: 0,
+        subscriptionRequired: false),
     TabItem.position2: TabItemData(
         key: Keys.asdefinedTab,
         title: Strings.appsTabTitle,
@@ -57,7 +60,11 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         pageUrl: 'AppRunPage.create',
         pageTitle: Strings.appsTabTitle,
         extraHeaderInfo: '',
-        parent: 0),
+        iconImageFileName: 'add_circle',
+        isActive: true,
+        sortOrder: 1,
+        parent: 0,
+        subscriptionRequired: false),
     TabItem.position3: TabItemData(
         key: Keys.accountTab,
         title: Strings.account,
@@ -65,7 +72,11 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         pageUrl: 'AccountPage()',
         pageTitle: Strings.account,
         extraHeaderInfo: '',
-        parent: 0),
+        iconImageFileName: 'add_circle',
+        isActive: true,
+        sortOrder: 1,
+        parent: 0,
+        subscriptionRequired: false),
   };
   Map<TabItem, WidgetBuilder> widgetBuilders = {
     TabItem.position1: (_) => AppsPage(),
@@ -116,8 +127,15 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     return _currentTab;
   }
 
+//this method is called on the notification process of app changes
+//dont set the current tab if we are in IntroPage or if the current tab is a
+//already equal to the new tab
   set currentTab(TabItem newtab) {
     if (defaultTabsJson == '') {
+      return;
+    }
+    if (_currentTab == newtab && !doBuildTabs) {
+      tabController.index = _currentTab.index;
       return;
     }
     print('$_currentTab is changing to $newtab');
@@ -126,12 +144,33 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     if (isInitializing) {
       return;
     }
+
+    allTabs.forEach((key, value) {
+      if (key == newtab) {
+        value.isActive = true;
+      } else {
+        value.isActive = false;
+      }
+    });
+
+    tabController.index = _currentTab.index;
+
     notifyListeners();
-    _setdefaults();
+    if (doBuildTabs) {
+      doBuildTabs = false;
+      _setdefaults();
+    }
   }
 
   String get defaultTabsJson {
     return _defaulttabsjson;
+  }
+
+  bool get isDashboard {
+    if (tabController.index < 2) {
+      return true;
+    }
+    return false;
   }
 
   //this should set to the value passed in unless it's empty
@@ -146,6 +185,20 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   Future<bool> signingout() async {
     _currentTab = TabItem.position1;
+    return true;
+  }
+
+  Future<bool> goToDashboard(BuildContext context) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    // this takes you all the way back to login page
+    Navigator.of(context, rootNavigator: true)
+        .popUntil((route) => route.isFirst);
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    //now change to Dashboard tab, using the property here to get the notifications out
+    doBuildTabs = true;
+    currentTab = TabItem.position1;
     return true;
   }
 
@@ -194,20 +247,11 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   }
 
   BottomNavigationBarItem _buildItem(TabItem tabItem, TabItemData itemData) {
-    final color =
-        _currentTab == tabItem ? PrassoColors.brightBlue : Colors.grey;
-
     return BottomNavigationBarItem(
       icon: Icon(
         itemData.icon,
-        color: color,
       ),
-      // ignore: deprecated_member_use
-      title: Text(
-        itemData.title,
-        key: Key(itemData.key),
-        style: TextStyle(color: color),
-      ),
+      label: itemData.title,
     );
   }
 
@@ -217,23 +261,32 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
     for (int i = 0; i < tabsFromAPI.length; i++) {
       final TabItemData t1 = TabItemData(
-        key: UniqueKey().toString(),
-        title: tabsFromAPI[i]['label'],
-        icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']),
-        pageUrl: tabsFromAPI[i]['page_url'],
-        pageTitle: tabsFromAPI[i]['page_title'],
-        extraHeaderInfo: tabsFromAPI[i]['request_header'],
-        sortOrder: tabsFromAPI[i]['sort_order'],
-        parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
-            ? 0
-            : tabsFromAPI[i]['parent'],
-      );
+          key: UniqueKey().toString(),
+          title: tabsFromAPI[i]['label'],
+          icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']),
+          iconImageFileName: tabsFromAPI[i]['icon'],
+          pageUrl: tabsFromAPI[i]['page_url'],
+          pageTitle: tabsFromAPI[i]['page_title'],
+          extraHeaderInfo: tabsFromAPI[i]['request_header'],
+          isActive: true,
+          sortOrder: tabsFromAPI[i]['sort_order'],
+          parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
+              ? 0
+              : tabsFromAPI[i]['parent'],
+          subscriptionRequired: false
+
+          //         fill these in
+/*
+      @required this.iconImageFileName,
+      @required this.isActive,
+      @required this.subscriptionRequired});*/
+          );
 
       final int position = allTabs.length;
       if (position <= TabItem.values.length && t1.parent == 0) {
         allTabs[TabItem.values[position]] = t1;
 
-        widgetBuilders[TabItem.values[position]] = actionFromString(t1);
+        widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
       }
       if (t1.parent > 0) {
         moreItems.add(t1);
@@ -243,11 +296,29 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     buildTabs(tryagain: true);
   }
 
-  WidgetBuilder actionFromString(TabItemData t1) {
+  WidgetBuilder _actionFromString(TabItemData t1) {
     final String actionString = t1.pageUrl;
     final String extraHeaderInfo = t1.extraHeaderInfo;
 
-    // if pageurl isn't https it is a page in this code
+    //filter out the known links ( links that are pointing to native views)
+    //if not a known link then do the web view action
+
+    if (actionString.endsWith(Strings.subscribePageUrl)) {
+      return (_) => SubscribePage();
+    }
+    if (actionString == Strings.accountPageUrl) {
+      return (_) => AccountPage();
+    }
+    if (actionString == Strings.morePageUrl) {
+      return (_) => MorePage();
+    }
+    
+    if (actionString == 'AppsPage()') {
+      return (_) => AppsPage();
+    }
+    if (actionString == 'AppRunPage.create') {
+      return (_) => AppRunPage();
+    }
     if (actionString.startsWith('http')) {
       if (actionString.endsWith('.pdf')) {
         return (_) => AppRunPdfView(title: t1.title, urlPDFPath: actionString);
@@ -258,22 +329,6 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
               extraHeaderInfo: extraHeaderInfo,
             );
       }
-    } else {
-      if (actionString == Strings.accountPageUrl) {
-        return (_) => AccountPage();
-      } else {
-        if (actionString == Strings.morePageUrl) {
-          return (_) => MorePage();
-        } else {
-          if (actionString == 'AppsPage()') {
-            return (_) => AppsPage();
-          } else {
-            if (actionString == 'AppRunPage.create') {
-              return (_) => AppRunPage();
-            }
-          }
-        }
-      }
     }
     return null;
   }
@@ -283,7 +338,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     Navigator.push<MaterialPageRoute>(
       context,
       MaterialPageRoute(
-        builder: actionFromString(t1),
+        builder: _actionFromString(t1),
       ),
     );
   }

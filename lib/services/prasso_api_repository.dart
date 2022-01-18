@@ -4,18 +4,15 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:io';
 
-// Flutter imports:
-import 'package:path/path.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+// Flutter imports:
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'package:pedantic/pedantic.dart';
-
 // Project imports:
 import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
 import 'package:prasso_app/common_widgets/alert_dialogs.dart';
@@ -25,6 +22,27 @@ import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
+import 'package:qonversion_flutter/qonversion_flutter.dart';
+
+// Show ErrorToast
+void showErrorToast(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white);
+}
+
+void showSuccessToast(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: PrassoColors.olive,
+      textColor: Colors.white);
+}
 
 class PrassoApiRepository {
   PrassoApiRepository(
@@ -36,14 +54,16 @@ class PrassoApiRepository {
   final String _apiServer = Strings.prodUrl;
 
   final String _configUrl = 'app/';
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   static PrassoApiRepository _prassoApiInstance;
 
   String appConfig = ''; //holds tabs and some user data not stored at Firebase
   String personalAppToken = ''; //identifies this app
+  String thirdPartyToken = ''; //identifies your health user
   bool userIsSigningIn = false;
   bool userIsRegistering = false;
+  bool doBuildTabs = false;
 
   factory PrassoApiRepository.empty(
       SharedPreferencesService sharedPreferencesServiceProvider,
@@ -80,12 +100,13 @@ class PrassoApiRepository {
 
   dynamic authData(String data, String apiUrl) {
     final fullUrl = _apiServer + apiUrl;
-    return http.post(fullUrl, body: jsonEncode(data), headers: _setHeaders());
+    return http.post(Uri.parse(fullUrl),
+        body: jsonEncode(data), headers: _setHeaders());
   }
 
   Future<dynamic> getData(String apiUrl) async {
     final fullUrl = _apiServer + apiUrl;
-    return http.get(fullUrl, headers: _setHeaders());
+    return http.get(Uri.parse(fullUrl), headers: _setHeaders());
   }
 
   Future<ApiUser> signInWithEmailAndPassword(
@@ -96,18 +117,22 @@ class PrassoApiRepository {
 
     final UserCredential usr = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-
     if (usr.user != null) {
       String _pnToken = '';
       final apiuser =
-          ApiUser.fromAPIJson(usr.user, appConfig, personalAppToken);
+          ApiUser.fromAPIJson(
+        usr.user,
+        appConfig,
+        personalAppToken,
+      );
+
       if (apiuser.pnToken == null || apiuser.pnToken == '') {
         await _firebaseMessaging.getToken().then((token) => _pnToken = token);
         unawaited(_firebaseMessaging.subscribeToTopic('all'));
       } else {
         _pnToken = apiuser.pnToken;
       }
-      final dynamic res = await http.post(Uri.encodeFull(_signinUrl),
+      final dynamic res = await http.post(Uri.parse(Uri.encodeFull(_signinUrl)),
           headers: _setHeaders(),
           body: jsonEncode(<String, String>{
             'email': email,
@@ -116,11 +141,14 @@ class PrassoApiRepository {
             'firebase_uid': usr.user.uid
           }));
       if (res.statusCode == 200) {
-        _parseReturnCallReload(res.body);
+        doBuildTabs = true; //do the build tabs after login
+        await _parseReturnCallReload(res.body);
       } else {
+        userIsSigningIn = false;
         throw Exception(res.body);
       }
     } else {
+      userIsSigningIn = false;
       throw Exception('User name or Password was not recognized.');
     }
 
@@ -129,29 +157,44 @@ class PrassoApiRepository {
     return currentUser;
   }
 
-  ApiUser _parseReturnCallReload(String resBody) {
+  Future<ApiUser> _parseReturnCallReload(String resBody) async {
     //app tabs decoded here and added to route
     final dynamic data = jsonDecode(resBody);
 
     personalAppToken = data['data']['token'] as String;
     personalAppToken = personalAppToken.replaceAll('"', '');
     appConfig = data['data']['app_data'] as String;
+    thirdPartyToken = data['data']['thirdPartyToken'] as String;
 
-    final user = ApiUser.fromAPIJson(
+    ApiUser user = ApiUser.fromAPIJson(
         jsonEncode(data['data']), appConfig, personalAppToken);
 
     if (user != null) {
+      //update unreadmessages in the user from storage
+      final unreadMessages =
+          sharedPreferencesServiceProvider.getUnreadMessages();
+      if (unreadMessages) {
+        data['data']['unreadmessages'] = true;
+        user = ApiUser.fromAPIJson(
+            jsonEncode(data['data']), appConfig, personalAppToken);
+      }
       final firestoreDatabase = FirestoreDatabase(uid: user.uid);
-      unawaited(firestoreDatabase.setUser(user));
+      await firestoreDatabase.setUser(user);
 
       unawaited(sharedPreferencesServiceProvider
           .saveUserData(jsonEncode(user.toMap())));
+      unawaited(Qonversion.setUserId(user.email));
     }
 
+    unawaited(
+        sharedPreferencesServiceProvider.setthirdPartyToken(thirdPartyToken));
     unawaited(sharedPreferencesServiceProvider.saveAppData(appConfig));
     unawaited(sharedPreferencesServiceProvider.saveUserToken(personalAppToken));
-
     cupertinoHomeScaffoldVM.defaultTabsJson = appConfig;
+    if (doBuildTabs) {
+      cupertinoHomeScaffoldVM.doBuildTabs = true;
+      doBuildTabs = false;
+    }
     cupertinoHomeScaffoldVM.currentTab = TabItem.position1;
 
     return user;
@@ -165,10 +208,13 @@ class PrassoApiRepository {
 
   //TODO: User Changes Provider should not notify of user changes during a build process
   //how to fix that
+  // this method is key to the screen changes during IntroPages
   Stream<ApiUser> userChanges() {
+
     return _firebaseAuth
         .userChanges()
         .map((user) => ApiUser.fromAPIJson(user, appConfig, personalAppToken));
+    
   }
 
   Stream<ApiUser> _pipeStreamChanges(Stream<User> stream) {
@@ -196,7 +242,7 @@ class PrassoApiRepository {
     final String _signoutUrl = '$_apiServer${Strings.logoutUrl}';
 
     final dynamic res = await http.post(
-      Uri.encodeFull(_signoutUrl),
+      Uri.parse(Uri.encodeFull(_signoutUrl)),
       headers: _setHeaders(),
     );
     unawaited(_firebaseAuth.signOut());
@@ -210,7 +256,7 @@ class PrassoApiRepository {
   Future<void> addApp(AppModel widget) async {
     final String _saveAppUrl = '$_apiServer${Strings.saveApp}';
 
-    final dynamic res = await http.post(Uri.encodeFull(_saveAppUrl),
+    final dynamic res = await http.post(Uri.parse(Uri.encodeFull(_saveAppUrl)),
         headers: _setHeaders(),
         body: jsonEncode(<String, String>{
           'team_id': Strings.teamId,
@@ -273,9 +319,10 @@ class PrassoApiRepository {
       error: clientAppUrl,
     );
     final dynamic res =
-        await http.post(Uri.encodeFull(clientAppUrl), headers: _setHeaders());
+        await http.post(Uri.parse(Uri.encodeFull(clientAppUrl)),
+        headers: _setHeaders());
     if (res.statusCode == 200) {
-      _parseReturnCallReload(res.body);
+      await _parseReturnCallReload(res.body);
     }
     return true;
   }
@@ -306,7 +353,7 @@ class PrassoApiRepository {
         .saveUserData(jsonEncode(apiUser.toMap())));
 
     final String _registerUrl = '${_apiServer}register';
-    final dynamic res = await http.post(Uri.encodeFull(_registerUrl),
+    final dynamic res = await http.post(Uri.parse(Uri.encodeFull(_registerUrl)),
         headers: _setHeaders(),
         body: jsonEncode(<String, String>{
           'name': email,
@@ -318,7 +365,7 @@ class PrassoApiRepository {
         }));
 
     if (res.statusCode == 200) {
-      _parseReturnCallReload(res.body);
+      await _parseReturnCallReload(res.body);
 
       userIsSigningIn = userIsRegistering = false;
     } else {
@@ -339,22 +386,58 @@ class PrassoApiRepository {
 
     await database.setUser(user);
 
-    final dynamic res = await http.post(Uri.encodeFull(_setUserUrl),
+    final dynamic res = await http.post(Uri.parse(Uri.encodeFull(_setUserUrl)),
         headers: _setHeaders(), body: user.toString());
 
     if (res.statusCode == 200) {
-      _parseReturnCallReload(res.body);
+      doBuildTabs = true; //do the build tabs after saveuserprofile
+      await _parseReturnCallReload(res.body);
       return true;
     } else {
-      throw Exception(res.body);
+      print('error running saveUserProfileData: $res.body');
     }
+    return false;
+  }
+
+  /// processNewSubscription registers the subscription with the API
+  /// receives back a new app configuration which is saved to firebase
+  /// initiates an application reload
+  /// and communicates the subscription to Qonversion
+  Future<bool> processNewSubscription(QProduct purchasedSub) async {
+    try {
+      showSuccessToast('in processNewSubscription');
+      final String _subscriptionUrl = '${_apiServer}save_subscription/';
+      print('processNewSubscription $_subscriptionUrl');
+      final body = purchasedSub?.toJson() ?? {};
+      print('processNewSubscription $body');
+      final dynamic res = await http.post(
+          Uri.parse(Uri.encodeFull(_subscriptionUrl)),
+          headers: _setHeaders(), body: json.encode(body));
+
+      showSuccessToast('in processNewSubscription res.body: ${res.statusCode}');
+
+      if (res.statusCode == 200) {
+        doBuildTabs = true; //do the build tabs after saveuserprofile
+        await _parseReturnCallReload(res.body);
+
+        showSuccessToast(
+            'in processNewSubscription after _parseReturnCallReload');
+
+        return true;
+      } else {
+        showErrorToast('error running processNewSubscription: $res.body');
+      }
+    } on Exception catch (e) {
+      showErrorToast(e.toString());
+    }
+    return true;
   }
 
   Future<String> uploadFile(String filePath, String filename) async {
-    const prodWebUrl = Strings.prodUrl;
+    final prodWebUrl = Strings.prodUrl;
 
     // try post to web site which will push to aws
-    const fullUrl = '${prodWebUrl}profile_update_image';
+    final fullUrl = '${prodWebUrl}profile_update_image';
 
     final imageFile = File(filePath);
     final headerArray = _setHeaders();
@@ -411,6 +494,7 @@ class PrassoApiRepository {
     final String userToken = sharedPreferencesServiceProvider.getUserToken();
 
     if (userToken != null) {
+      print('Authorization: Bearer $userToken');
       return {
         'Content-type': 'application/json',
         'Accept': 'application/json',

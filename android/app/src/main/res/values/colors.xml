@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background">#FFFFFF</color>
     <color name="appThemeColor">#4D4D4D</color>
     <color name="appThemeDarkColor">#4D4D4D</color>
     <color name="appThemeLightColor">#D74D4D4D</color>

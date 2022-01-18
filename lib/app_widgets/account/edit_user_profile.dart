@@ -8,15 +8,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Project imports:
 import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
-import 'package:prasso_app/app_widgets/account/profile_form_children.dart';
+import 'package:prasso_app/app_widgets/initial_profile/initial_profile2.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
-
-import 'package:prasso_app/constants/constants.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-
 
 class EditUserProfile extends HookWidget {
   const EditUserProfile({Key key}) : super(key: key);
@@ -49,7 +44,7 @@ class EditUserProfile extends HookWidget {
           ),
         ],
       ),
-      body: const ProfileFormChildren(),
+      body: InitialProfile(Strings.fromClassEditUserProfile),
       backgroundColor: Theme.of(context).backgroundColor,
     );
   }

@@ -9,6 +9,7 @@ class CupertinoTabViewRoutes {
   static const webViewPage = '/app_web_view';
 }
 
+// ignore: avoid_classes_with_only_static_members
 class CupertinoTabViewRouter {
   static Route generateRoute(RouteSettings settings) {
     switch (settings.name) {

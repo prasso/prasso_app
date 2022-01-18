@@ -59,10 +59,12 @@ class MorePage extends HookWidget {
     );
   }
 
-  // ignore: avoid_void_async
-  void _callNativePage(BuildContext context, ApiUser user) async {
+  Future<bool> _callNativePage(BuildContext context, ApiUser user) async {
     const platform = MethodChannel('NativeChannel');
-    String mRoleId = '3', mModelId = '', mUserId = '';
+    String mRoleId = '3',
+        mModelId = '',
+        mUserId = '',
+        mUserCoachUid = 'hVFxj9fC6Xbkqw9m1Yw3mKLBsuL2';
     String nativeCall;
     try {
       if (user.uid != null &&
@@ -74,6 +76,9 @@ class MorePage extends HookWidget {
           mRoleId = user.roles[0].roleId.toString();
           mModelId = user.roles[0].modelId.toString();
           mUserId = user.roles[0].userId.toString();
+          if (user.coachUid != null) {
+            mUserCoachUid = user.coachUid.toString();
+          }
         }
         final Map<String, String> mParams = {
           'loginId': user.uid,
@@ -83,18 +88,20 @@ class MorePage extends HookWidget {
           'teamCoachId': user.teamCoachId.toString(),
           'roleId': mRoleId,
           'modelId': mModelId,
-          'userId': mUserId
+          'userId': mUserId,
+          'coachUID': mUserCoachUid,
         };
 
         nativeCall = await platform.invokeMethod('NativeMethodCall', mParams);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Something went wrong!!'),
+          content: Text('Something went wrong'),
         ));
       }
     } catch (e) {
       print(e);
     }
     print(nativeCall);
+    return true;
   }
 }

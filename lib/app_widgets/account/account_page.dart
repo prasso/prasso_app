@@ -19,11 +19,18 @@ import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
+import 'package:prasso_app/services/shared_preferences_service.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountPage extends HookWidget {
   Future<void> _signOut(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferencesService sharedPreferencesServiceProvider =
+        SharedPreferencesService(prefs);
     try {
+      await sharedPreferencesServiceProvider.saveUserToken('');
+      await sharedPreferencesServiceProvider.setthirdPartyToken('');
       await PrassoApiRepository.instance.signOut();
     } catch (e) {
       unawaited(showExceptionAlertDialog(
@@ -129,6 +136,13 @@ class AccountPage extends HookWidget {
                   .copyWith(color: Colors.white),
             )),
           ),
+        ),
+        TextButton(
+          child: const Text(
+            Strings.editProfileText,
+            style: TextStyle(fontSize: 14, color: Colors.black),
+          ),
+          onPressed: () => _showProfileEditor(context, user),
         ),
       ],
     );

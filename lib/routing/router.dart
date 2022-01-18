@@ -17,6 +17,7 @@ class Routes {
   static const login = '/login';
 }
 
+// ignore: avoid_classes_with_only_static_members
 class Router {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final args = settings.arguments;

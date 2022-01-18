@@ -34,6 +34,6 @@ class EmailPasswordSignInStrings {
   static const String or = 'or';
   static const String createAPlan = 'Let\'s Get Started';
   static const String yourStatus =
-      'Your status and progress will be shown here';
-  static const String noPlan = 'YOU HAVEN\'T CUSTOMIZED YOUR APP';
+      '';
+  static const String noPlan = 'LOG IN TO VIEW YOUR APP';
 }

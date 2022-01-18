@@ -1,12 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/onboarding/slider_model.dart';
 import 'package:prasso_app/common_widgets/custom_buttons.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 import 'onboarding_viewmodel.dart';
 
@@ -87,7 +86,7 @@ class OnboardingPage extends HookWidget {
                     onNext(context);
                   }
                 },
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).secondaryHeaderColor,
                 borderRadius: 15,
                 height: 50,
                 child: Text(

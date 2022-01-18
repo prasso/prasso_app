@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -63,77 +62,72 @@ class ProfileFormChildren extends HookWidget {
     final double algo = screenWidth / perfectWidth;
 
     return [
-      Stack(
-        children: [
-          Opacity(
-            opacity: _viewmodel.uploadingDp ? 0.5 : 1.0,
-            child: Hero(
-              tag: 'myProfile',
-              child: CircleAvatar(
-                radius: algo * 120.0,
-                backgroundColor: Colors.white,
-                backgroundImage: _viewmodel.profileImage,
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: _viewmodel.uploadingDp
-                  ? const CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                    )
-                  : Container(),
-            ),
-          ),
-          Positioned(
-            bottom: algo * 5.0,
-            right: algo * 10.0,
-            child: GestureDetector(
-              onTap: () {
-                _viewmodel.pickImage(context, auth, database);
-              },
-              child: CircleAvatar(
-                backgroundColor: PrassoColors.lightGray,
-                radius: algo * 30.0,
-                child: Icon(
-                  Icons.camera_alt,
-                  color: PrassoColors.olive,
-                  size: algo * 33.0,
+      SingleChildScrollView(
+        child: [
+          Stack(
+            children: [
+              Opacity(
+                opacity: _viewmodel.uploadingDp ? 0.5 : 1.0,
+                child: Hero(
+                  tag: 'myProfile',
+                  child: CircleAvatar(
+                    radius: algo * 120.0,
+                    backgroundColor: Colors.white,
+                    backgroundImage: _viewmodel.profileImage,
+                  ),
                 ),
               ),
-            ),
-          )
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: _viewmodel.uploadingDp
+                      ? const CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        )
+                      : Container(),
+                ),
+              ),
+              Positioned(
+                bottom: algo * 5.0,
+                right: algo * 10.0,
+                child: GestureDetector(
+                  onTap: () {
+                    _viewmodel.pickImage(context, auth, database);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: PrassoColors.lightGray,
+                    radius: algo * 30.0,
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: PrassoColors.olive,
+                      size: algo * 33.0,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          TextFormField(
+            decoration: const InputDecoration(labelText: Strings.emailLabel),
+            keyboardAppearance: Brightness.light,
+            initialValue: _viewmodel.email,
+            validator: (value) =>
+                value.isNotEmpty ? null : Strings.emailCantbeEmpty,
+            onSaved: (value) => _viewmodel.email = value,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(labelText: Strings.nameLabel),
+            keyboardAppearance: Brightness.light,
+            initialValue: _viewmodel.displayName,
+            onSaved: (value) => _viewmodel.displayName = value,
+          ),
+          
+          
         ],
-      ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: Strings.emailLabel),
-        keyboardAppearance: Brightness.light,
-        initialValue: _viewmodel.email,
-        validator: (value) =>
-            value.isNotEmpty ? null : Strings.emailCantbeEmpty,
-        onSaved: (value) => _viewmodel.email = value,
-      ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: Strings.photoUrl),
-        keyboardAppearance: Brightness.light,
-        initialValue: _viewmodel.photoURL,
-        onSaved: (value) => _viewmodel.photoURL = value,
-      ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: Strings.nameLabel),
-        keyboardAppearance: Brightness.light,
-        initialValue: _viewmodel.displayName,
-        onSaved: (value) => _viewmodel.displayName = value,
-      ),
-      TextFormField(
-        decoration: const InputDecoration(labelText: Strings.appNameLabel),
-        keyboardAppearance: Brightness.light,
-        initialValue: _viewmodel.appName,
-        onSaved: (value) => _viewmodel.appName = value,
       ),
     ];
   }
+
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

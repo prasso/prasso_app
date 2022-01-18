@@ -14,6 +14,7 @@ import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/routing/cupertino_tab_view_router.dart';
 import 'package:prasso_app/routing/router.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
 
 @immutable
 class CupertinoHomeScaffold extends StatefulHookWidget {
@@ -93,15 +94,27 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
     if (vm.tabs.length < 2) {
       return const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+              child: Padding(
+        padding: EdgeInsets.all(28.0),
+        child: Text(
+          'A default app may not be setup for this login yet. If you have setup your app, please contact support. Otherwise, please restart this app.',
+          style: TextStyle(
+            fontSize: 24.0,
+            color: PrassoColors.primary,
+          ),
         ),
-      );
+      )));
     }
 
     return CupertinoTabScaffold(
+      controller: vm.tabController,
       tabBar: CupertinoTabBar(
         items: vm.tabs,
-        onTap: (index) => _select(vm, index, TabItem.values[index]),
+        inactiveColor: Colors.grey,
+        activeColor: PrassoColors.brightOrange,
+        onTap: (index) => () {
+          _select(vm, index, TabItem.values[index]);
+        },
       ),
       tabBuilder: (dynamic context, dynamic index) {
         final item = TabItem.values[index];

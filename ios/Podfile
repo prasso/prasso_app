@@ -5,12 +5,13 @@ use_frameworks!
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+pod 'MessageKit', '~> 3.3.0'
 pod 'Firebase/Crashlytics'
 pod 'Firebase/Analytics'
 
 
 
-pod 'SDWebImage/Core'
+# pod 'SDWebImage/Core'
 project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,

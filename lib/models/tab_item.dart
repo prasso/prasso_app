@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:prasso_app/utils/prasso_themedata.dart';
 
 //
 // TabItem outlines the maximum tabs this app could have
@@ -14,9 +15,12 @@ class TabItemData {
       @required this.icon,
       @required this.pageUrl,
       @required this.pageTitle,
-      this.extraHeaderInfo,
-      this.sortOrder,
-      this.parent});
+      @required this.extraHeaderInfo,
+      @required this.sortOrder,
+      @required this.parent,
+      @required this.iconImageFileName,
+      @required this.isActive,
+      @required this.subscriptionRequired});
 
   final String key;
   final String title;
@@ -26,4 +30,14 @@ class TabItemData {
   final String extraHeaderInfo;
   final int sortOrder;
   final int parent;
+  bool isActive;
+  final String iconImageFileName;
+  final bool subscriptionRequired;
+
+  Color _color;
+
+  Color get color {
+    isActive ? _color = PrassoColors.brightOrange : _color = Colors.grey;
+    return _color;
+  }
 }

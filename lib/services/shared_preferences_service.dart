@@ -7,10 +7,12 @@ class SharedPreferencesService {
 
   static const userTokenKey = 'userToken';
   static const accessTokenKey = 'accessToken';
+  static const thirdPartyTokenKey = 'thirdPartyToken';
   static const appDataKey = 'appData';
   static const userDataKey = 'userData';
   static const onboardingCompleteKey = 'onboardingComplete';
   static const introCompleteKey = 'introComplete';
+  static const unreadMessagesKey = 'unreadMessages';
 
   String getUserData() {
     final String userData = sharedPreferences.getString(userDataKey);
@@ -68,6 +70,26 @@ class SharedPreferencesService {
     return accessToken;
   }
 
+  Future<bool> setthirdPartyToken(String thirdPartyToken) async {
+    if (thirdPartyToken == null) {
+      await sharedPreferences.setString(thirdPartyTokenKey, '');
+    } else {
+      await sharedPreferences.setString(
+          thirdPartyTokenKey, thirdPartyToken.replaceAll('"', ''));
+    }
+    return true;
+  }
+
+  String getthirdPartyToken() {
+    final String thirdPartyToken =
+        sharedPreferences.getString(thirdPartyTokenKey);
+    if (thirdPartyToken != null) {
+      final restoredjson = thirdPartyToken.replaceAll('"', '');
+      return restoredjson;
+    }
+    return '';
+  }
+
   Future<void> setOnboardingComplete() async {
     await sharedPreferences.setBool(onboardingCompleteKey, true);
   }
@@ -87,6 +109,23 @@ class SharedPreferencesService {
     await sharedPreferences.setBool(introCompleteKey, false);
   }
 
-  bool isIntroComplete() =>
-      sharedPreferences.getBool(introCompleteKey) ?? false;
+  bool isIntroComplete() => sharedPreferences.getBool(introCompleteKey) ?? true;
+
+  bool getUnreadMessages() {
+    final bool unreadMessages = sharedPreferences.getBool(unreadMessagesKey);
+    if (unreadMessages != null) {
+      return unreadMessages;
+    }
+    return false;
+  }
+
+  Future<bool> saveUnreadMessages({bool unreadMessages}) async {
+    if (unreadMessages == null) {
+      await sharedPreferences.setBool(unreadMessagesKey, false);
+    } else {
+      await sharedPreferences.setBool(unreadMessagesKey, unreadMessages);
+    }
+    return true;
+  }
+
 }

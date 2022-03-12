@@ -2,7 +2,7 @@ name: prasso_app
 description: change your habits to change your life
 publish_to: 'none' 
 
-version: 1.0.8+20
+version: 1.0.8+21
 
 environment:
   sdk: ">=2.8.4 <3.0.0"
@@ -13,6 +13,7 @@ dependencies:
   cloud_firestore: ^3.1.6
   cloud_functions: ^3.2.5
   cupertino_icons: ^1.0.4
+  device_info_plus: ^3.2.2
   firebase_auth: ^3.3.5
   firebase_core: ^1.11.0
   firebase_messaging: ^11.2.5
@@ -31,15 +32,16 @@ dependencies:
   fluttertoast: ^8.0.8
   hooks_riverpod: ^0.14.0+3
   http: ^0.13.4
-  icons_helper: ^1.0.4
+  icons_helper: 1.2.0-nullsafety.1 
   image_picker: ^0.8.4+4
   intl: ^0.17.0
+  loading_overlay: ^0.3.0
   logger: ^1.1.0
+  package_info_plus: ^1.4.0
   path_provider: any
   pedantic: any
   percent_indicator: ^3.4.0
   permission_handler: ^8.3.0  
-  progress_dialog: ^1.2.0
   qonversion_flutter: 4.3.0
   # For asking permission to load the pdf
   rxdart: ^0.27.3

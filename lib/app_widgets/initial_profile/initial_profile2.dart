@@ -3,10 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 // Package imports:
 import 'package:image_picker/image_picker.dart';
-
+import 'package:loading_overlay/loading_overlay.dart';
 // Project imports:
 import 'package:prasso_app/app_widgets/initial_profile/create_profile_input_model.dart';
 import 'package:prasso_app/app_widgets/initial_profile/profile_model.dart';
@@ -16,9 +15,6 @@ import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
-import 'package:progress_dialog/progress_dialog.dart';
-
-ProgressDialog progressDialog;
 
 DateTime selectedDate = DateTime(2000, 1, 1);
 String fromClass;
@@ -49,6 +45,7 @@ class InitialProfilePageState extends State<InitialProfile> {
   bool _isApiRequired = false;
   bool _isApiFinished = false;
   final ProfileModel _profileModel = ProfileModel();
+  bool _isProgressLoading = false;
 
   @override
   void initState() {
@@ -87,9 +84,12 @@ class InitialProfilePageState extends State<InitialProfile> {
         if (_profileModel != null) {
           if (_profileModel.statusCode == 200 &&
               _profileModel.message == null) {
-            return Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: _buildProfileData(context, _profileModel),
+            return LoadingOverlay(
+              isLoading: _isProgressLoading,
+              child: Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: _buildProfileData(context, _profileModel),
+              ),
             );
           } else if (_profileModel.statusCode == 401 ||
               _profileModel.statusCode == 404) {
@@ -171,7 +171,9 @@ class InitialProfilePageState extends State<InitialProfile> {
       createProfileInputModel.lastName = _lastNameTextController.text;
     }
 
-    progressDialog.show();
+    setState(() {
+       _isProgressLoading = true;
+     });
     createProfileApi(context, createProfileInputModel);
   }
 
@@ -182,7 +184,9 @@ class InitialProfilePageState extends State<InitialProfile> {
     final result = await _profileViewModel.createProfileAPI(
         createProfileInputModel, context);
     print(result);
-    await progressDialog.hide();
+    setState(() {
+       _isProgressLoading = false;
+     });
     if (result != null) {
       showSuccessToast('Saved successfully');
       await PrassoApiRepository.instance.cupertinoHomeScaffoldVM
@@ -302,8 +306,6 @@ class InitialProfilePageState extends State<InitialProfile> {
   }
 
   Widget _buildProfileData(BuildContext context, ProfileModel profileModel) {
-    progressDialog = ProgressDialog(context, type: ProgressDialogType.Normal);
-    progressDialog.style(message: 'Please wait..');
     if (fromClass == Strings.fromClassEditUserProfile) {
       setInitialValues(profileModel);
     }

@@ -78,8 +78,13 @@ class AppRunWebView extends StatelessWidget {
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (webViewController) {
             if (extraHeaderInfo != '') {
-              final Map<String, String> headers =
-                  Map.from(json.decode(extraHeaderInfo ?? '{}'));
+              //if extra header info isn't json we need to ignore it
+              Map<String, String> headers = {};
+              try {
+                headers = Map.from(json.decode(extraHeaderInfo ?? '{}'));
+              } on FormatException catch (e) {
+                print('The provided header string is not valid JSON');
+              }
               webViewController.loadUrl(selectedUrl, headers: headers);
             } else {
               webViewController.loadUrl(selectedUrl, headers: null);

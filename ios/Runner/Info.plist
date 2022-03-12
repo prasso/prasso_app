@@ -31,6 +31,10 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>The pdf viewer added the permission request and may use it internally</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
 	<key>NSCalendarsUsageDescription</key>
 	<string>The pdf viewer added the permission request and may use it internally</string>
 	<key>NSCameraUsageDescription</key>

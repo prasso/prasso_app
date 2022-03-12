@@ -35,7 +35,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   bool hasChangedEvent = false;
   bool isInitializing = false;
   bool doBuildTabs = false;
-  
+
   final CupertinoTabController tabController = CupertinoTabController();
   final SharedPreferencesService sharedPreferencesServiceProvider;
 
@@ -284,12 +284,13 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
       final int position = allTabs.length;
       if (position <= TabItem.values.length && t1.parent == 0) {
-        allTabs[TabItem.values[position]] = t1;
+        if ((position > 3 && t1.pageUrl != Strings.morePageUrl) || t1.parent > 0) {
+          moreItems.add(t1);
+        } else {
+          allTabs[TabItem.values[position]] = t1;
+          widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
+        }
 
-        widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
-      }
-      if (t1.parent > 0) {
-        moreItems.add(t1);
       }
     }
 
@@ -312,7 +313,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     if (actionString == Strings.morePageUrl) {
       return (_) => MorePage();
     }
-    
+
     if (actionString == 'AppsPage()') {
       return (_) => AppsPage();
     }

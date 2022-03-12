@@ -107,7 +107,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
 
   Future pickImage(BuildContext context, PrassoApiRepository auth,
       FirestoreDatabase database) async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setUploadingOn();
       final filename = FilenameHelper.getFilenameFromPath(pickedFile.path);

@@ -11,8 +11,7 @@ class Strings {
   static const String apiUrl = 'API_URL';
   static const String appId = 'appId';
 
-  static const String prodUrl = 'https://invenbin.com/api/';
-  //static const String prodUrl = 'https://prasso.io/api/';
+  static const String prodUrl = 'https://prasso.io/api/';
   //static const String prodUrl = 'http://localhost:8000/api/';
 
   static const String awsIdentityPool = 'AWS_IDENTITY_POOL';
@@ -48,7 +47,7 @@ class Strings {
   static const String signInFailed = 'Sign in failed';
 
   // Subscription Page
-  static const String qonversionId = 'aia0X4D0r_I3bDzjBYHubVMwZsW2Z_61';
+  static const String qonversionId = 'QONVERSION_ID';
 
   // Home page
   static const String homePage = 'Home Page';

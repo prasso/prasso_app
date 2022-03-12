@@ -1,0 +1,75 @@
+name: prasso_app
+description: change your habits to change your life
+publish_to: 'none' 
+
+version: 1.0.8+21
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: ">=2.8.4 <3.0.0"
+
+dependencies:
+
+  cached_network_image: ^3.2.0
+  cloud_firestore: ^3.1.6
+  cloud_functions: ^3.2.5
+  cupertino_icons: ^1.0.4
+  device_info_plus: ^3.2.2
+  firebase_auth: ^3.3.5
+  firebase_core: ^1.11.0
+  firebase_messaging: ^11.2.5
+  firebase_storage: ^10.2.5
+  flutter:
+    sdk: flutter  
+  flutter_cache_manager: any
+  flutter_cached_pdfview: any
+  flutter_hooks: any
+  flutter_image_compress: any
+  flutter_local_notifications: ^9.2.0
+  # https://stackoverflow.com/questions/62476108/how-to-load-and-present-a-pdf-file-from-the-web-in-flutter
+  flutter_native_timezone: ^2.0.0
+  flutter_pdfview: ^1.0.1
+  flutter_svg: ^1.0.0
+  fluttertoast: ^8.0.8
+  hooks_riverpod: ^0.14.0+3
+  http: ^0.13.4
+  icons_helper: 1.2.0-nullsafety.1 
+  image_picker: ^0.8.4+4
+  intl: ^0.17.0
+  loading_overlay: ^0.3.0
+  logger: ^1.1.0
+  package_info_plus: ^1.4.0
+  path_provider: any
+  pedantic: any
+  percent_indicator: ^3.4.0
+  permission_handler: ^8.3.0  
+  qonversion_flutter: 4.3.0
+  # For asking permission to load the pdf
+  rxdart: ^0.27.3
+  shared_preferences: ^2.0.11
+  state_notifier: any
+  syncfusion_flutter_calendar: ^19.4.40
+  toggle_switch: ^1.2.0
+  url_launcher: ^6.0.5
+  webview_flutter: ^3.0.0
+
+dependency_overrides:
+  extended_image: any
+
+dev_dependencies:
+  flutter_driver:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  import_sorter: ^4.4.1
+  mockito: any
+  random_string: ^2.0.0
+  test: any
+
+flutter:
+
+  uses-material-design: true
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - media/
+

@@ -8,6 +8,8 @@ import 'package:prasso_app/app_widgets/onboarding/intro_page.dart';
 import 'package:prasso_app/app_widgets/sign_in/email_password_sign_in_ui.dart';
 import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
 
+import '../models/app.dart';
+
 class Routes {
   static const emailPasswordSignInPage = '/email-password-sign-in-page';
   static const emailPasswordRegisterPage = '/email-password-register-in-page';

@@ -24,12 +24,10 @@ class FirestoreDatabase {
         data: app.toMap(),
       );
 
-  Future<void> setUser(ApiUser usr) => usr != null
-      ? _service.setData(
+  Future<void>? setUser(ApiUser usr) => _service.setData(
           path: FirestorePath.users(usr.uid),
           data: usr.toMap(),
-        )
-      : null;
+      );
 
   Future<void> deleteApp(AppModel app) async {
     // delete app

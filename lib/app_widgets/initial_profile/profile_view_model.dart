@@ -35,12 +35,12 @@ class ProfileViewModel extends ChangeNotifier {
     //save to api and this gets the yourhealth token and yourhealth profile updated
     state = true;
     final _viewmodel = context.read(editUserProfileViewModel);
-    _viewmodel.setFromProfileViewModel(createProfileInputModel, user);
+    _viewmodel.setFromProfileViewModel(createProfileInputModel, user!);
 
     final database = context.read(databaseProvider);
 
     final IntroViewModel introViewModel = context.read(introViewModelProvider);
-    await introViewModel.completeIntro(context, auth, database, _viewmodel);
+    await introViewModel.completeIntro(context, auth!, database!, _viewmodel);
     await localSharedPreferencesService.setIntroComplete();
 
     notifyListeners();

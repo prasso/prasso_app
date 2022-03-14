@@ -64,7 +64,7 @@ class IntroPage extends HookWidget {
               textAlign: TextAlign.center,
             ),
             Text(
-              slides[introViewModel.index].description,
+              slides[introViewModel.index].description ?? '',
               style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
             ),
@@ -112,7 +112,7 @@ class IntroPage extends HookWidget {
           children: [
             const SizedBox(height: 30.0),
             Text(
-              slides[introViewModel.index].description,
+              slides[introViewModel.index].description ?? '',
               style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
             ),

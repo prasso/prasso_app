@@ -26,9 +26,6 @@ class RoleModel {
   }
 
   factory RoleModel.fromMap(Map<String, dynamic> data, int modelId) {
-    if (data == null) {
-      return RoleModel.empty();
-    }
 
     return RoleModel(
         modelId: modelId,

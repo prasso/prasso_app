@@ -1,9 +1,6 @@
 // Dart imports:
 import 'dart:async';
 
-// Package imports:
-import 'package:meta/meta.dart';
-
 // Project imports:
 import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/models/app.dart';
@@ -13,14 +10,13 @@ import 'package:prasso_app/services/firestore_path.dart';
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
 
 class FirestoreDatabase {
-  FirestoreDatabase({required this.uid})
-      : assert(uid != null, 'Cannot create FirestoreDatabase with null uid');
+  FirestoreDatabase({required this.uid});
   final String uid;
 
   final _service = FirestoreService.instance;
 
   Future<void> setApp(AppModel app) => _service.setData(
-        path: FirestorePath.app(uid, app.documentId),
+        path: FirestorePath.app(uid, app.documentId!),
         data: app.toMap(),
       );
 
@@ -31,13 +27,13 @@ class FirestoreDatabase {
 
   Future<void> deleteApp(AppModel app) async {
     // delete app
-    await _service.deleteData(path: FirestorePath.apps(app.documentId));
+    await _service.deleteData(path: FirestorePath.apps(app.documentId!));
   }
 
   Stream<AppModel> appStream({required String appId}) =>
       _service.documentStream(
         path: FirestorePath.app(uid, appId),
-        builder: (data, documentId) => AppModel.fromMap(data, documentId),
+        builder: (data, documentId) => AppModel.fromMap(data!, documentId),
       );
 
   Stream<List<AppModel>> appsStream() => _service.collectionStream(

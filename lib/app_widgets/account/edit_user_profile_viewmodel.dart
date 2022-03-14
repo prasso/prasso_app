@@ -27,9 +27,9 @@ class EditUserProfileViewModel extends ChangeNotifier {
   EditUserProfileViewModel(
       {required this.usr, required this.photoviewmodel}) {
     //(usr == null) happens on new app installs and failed registrations
-    email = usr.email;
-    photoURL = usr.photoURL;
-    displayName = usr.displayName;
+    email = usr?.email;
+    photoURL = usr?.photoURL;
+    displayName = usr?.displayName;
     if (photoURL != null && photoURL!.isNotEmpty) {
       photoviewmodel.setProfilePicUrl(photoURL!);
     } else {
@@ -38,13 +38,13 @@ class EditUserProfileViewModel extends ChangeNotifier {
     profileImage = photoviewmodel.profilePicUrl.isNotEmpty
         ? CachedNetworkImageProvider(photoviewmodel.profilePicUrl)
         : null;
-    pnToken = usr.pnToken;
-    coachUid = usr.coachUid;
-    unreadmessages = usr.unreadmessages;
+    pnToken = usr?.pnToken;
+    coachUid = usr?.coachUid;
+    unreadmessages = usr?.unreadmessages;
     _initData();
   }
 
-  final ApiUser usr;
+  final ApiUser? usr;
   final ProfilePicUrlState photoviewmodel;
 
   final formKey = GlobalKey<FormState>();
@@ -172,9 +172,9 @@ class EditUserProfileViewModel extends ChangeNotifier {
       {bool canPop = true}) async {
     final uneditedUser = auth.currentUser!;
 
-    if (usr.uid != uneditedUser.uid) {
+    if (usr?.uid != uneditedUser.uid) {
       //the user has changed. allow it to be saved
-      print('${usr.uid} ${uneditedUser.uid}');
+      print('${usr?.uid} ${uneditedUser.uid}');
     }
     final ApiUser newusr = ApiUser.fromLocatorUpdated(uneditedUser, this);
 

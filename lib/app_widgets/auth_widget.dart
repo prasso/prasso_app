@@ -44,7 +44,6 @@ class AuthWidget extends ConsumerWidget {
       CupertinoHomeScaffoldViewModel cupertinoVM,
       SharedPreferencesService sharedPreferences) {
     if (user != null &&
-        cupertinoVM.tabs != null &&
         cupertinoVM.tabs.isNotEmpty) {
       return signedInBuilder(context);
     }

@@ -29,8 +29,7 @@ class ApiUser {
       this.teamMembers,
       this.pnToken,
       this.coachUid,
-      this.unreadmessages})
-      : assert(uid != null, 'User can only be created with a non-null uid');
+      this.unreadmessages});
 
   final String uid;
   final String? email;
@@ -51,7 +50,7 @@ class ApiUser {
   factory ApiUser.fromLocatorUpdated(
       ApiUser? user, EditUserProfileViewModel vm) {
     return ApiUser(
-        uid: user?.uid,
+        uid: user == null ? '' : user.uid,
         email: vm.email,
         photoURL: vm.photoURL,
         displayName: vm.displayName,
@@ -71,7 +70,7 @@ class ApiUser {
       dynamic _user, String? appConfig, String? appToken) {
     if (_user == null) {
       return ApiUser(
-          uid: null,
+          uid: '',
           email: null,
           photoURL: null,
           displayName: null,
@@ -157,8 +156,7 @@ class ApiUser {
             personalTeamId: _user['data']['personal_team_id'],
             teamCoachId: _user['data']['team_coach_id'],
             teamMembers: TeamMemberModel.convertFromJson(
-                    _user['data']['team_members']?.toString()) ??
-                defaultTeamMembers(),
+                _user['data']['team_members']?.toString()),
             pnToken: _user['data']['pn_token'],
             coachUid: _user['data']['coach_uid'],
             unreadmessages: _user['data']['unreadmessages'] ?? false);
@@ -173,13 +171,11 @@ class ApiUser {
             thirdPartyToken: jsonResponse['thirdPartyToken'] ?? '',
             initialized: true,
             roles:
-                RoleModel.convertFromJson(jsonResponse['roles'].toString()) ??
-                    RoleModel.defaultRole(),
+                RoleModel.convertFromJson(jsonResponse['roles'].toString()),
             personalTeamId: jsonResponse['personal_team_id'] ?? 0,
             teamCoachId: jsonResponse['team_coach_id'] ?? 0,
             teamMembers: TeamMemberModel.convertFromJson(
-                    jsonResponse['team_members'].toString()) ??
-                defaultTeamMembers(),
+                jsonResponse['team_members'].toString()),
             pnToken: jsonResponse['pn_token'],
             coachUid: jsonResponse['coach_uid'] ?? '',
             unreadmessages: jsonResponse['unreadmessages'] ?? false);
@@ -199,13 +195,11 @@ class ApiUser {
         appToken: appToken,
         thirdPartyToken: userFromStorage['thirdPartyToken'],
         initialized: true,
-        roles: RoleModel.convertFromJson(userFromStorage['roles'].toString()) ??
-            RoleModel.defaultRole(),
+        roles: RoleModel.convertFromJson(userFromStorage['roles'].toString()),
         personalTeamId: userFromStorage['personalTeamId'],
         teamCoachId: userFromStorage['teamCoachId'],
         teamMembers: TeamMemberModel.convertFromJson(
-                userFromStorage['teamMembers'].toString()) ??
-            defaultTeamMembers(),
+            userFromStorage['teamMembers'].toString()),
         pnToken: userFromStorage['pnToken'],
         coachUid: userFromStorage['coachUid'],
         unreadmessages: userFromStorage['unreadmessages'] ?? false);

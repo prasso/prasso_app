@@ -11,9 +11,6 @@ class TeamMemberModel {
   }
 
   factory TeamMemberModel.fromMap(Map<String, dynamic> data) {
-    if (data == null) {
-      return TeamMemberModel.empty();
-    }
 
     return TeamMemberModel(data['uid'].toInt(), data['id'].toInt());
   }

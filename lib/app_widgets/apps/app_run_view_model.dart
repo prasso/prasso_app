@@ -42,7 +42,7 @@ class AppRunViewModel extends ChangeNotifier {
       for (AppModel dynamicDetails in allAppRun) ...[
         AppRunListTileModel(
             isHeader: true,
-            leadingText: dynamicDetails.documentId,
+            leadingText: dynamicDetails.documentId!,
             pageTitle: dynamicDetails.pageTitle,
             pageUrl: dynamicDetails.pageUrl,
             sortOrder: dynamicDetails.sortOrder),

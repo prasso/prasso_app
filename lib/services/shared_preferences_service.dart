@@ -25,10 +25,10 @@ class SharedPreferencesService {
 
   Future<bool> saveUserData(String? userData) async {
     if (userData == null) {
-      await sharedPreferences!.setString(userDataKey, null);
+      await sharedPreferences!.setString(userDataKey, '');
     } else {
       await sharedPreferences!.setString(
-          userDataKey, userData?.replaceAll('"', '&quote;'));
+          userDataKey, userData.replaceAll('"', '&quote;'));
     }
     return true;
   }

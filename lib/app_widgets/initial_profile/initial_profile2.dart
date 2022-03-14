@@ -88,7 +88,7 @@ class InitialProfilePageState extends State<InitialProfile> {
               isLoading: _isProgressLoading,
               child: Padding(
                 padding: const EdgeInsets.all(0.0),
-                child: _buildProfileData(context, _profileModel),
+                child: _buildProfileData(context, _profileModel!),
               ),
             );
           } else if (_profileModel?.statusCode == 401 ||
@@ -96,7 +96,7 @@ class InitialProfilePageState extends State<InitialProfile> {
             showErrorToast('Authorization has been denied for this request');
             return Container();
           } else if (_profileModel != null && _profileModel?.message != null) {
-            return Text(_profileModel?.message);
+            return Text(_profileModel!.message!);
           } else {
             return const Text('Something went wrong!!');
           }
@@ -107,7 +107,11 @@ class InitialProfilePageState extends State<InitialProfile> {
         return const Center(child: CircularProgressIndicator());
       }
     } else {
-      return _buildProfileData(context, _profileModel);
+      if (_profileModel != null) {
+        return _buildProfileData(context, _profileModel!);
+      } else {
+        return const Text('No data!!!');
+      }
     }
   }
 

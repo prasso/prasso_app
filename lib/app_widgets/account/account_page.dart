@@ -110,15 +110,13 @@ class AccountPage extends HookWidget {
           ),
         ),
         const SizedBox(height: 8),
-        if (user?.displayName != null)
-          Text(
-            user?.displayName!,
+        Text(
+          user?.displayName ?? '',
             style: const TextStyle(color: Colors.black),
           ),
         const SizedBox(height: 8),
-        if (user?.email != null)
-          Text(
-            user?.email!,
+        Text(
+          user?.email ?? '',
             style: const TextStyle(color: Colors.black),
           ),
         const SizedBox(height: 8),

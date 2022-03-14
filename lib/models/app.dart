@@ -5,7 +5,7 @@ class AppModel {
   AppModel(this.documentId, this.pageTitle, this.pageUrl, this.tabIcon,
       this.tabLabel, this.extraHeaderInfo, this.sortOrder);
 
-  String documentId;
+  String? documentId;
   String? pageTitle;
   String? pageUrl;
   String? tabIcon;

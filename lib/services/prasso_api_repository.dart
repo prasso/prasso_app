@@ -166,18 +166,16 @@ class PrassoApiRepository {
     appConfig = data['data']['app_data'] as String?;
     thirdPartyToken = data['data']['thirdPartyToken'] as String?;
 
-    ApiUser? user = ApiUser.fromAPIJson(
+    ApiUser user = ApiUser.fromAPIJson(
         jsonEncode(data['data']), appConfig, personalAppToken);
 
-    if (user != null) {
-      //update unreadmessages in the user from storage
-      final unreadMessages =
-          sharedPreferencesServiceProvider.getUnreadMessages();
-      if (unreadMessages) {
-        data['data']['unreadmessages'] = true;
-        user = ApiUser.fromAPIJson(
-            jsonEncode(data['data']), appConfig, personalAppToken);
-      }
+    //update unreadmessages in the user from storage
+    final unreadMessages = sharedPreferencesServiceProvider.getUnreadMessages();
+    if (unreadMessages) {
+      data['data']['unreadmessages'] = true;
+      user = ApiUser.fromAPIJson(
+          jsonEncode(data['data']), appConfig, personalAppToken);
+    
       final firestoreDatabase = FirestoreDatabase(uid: user.uid);
       await firestoreDatabase.setUser(user);
 
@@ -279,7 +277,7 @@ class PrassoApiRepository {
     try {
       final apps = await database.appsStream().first;
       final allLowerCaseNames =
-          apps.map((app) => app.documentId.toLowerCase()).toList();
+          apps.map((app) => app.documentId?.toLowerCase()).toList();
       allLowerCaseNames.remove(widget.pageTitle!.toLowerCase());
 
       if (allLowerCaseNames.contains(widget.pageTitle!.toLowerCase())) {
@@ -290,8 +288,8 @@ class PrassoApiRepository {
           defaultActionText: 'OK',
         ));
       } else {
-        var documentId = widget?.documentId ?? documentIdFromCurrentDate();
-        if (documentId?.isEmpty ?? true) {
+        var documentId = widget.documentId;
+        if (documentId!.isEmpty) {
           documentId = documentIdFromCurrentDate();
         }
         widget.documentId = documentId;
@@ -384,7 +382,7 @@ class PrassoApiRepository {
       return null;
     }
 
-    await database.setUser(user);
+    await database.setUser(user!);
 
     final dynamic res = await http.post(Uri.parse(Uri.encodeFull(_setUserUrl)),
         headers: _setHeaders(), body: user.toString());
@@ -408,7 +406,7 @@ class PrassoApiRepository {
       showSuccessToast('in processNewSubscription');
       final String _subscriptionUrl = '${_apiServer}save_subscription/';
       print('processNewSubscription $_subscriptionUrl');
-      final body = purchasedSub?.toJson() ?? {};
+      final body = purchasedSub.toJson();
       print('processNewSubscription $body');
       final dynamic res = await http.post(
           Uri.parse(Uri.encodeFull(_subscriptionUrl)),
@@ -479,13 +477,11 @@ class PrassoApiRepository {
       final user = ApiUser.fromAPIJson(
           jsonEncode(userdata), appConfig, personalAppToken);
 
-      if (user != null) {
-        final firestoreDatabase = FirestoreDatabase(uid: user.uid);
-        unawaited(firestoreDatabase.setUser(user));
+      final firestoreDatabase = FirestoreDatabase(uid: user.uid);
+      unawaited(firestoreDatabase.setUser(user));
 
-        unawaited(sharedPreferencesServiceProvider
-            .saveUserData(jsonEncode(user.toMap())));
-      }
+      unawaited(sharedPreferencesServiceProvider
+          .saveUserData(jsonEncode(user.toMap())));
     }
     return response.body;
   }

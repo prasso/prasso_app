@@ -15,6 +15,7 @@ dependencies:
   cloud_functions: ^3.2.5
   cupertino_icons: ^1.0.4
   device_info_plus: ^3.2.2
+  extended_image: any
   firebase_auth: ^3.3.5
   firebase_core: ^1.11.0
   firebase_messaging: ^11.2.5
@@ -31,7 +32,7 @@ dependencies:
   flutter_pdfview: ^1.0.1
   flutter_svg: ^1.0.0
   fluttertoast: ^8.0.8
-  hooks_riverpod: ^0.14.0+3
+  hooks_riverpod: ^0.14.0+3d
   http: ^0.13.4
   icons_helper: 1.2.0-nullsafety.1 
   image_picker: ^0.8.4+4
@@ -41,30 +42,28 @@ dependencies:
   package_info_plus: ^1.4.0
   path_provider: any
   pedantic: any
-  percent_indicator: ^3.4.0
-  permission_handler: ^8.3.0  
-  qonversion_flutter: 4.3.0
+  percent_indicator: ^4.2.2
+  permission_handler: ^10.0.0  
+  qonversion_flutter: 4.3.2
   # For asking permission to load the pdf
   rxdart: ^0.27.3
   shared_preferences: ^2.0.11
   state_notifier: any
-  syncfusion_flutter_calendar: ^19.4.40
-  toggle_switch: ^1.2.0
+  syncfusion_flutter_calendar: ^20.1.60
+  toggle_switch: ^2.0.1
   url_launcher: ^6.0.5
   webview_flutter: ^3.0.0
 
 dependency_overrides:
-  extended_image: any
+  test_api: 0.4.9
 
 dev_dependencies:
   flutter_driver:
     sdk: flutter
-  flutter_test:
-    sdk: flutter
   import_sorter: ^4.4.1
   mockito: any
   random_string: ^2.0.0
-  test: any
+  test: ^1.21.2
 
 flutter:
 

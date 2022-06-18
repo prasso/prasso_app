@@ -181,7 +181,8 @@ class PrassoApiRepository {
 
       unawaited(sharedPreferencesServiceProvider
           .saveUserData(jsonEncode(user.toMap())));
-      unawaited(Qonversion.setUserId(user.email!));
+      unawaited(
+          Qonversion.setProperty(QUserProperty.customUserId, user.email!));
     }
 
     unawaited(

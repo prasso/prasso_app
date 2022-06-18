@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/onboarding/slider_model.dart';
 import 'package:prasso_app/common_widgets/custom_buttons.dart';
@@ -10,10 +9,10 @@ import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'onboarding_viewmodel.dart';
 
 // ignore: must_be_immutable
-class OnboardingPage extends HookWidget {
-  Future<void> onGetStarted(BuildContext context) async {
+class OnboardingPage extends HookConsumerWidget {
+  Future<void> onGetStarted(WidgetRef ref, BuildContext context) async {
     final OnboardingViewModel onboardingViewModel =
-        context.read(onboardingViewModelProvider);
+        ref.read(onboardingViewModelProvider);
     await onboardingViewModel.completeOnboarding();
   }
 
@@ -28,9 +27,9 @@ class OnboardingPage extends HookWidget {
             )));
   }
 
-  Future<void> onNext(BuildContext context) async {
+  Future<void> onNext(WidgetRef ref, BuildContext context) async {
     final OnboardingViewModel onboardingViewModel =
-        context.read(onboardingViewModelProvider);
+        ref.read(onboardingViewModelProvider);
     await onboardingViewModel.incrementOnboarding();
   }
 
@@ -54,9 +53,9 @@ class OnboardingPage extends HookWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final OnboardingViewModel onboardingViewModel =
-        context.read(onboardingViewModelProvider);
+        ref.read(onboardingViewModelProvider);
 
     return Scaffold(
         body: Padding(
@@ -81,9 +80,9 @@ class OnboardingPage extends HookWidget {
               child: CustomRaisedButton(
                 onPressed: () {
                   if (onboardingViewModel.index == slides.length - 1) {
-                    onGetStarted(context);
+                    onGetStarted(ref, context);
                   } else {
-                    onNext(context);
+                    onNext(ref, context);
                   }
                 },
                 color: Theme.of(context).secondaryHeaderColor,

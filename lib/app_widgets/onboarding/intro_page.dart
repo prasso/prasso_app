@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:prasso_app/app_widgets/Onboarding/slider_model.dart';
 import 'package:prasso_app/app_widgets/initial_profile/initial_profile2.dart';
 import 'package:prasso_app/common_widgets/custom_buttons.dart';
@@ -10,9 +10,9 @@ import 'package:prasso_app/utils/prasso_themedata.dart';
 
 import 'intro_viewmodel.dart';
 
-class IntroPage extends HookWidget {
-  Future<void> onNext(BuildContext context) async {
-    final IntroViewModel introViewModel = context.read(introViewModelProvider);
+class IntroPage extends HookConsumerWidget {
+  Future<void> onNext(WidgetRef ref, BuildContext context) async {
+    final IntroViewModel introViewModel = ref.read(introViewModelProvider);
     await introViewModel.incrementIntro();
 
     //this trick is to reload the screen since it was navigated to directly and the view model state change is not initiating a redraw
@@ -37,11 +37,11 @@ class IntroPage extends HookWidget {
 
 
   @override
-  Widget build(BuildContext context) {
-    final IntroViewModel introViewModel = context.read(introViewModelProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final IntroViewModel introViewModel = ref.read(introViewModelProvider);
 
     if (introViewModel.index < slides.length - 1) {
-      return _showVideoIntroScreen(context, introViewModel);
+      return _showVideoIntroScreen(ref, context, introViewModel);
     } else {
       introViewModel.index = slides.length - 1;
       return _showProfileEditorScreen(context, introViewModel);
@@ -49,7 +49,7 @@ class IntroPage extends HookWidget {
   }
 
   Widget _showVideoIntroScreen(
-      BuildContext context, IntroViewModel introViewModel) {
+      WidgetRef ref, BuildContext context, IntroViewModel introViewModel) {
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
@@ -82,7 +82,7 @@ class IntroPage extends HookWidget {
               alignment: Alignment.bottomCenter,
               child: CustomRaisedButton(
                 onPressed: () {
-                  onNext(context);
+                  onNext(ref, context);
                 },
                 color: Theme.of(context).secondaryHeaderColor,
                 borderRadius: 15,

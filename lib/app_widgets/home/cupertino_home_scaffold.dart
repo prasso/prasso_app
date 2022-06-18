@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Project imports:
@@ -16,7 +15,7 @@ import 'package:prasso_app/routing/router.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
 @immutable
-class CupertinoHomeScaffold extends StatefulHookWidget {
+class CupertinoHomeScaffold extends StatefulHookConsumerWidget {
   const CupertinoHomeScaffold({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +23,8 @@ class CupertinoHomeScaffold extends StatefulHookWidget {
       CupertinoHomeScaffoldPageState();
 }
 
-class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
+class CupertinoHomeScaffoldPageState
+    extends ConsumerState<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
   CupertinoHomeScaffoldViewModel? vm;
 
@@ -63,7 +63,7 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final authService = context.read(prassoApiService);
+    final authService = ref.read(prassoApiService);
     final usr = authService?.currentUser;
 
     if (usr == null) {
@@ -83,7 +83,7 @@ class CupertinoHomeScaffoldPageState extends State<CupertinoHomeScaffold> {
 
     //if we haven't transitioned to the sign in screen after loading the user
     //then we need to make sure the tabs are built
-    vm = useProvider(cupertinoHomeScaffoldVMProvider);
+    vm = ref.watch(cupertinoHomeScaffoldVMProvider);
 
     if (!vm!.hasChangedEvent) {
       vm!.addListener(_onChangedApplication);

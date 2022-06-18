@@ -2,16 +2,16 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-
-// Package imports:
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/mockito.dart';
-
 // Project imports:
 import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/routing/router.dart' as _rtr;
+import 'package:prasso_app/services/prasso_api_repository.dart';
+
 import 'mocks.dart';
 
 void main() {
@@ -29,7 +29,8 @@ void main() {
         ProviderScope(
           overrides: [
             prassoApiService
-                .overrideWithProvider(Provider((ref) => mockPrassoAuth)),
+                .overrideWithProvider(
+                Provider<PrassoApiRepository?>((ref) => mockPrassoAuth)),
           ],
           child: Consumer(builder: (context, watch, __) {
             return MaterialApp(

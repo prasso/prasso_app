@@ -12,7 +12,7 @@ import 'package:prasso_app/common_widgets/alert_dialogs.dart';
 import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 
-final appsPageViewModel = ChangeNotifierProvider(
+final appsPageViewModel = ChangeNotifierProvider<AppsPageViewModel>(
     (ref) => AppsPageViewModel(database: ref.read(databaseProvider)));
 
 class AppsPageViewModel extends ChangeNotifier {

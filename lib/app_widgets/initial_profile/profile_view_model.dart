@@ -25,21 +25,22 @@ class ProfileViewModel extends ChangeNotifier {
 
   // Create Profile
   Future<ProfileModel?> createProfileAPI(
+      WidgetRef ref,
       CreateProfileInputModel createProfileInputModel,
       BuildContext context) async {
     profileModel = ProfileModel.fromCreatePim(createProfileInputModel);
 
-    final auth = context.read(prassoApiService);
+    final auth = ref.read(prassoApiService);
     final user = auth?.currentUser;
 
     //save to api and this gets the yourhealth token and yourhealth profile updated
     state = true;
-    final _viewmodel = context.read(editUserProfileViewModel);
+    final _viewmodel = ref.read(editUserProfileViewModel);
     _viewmodel.setFromProfileViewModel(createProfileInputModel, user!);
 
-    final database = context.read(databaseProvider);
+    final database = ref.read(databaseProvider);
 
-    final IntroViewModel introViewModel = context.read(introViewModelProvider);
+    final IntroViewModel introViewModel = ref.read(introViewModelProvider);
     await introViewModel.completeIntro(context, auth!, database!, _viewmodel);
     await localSharedPreferencesService.setIntroComplete();
 

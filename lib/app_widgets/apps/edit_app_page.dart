@@ -11,13 +11,13 @@ import 'package:prasso_app/app_widgets/apps/edit_app_view_model.dart';
 import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
-class EditAppPage extends HookWidget {
+class EditAppPage extends HookConsumerWidget {
   const EditAppPage({Key? key, this.appinfo}) : super(key: key);
   final AppModel? appinfo;
 
   @override
-  Widget build(BuildContext context) {
-    final _viewModel = useProvider(editAppViewModel);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _viewModel = ref.watch(editAppViewModel);
     _viewModel.appInfo = appinfo;
     return Scaffold(
       appBar: AppBar(

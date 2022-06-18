@@ -13,23 +13,23 @@ import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/api_user.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
-class MorePage extends HookWidget {
+class MorePage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final model = useProvider(cupertinoHomeScaffoldVMProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final model = ref.watch(cupertinoHomeScaffoldVMProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text(Strings.morePage,
             style: TextStyle(color: PrassoColors.lightGray)),
       ),
-      body: _buildMoreInfo(context, model),
+      body: _buildMoreInfo(ref, context, model),
     );
   }
 
   Widget _buildMoreInfo(
-      BuildContext context, CupertinoHomeScaffoldViewModel model) {
-    final authService = context.read(prassoApiService);
+      WidgetRef ref, BuildContext context, CupertinoHomeScaffoldViewModel model) {
+    final authService = ref.read(prassoApiService);
     final user = authService?.currentUser;
 
     return ListView.builder(

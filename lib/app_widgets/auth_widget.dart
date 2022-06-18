@@ -24,10 +24,10 @@ class AuthWidget extends ConsumerWidget {
   final WidgetBuilder signedInBuilder;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final cupertinoVM = watch(cupertinoHomeScaffoldVMProvider);
-    final sharedPreferences = watch(sharedPreferencesService);
-    final authStateChanges = watch(userChangesProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cupertinoVM = ref.watch(cupertinoHomeScaffoldVMProvider);
+    final sharedPreferences = ref.watch(sharedPreferencesService);
+    final authStateChanges = ref.watch(userChangesProvider);
     return authStateChanges.when(
         data: (user) => _data(context, user, cupertinoVM, sharedPreferences),
         loading: () => const Scaffold(

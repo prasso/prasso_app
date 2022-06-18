@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pedantic/pedantic.dart';
 
@@ -23,7 +22,7 @@ import 'package:prasso_app/services/shared_preferences_service.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AccountPage extends HookWidget {
+class AccountPage extends HookConsumerWidget {
   Future<void> _signOut(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final SharedPreferencesService sharedPreferencesServiceProvider =
@@ -67,8 +66,8 @@ class AccountPage extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final authService = context.read(prassoApiService);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authService = ref.read(prassoApiService);
     final user = authService?.currentUser;
     return Scaffold(
       appBar: AppBar(

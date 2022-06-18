@@ -79,7 +79,7 @@ class PrassoApiRepository {
 
   ApiUser? get currentUser {
     final savedUser = sharedPreferencesServiceProvider.getUserData();
-    if (savedUser != null) {
+    if (savedUser != null && savedUser.isNotEmpty) {
       userIsSigningIn = false;
       appConfig = sharedPreferencesServiceProvider.getAppData();
       personalAppToken = sharedPreferencesServiceProvider.getUserToken();
@@ -181,7 +181,8 @@ class PrassoApiRepository {
 
       unawaited(sharedPreferencesServiceProvider
           .saveUserData(jsonEncode(user.toMap())));
-      unawaited(Qonversion.setUserId(user.email!));
+      unawaited(
+          Qonversion.setProperty(QUserProperty.customUserId, user.email!));
     }
 
     unawaited(

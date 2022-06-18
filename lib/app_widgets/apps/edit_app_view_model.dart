@@ -11,7 +11,7 @@ import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 
-final editAppViewModel = ChangeNotifierProvider((ref) => EditAppViewModel());
+final editAppViewModel = ChangeNotifierProvider<EditAppViewModel>((ref) => EditAppViewModel());
 
 class EditAppViewModel extends ChangeNotifier {
   EditAppViewModel();

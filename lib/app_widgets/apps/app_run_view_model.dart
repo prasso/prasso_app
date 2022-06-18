@@ -10,7 +10,7 @@ import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/services/firestore_database.dart';
 
-final appRunViewModel = ChangeNotifierProvider(
+final appRunViewModel = ChangeNotifierProvider<AppRunViewModel>(
     (ref) => AppRunViewModel(database: ref.read(databaseProvider)));
 
 class AppRunViewModel extends ChangeNotifier {

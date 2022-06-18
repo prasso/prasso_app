@@ -13,7 +13,7 @@ import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
-class EditUserProfile extends HookWidget {
+class EditUserProfile extends HookConsumerWidget {
   const EditUserProfile({Key? key}) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
@@ -24,10 +24,10 @@ class EditUserProfile extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final _viewmodel = useProvider(editUserProfileViewModel);
-    final auth = useProvider(prassoApiService);
-    final database = useProvider(databaseProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _viewmodel = ref.watch(editUserProfileViewModel);
+    final auth = ref.watch(prassoApiService);
+    final database = ref.watch(databaseProvider);
 
     return Scaffold(
       appBar: AppBar(

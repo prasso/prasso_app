@@ -14,7 +14,7 @@ import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
-class ProfileFormChildren extends HookWidget {
+class ProfileFormChildren extends HookConsumerWidget {
   const ProfileFormChildren({Key? key}) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
@@ -25,10 +25,10 @@ class ProfileFormChildren extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final _viewmodel = useProvider(editUserProfileViewModel);
-    final auth = useProvider(prassoApiService as ProviderListenable<PrassoApiRepository>);
-    final database = useProvider(databaseProvider as ProviderListenable<FirestoreDatabase>);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _viewmodel = ref.watch(editUserProfileViewModel);
+    final auth = ref.watch(prassoApiService as ProviderListenable<PrassoApiRepository>);
+    final database = ref.watch(databaseProvider as ProviderListenable<FirestoreDatabase>);
 
     return SingleChildScrollView(
       child: Padding(

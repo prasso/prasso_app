@@ -18,7 +18,7 @@ import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/utils/filename_helper.dart';
 
-final editUserProfileViewModel = ChangeNotifierProvider((ref) =>
+final editUserProfileViewModel = ChangeNotifierProvider<EditUserProfileViewModel>((ref) =>
     EditUserProfileViewModel(
         usr: ref.read(prassoApiService)!.currentUser!,
         photoviewmodel: ref.read(profilePicUrlState)));

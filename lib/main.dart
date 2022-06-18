@@ -66,18 +66,18 @@ class _PrassoCoreState extends State<PrassoCore> {
         debugShowCheckedModeBanner: false,
         home: AuthWidget(
           nonSignedInBuilder: (_) => Consumer(
-            builder: (context, watch, _) {
+            builder: (context, ref, _) {
               final bool didCompleteOnboarding =
-                  watch(onboardingViewModelProvider).state;
+                  ref.watch(onboardingViewModelProvider).state;
               return didCompleteOnboarding ? SignInPage() : OnboardingPage();
             },
           ),
 
           /// Signed In Builder will show intro pages ( video and profile editor ) if the user is newly registered
           signedInBuilder: (_) => Consumer(
-            builder: (context, watch, _) {
+            builder: (context, ref, _) {
               final bool didCompleteProfile =
-                  watch(introViewModelProvider).state;
+                  ref.watch(introViewModelProvider).state;
               return didCompleteProfile ? const HomePage() : IntroPage();
 
             },

@@ -12,8 +12,8 @@ class HomePage extends ConsumerWidget {
   const HomePage();
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final cupertinoVM = watch(cupertinoHomeScaffoldVMProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cupertinoVM = ref.watch(cupertinoHomeScaffoldVMProvider);
 
     return WillPopScope(
       onWillPop: () async => !await cupertinoVM

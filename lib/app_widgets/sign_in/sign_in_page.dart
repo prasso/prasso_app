@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 // Package imports:
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 // Project imports:
@@ -28,11 +28,8 @@ final signInModelProvider = ChangeNotifierProvider<SignInViewModel>(
 
 class SignInPage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final signInModel = watch(signInModelProvider);
-    return ProviderListener<SignInViewModel>(
-      provider: signInModelProvider,
-      onChange: (context, model) async {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<SignInViewModel>(signInModelProvider, (previous, model) async {
         if (model.error != null) {
           await showExceptionAlertDialog(
             context: context,
@@ -40,16 +37,16 @@ class SignInPage extends ConsumerWidget {
             exception: model.error,
           );
         }
-      },
-      child: SignInPageContents(
+    });
+    final signInModel = ref.watch(signInModelProvider);
+    return SignInPageContents(
         viewModel: signInModel,
-        title: Strings.appName,
-      ),
+      title: Strings.appName,
     );
   }
 }
 
-class SignInPageContents extends StatelessWidget {
+class SignInPageContents extends ConsumerWidget {
   const SignInPageContents(
       {Key? key, this.viewModel, this.title = Strings.appName})
       : super(key: key);
@@ -59,9 +56,10 @@ class SignInPageContents extends StatelessWidget {
   static const Key emailPasswordButtonKey = Key(Keys.emailPassword);
   static const Key emailSignupButtonKey = Key(Keys.emailSignup);
 
-  Future<void> _showEmailPasswordSignInPage(BuildContext context) async {
+  Future<void> _showEmailPasswordSignInPage(
+      WidgetRef ref, BuildContext context) async {
     final EmailPasswordSignInModel _thismodel =
-        context.read(emailPasswordSigninViewModelProvider);
+        ref.read(emailPasswordSigninViewModelProvider);
     _thismodel.formType = EmailPasswordSignInFormType.signIn;
     final navigator = Navigator.of(context);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -73,9 +71,10 @@ class SignInPageContents extends StatelessWidget {
     });
   }
 
-  Future<void> _showEmailPasswordRegisterPage(BuildContext context) async {
+  Future<void> _showEmailPasswordRegisterPage(
+      WidgetRef ref, BuildContext context) async {
     final EmailPasswordSignInModel _thismodel =
-        context.read(emailPasswordSigninViewModelProvider);
+        ref.read(emailPasswordSigninViewModelProvider);
     _thismodel.formType = EmailPasswordSignInFormType.register;
     final navigator = Navigator.of(context);
     await navigator.pushNamed(
@@ -85,7 +84,7 @@ class SignInPageContents extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
@@ -96,11 +95,11 @@ class SignInPageContents extends StatelessWidget {
         ),
       ),
       backgroundColor: PrassoColors.lightGray,
-      body: _buildSignIn(context),
+      body: _buildSignIn(ref, context),
     );
   }
 
-  Widget _buildSignIn(BuildContext context) {
+  Widget _buildSignIn(WidgetRef ref, BuildContext context) {
     const fontSize = 20.0;
     return LayoutBuilder(builder: (context, constraints) {
       return Align(
@@ -135,7 +134,7 @@ class SignInPageContents extends StatelessWidget {
                     color: PrassoColors.olive,
                     onPressed: viewModel!.isLoading
                         ? null
-                        : () => _showEmailPasswordSignInPage(context),
+                        : () => _showEmailPasswordSignInPage(ref, context),
                     child: SizedBox(
                         child: Text(
                       EmailPasswordSignInStrings.createAPlan,
@@ -159,7 +158,8 @@ class SignInPageContents extends StatelessWidget {
                               onPressed: viewModel!.isLoading
                                   ? null
                                   : () =>
-                                      _showEmailPasswordRegisterPage(context),
+                                      _showEmailPasswordRegisterPage(
+                                      ref, context),
                               child: const Text(
                                 EmailPasswordSignInStrings
                                     .signUpWithEmailPassword,
@@ -178,7 +178,8 @@ class SignInPageContents extends StatelessWidget {
                               key: emailPasswordButtonKey,
                               onPressed: viewModel!.isLoading
                                   ? null
-                                  : () => _showEmailPasswordSignInPage(context),
+                                  : () => _showEmailPasswordSignInPage(
+                                      ref, context),
                               child: const Text(
                                 EmailPasswordSignInStrings
                                     .signInWithEmailPassword,

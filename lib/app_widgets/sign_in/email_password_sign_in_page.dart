@@ -1,15 +1,15 @@
 part of email_password_sign_in_ui;
 
-class EmailPasswordSignInPage extends HookWidget {
+class EmailPasswordSignInPage extends HookConsumerWidget {
   const EmailPasswordSignInPage({Key? key, this.onSignedIn, this.formType})
       : super(key: key);
   final VoidCallback? onSignedIn;
   final EmailPasswordSignInFormType? formType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final EmailPasswordSignInModel _thismodel =
-        useProvider(emailPasswordSigninViewModelProvider);
+        ref.watch(emailPasswordSigninViewModelProvider);
 
     return EmailPasswordSignInPageContents(
         model: _thismodel, onSignedIn: onSignedIn);

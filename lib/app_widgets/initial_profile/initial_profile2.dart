@@ -19,16 +19,16 @@ import 'package:prasso_app/utils/prasso_themedata.dart';
 DateTime selectedDate = DateTime(2000, 1, 1);
 String? fromClass;
 
-class InitialProfile extends StatefulWidget {
+class InitialProfile extends ConsumerStatefulWidget {
   InitialProfile(String className) {
     fromClass = className;
   }
 
   @override
-  State<StatefulWidget> createState() => InitialProfilePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => InitialProfilePageState();
 }
 
-class InitialProfilePageState extends State<InitialProfile> {
+class InitialProfilePageState extends ConsumerState<InitialProfile> {
   InitialProfilePageState() {
     if (fromClass == Strings.fromClassEditUserProfile) {
       _isApiRequired = true;
@@ -67,7 +67,7 @@ class InitialProfilePageState extends State<InitialProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return _setViews(context);
+    return _setViews(ref, context);
   }
 
   // Get Profile API
@@ -78,7 +78,7 @@ class InitialProfilePageState extends State<InitialProfile> {
     return true;
   }
 
-  Widget _setViews(BuildContext context) {
+  Widget _setViews(WidgetRef ref, BuildContext context) {
     if (_isApiRequired) {
       if (_isApiFinished) {
         if (_profileModel != null) {
@@ -88,7 +88,7 @@ class InitialProfilePageState extends State<InitialProfile> {
               isLoading: _isProgressLoading,
               child: Padding(
                 padding: const EdgeInsets.all(0.0),
-                child: _buildProfileData(context, _profileModel!),
+                child: _buildProfileData(ref, context, _profileModel!),
               ),
             );
           } else if (_profileModel?.statusCode == 401 ||
@@ -108,7 +108,7 @@ class InitialProfilePageState extends State<InitialProfile> {
       }
     } else {
       if (_profileModel != null) {
-        return _buildProfileData(context, _profileModel!);
+        return _buildProfileData(ref, context, _profileModel!);
       } else {
         return const Text('No data!!!');
       }
@@ -123,7 +123,7 @@ class InitialProfilePageState extends State<InitialProfile> {
   }
 
   // Save Profile Button
-  Widget showSaveProfileButton(BuildContext context) {
+  Widget showSaveProfileButton(WidgetRef ref, BuildContext context) {
     String buttonText = 'Save Profile';
     if (fromClass == Strings.fromClassEditUserProfile) {
       buttonText = 'Save Profile';
@@ -146,7 +146,7 @@ class InitialProfilePageState extends State<InitialProfile> {
             minimumSize: const Size(100, 40), //////// HERE
           ),
           onPressed: () {
-            validateFieldAndSaveProfile(context);
+            validateFieldAndSaveProfile(ref, context);
           },
           child: Text(buttonText),
         ),
@@ -155,8 +155,8 @@ class InitialProfilePageState extends State<InitialProfile> {
   }
 
   // Validate fields for saving
-  void validateFieldAndSaveProfile(BuildContext context) {
-    final auth = context.read(prassoApiService);
+  void validateFieldAndSaveProfile(WidgetRef ref, BuildContext context) {
+    final auth = ref.read(prassoApiService);
     final user = auth?.currentUser;
 
     final CreateProfileInputModel createProfileInputModel =
@@ -177,15 +177,15 @@ class InitialProfilePageState extends State<InitialProfile> {
     setState(() {
        _isProgressLoading = true;
      });
-    createProfileApi(context, createProfileInputModel);
+    createProfileApi(ref, context, createProfileInputModel);
   }
 
   // Save Profile API
-  Future<void> createProfileApi(BuildContext context,
+  Future<void> createProfileApi(WidgetRef ref, BuildContext context,
       CreateProfileInputModel createProfileInputModel) async {
-    final _profileViewModel = context.read(profileViewModelProvider);
+    final _profileViewModel = ref.read(profileViewModelProvider);
     final result = await _profileViewModel.createProfileAPI(
-        createProfileInputModel, context);
+        ref, createProfileInputModel, context);
     print(result);
     setState(() {
        _isProgressLoading = false;
@@ -308,7 +308,7 @@ class InitialProfilePageState extends State<InitialProfile> {
     );
   }
 
-  Widget _buildProfileData(BuildContext context, ProfileModel profileModel) {
+  Widget _buildProfileData(WidgetRef ref, BuildContext context, ProfileModel profileModel) {
     if (fromClass == Strings.fromClassEditUserProfile) {
       setInitialValues(profileModel);
     }
@@ -346,7 +346,7 @@ class InitialProfilePageState extends State<InitialProfile> {
                         _firsNameTextController, Strings.inputTypeText),
                     _customTextFieldForm('LAST NAME', 'Last Name',
                         _lastNameTextController, Strings.inputTypeText),
-                    showSaveProfileButton(context),
+                    showSaveProfileButton(ref, context),
                     const SizedBox(height: 64)
                   ]),
             )

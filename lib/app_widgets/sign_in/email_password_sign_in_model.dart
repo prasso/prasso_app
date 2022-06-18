@@ -12,7 +12,7 @@ class EmailAndPasswordValidators {
       NonEmptyStringValidator();
 }
 
-final emailPasswordSigninViewModelProvider = ChangeNotifierProvider(
+final emailPasswordSigninViewModelProvider = ChangeNotifierProvider<EmailPasswordSignInModel>(
     (ref) => EmailPasswordSignInModel(auth: ref.watch(prassoApiService)));
 
 class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {

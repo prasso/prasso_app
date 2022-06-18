@@ -32,7 +32,7 @@ dependencies:
   flutter_pdfview: ^1.0.1
   flutter_svg: ^1.0.0
   fluttertoast: ^8.0.8
-  hooks_riverpod: ^0.14.0+3d
+  hooks_riverpod: ^1.0.1
   http: ^0.13.4
   icons_helper: 1.2.0-nullsafety.1 
   image_picker: ^0.8.4+4

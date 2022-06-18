@@ -3,10 +3,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Project imports:
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 import 'package:prasso_app/main.dart';
+import 'package:prasso_app/services/firestore_database.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 
 import '../test/mocks.dart';
 
@@ -25,8 +27,10 @@ Future<void> main() async {
   runApp(ProviderScope(
     overrides: [
       prassoApiService
-          .overrideWithProvider(Provider((ref) => MockAuthService())),
-      databaseProvider.overrideWithProvider(Provider((ref) => MockDatabase())),
+          .overrideWithProvider(
+          Provider<PrassoApiRepository?>((ref) => MockAuthService())),
+      databaseProvider.overrideWithProvider(
+          Provider<FirestoreDatabase?>((ref) => MockDatabase())),
     ],
     child: PrassoCore(),
   ));

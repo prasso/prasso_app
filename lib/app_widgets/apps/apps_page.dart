@@ -14,10 +14,10 @@ import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/app.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
-class AppsPage extends HookWidget {
+class AppsPage extends HookConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final _viewModel = useProvider(appsPageViewModel);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _viewModel = ref.watch(appsPageViewModel);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,12 +32,12 @@ class AppsPage extends HookWidget {
           ),
         ],
       ),
-      body: _buildContents(context, _viewModel),
+      body: _buildContents(ref, context, _viewModel),
     );
   }
 
-  Widget _buildContents(BuildContext context, AppsPageViewModel _viewModel) {
-    final logprovider = useProvider(loggerProvider);
+  Widget _buildContents(WidgetRef ref, BuildContext context, AppsPageViewModel _viewModel) {
+    final logprovider = ref.watch(loggerProvider);
 
     return StreamBuilder<List<AppModel>>(
       stream: _viewModel.database!.appsStream(),

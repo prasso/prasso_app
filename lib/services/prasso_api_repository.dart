@@ -79,7 +79,7 @@ class PrassoApiRepository {
 
   ApiUser? get currentUser {
     final savedUser = sharedPreferencesServiceProvider.getUserData();
-    if (savedUser != null) {
+    if (savedUser != null && savedUser.isNotEmpty) {
       userIsSigningIn = false;
       appConfig = sharedPreferencesServiceProvider.getAppData();
       personalAppToken = sharedPreferencesServiceProvider.getUserToken();

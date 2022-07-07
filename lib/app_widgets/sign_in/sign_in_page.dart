@@ -5,11 +5,9 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
+import 'package:flutter_svg/svg.dart';
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-
 // Project imports:
 import 'package:prasso_app/app_widgets/sign_in/sign_in_view_model.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
@@ -62,7 +60,7 @@ class SignInPageContents extends ConsumerWidget {
         ref.read(emailPasswordSigninViewModelProvider);
     _thismodel.formType = EmailPasswordSignInFormType.signIn;
     final navigator = Navigator.of(context);
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       // fetch data
       navigator.pushNamed(
         Routes.emailPasswordSignInPage,

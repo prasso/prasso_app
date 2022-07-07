@@ -88,7 +88,7 @@ class _EmailPasswordSignInPageContentsState
 
   Future<void> navigateToHome() async {
     final navigator = Navigator.of(context);
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       // fetch data
       navigator.pushNamed(
         Routes.homePage,

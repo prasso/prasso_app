@@ -13,7 +13,6 @@ final ThemeData prassoThemeData = ThemeData(
     primaryColorDark: PrassoColors.olive,
     primaryColor: PrassoColors.brightGreen,
     brightness: Brightness.light,
-    primaryColorBrightness: Brightness.light,
     secondaryHeaderColor: PrassoColors.brightOrange,
     primaryColorLight: PrassoColors.lightGray[500]);
 

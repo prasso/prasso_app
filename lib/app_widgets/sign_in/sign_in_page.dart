@@ -28,17 +28,17 @@ class SignInPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<SignInViewModel>(signInModelProvider, (previous, model) async {
-        if (model.error != null) {
-          await showExceptionAlertDialog(
-            context: context,
-            title: EmailPasswordSignInStrings.signInFailed,
-            exception: model.error,
-          );
-        }
+      if (model.error != null) {
+        await showExceptionAlertDialog(
+          context: context,
+          title: EmailPasswordSignInStrings.signInFailed,
+          exception: model.error,
+        );
+      }
     });
     final signInModel = ref.watch(signInModelProvider);
     return SignInPageContents(
-        viewModel: signInModel,
+      viewModel: signInModel,
       title: Strings.appName,
     );
   }
@@ -155,8 +155,7 @@ class SignInPageContents extends ConsumerWidget {
                               key: emailSignupButtonKey,
                               onPressed: viewModel!.isLoading
                                   ? null
-                                  : () =>
-                                      _showEmailPasswordRegisterPage(
+                                  : () => _showEmailPasswordRegisterPage(
                                       ref, context),
                               child: const Text(
                                 EmailPasswordSignInStrings

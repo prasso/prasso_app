@@ -20,7 +20,7 @@ class IntroPage extends HookConsumerWidget {
     (context as Element).reassemble();
   }
 
- final List<SliderModel> slides = [
+  final List<SliderModel> slides = [
     SliderModel(
         description:
             'Rapid Prototyping\n. Plug Your Designs In.\n Play Your App\n',
@@ -33,7 +33,6 @@ class IntroPage extends HookConsumerWidget {
         localImageSrc: 'media/Screen2-Teaching-cuate.svg',
         backgroundColor: PrassoColors.lightGray)
   ];
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -101,6 +100,7 @@ class IntroPage extends HookConsumerWidget {
       ),
     )));
   }
+
   Widget _showProfileEditorScreen(
       BuildContext context, IntroViewModel introViewModel) {
     return Scaffold(

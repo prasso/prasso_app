@@ -1,5 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
+import 'package:flutter_hooks/flutter_hooks.dart';
+>>>>>>> master
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:prasso_app/app_widgets/Onboarding/slider_model.dart';
 import 'package:prasso_app/app_widgets/initial_profile/initial_profile2.dart';

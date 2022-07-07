@@ -5,6 +5,12 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+<<<<<<< HEAD
+=======
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+>>>>>>> master
 import 'package:flutter_svg/svg.dart';
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,6 +34,7 @@ class SignInPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<SignInViewModel>(signInModelProvider, (previous, model) async {
+<<<<<<< HEAD
       if (model.error != null) {
         await showExceptionAlertDialog(
           context: context,
@@ -39,6 +46,19 @@ class SignInPage extends ConsumerWidget {
     final signInModel = ref.watch(signInModelProvider);
     return SignInPageContents(
       viewModel: signInModel,
+=======
+        if (model.error != null) {
+          await showExceptionAlertDialog(
+            context: context,
+            title: EmailPasswordSignInStrings.signInFailed,
+            exception: model.error,
+          );
+        }
+    });
+    final signInModel = ref.watch(signInModelProvider);
+    return SignInPageContents(
+        viewModel: signInModel,
+>>>>>>> master
       title: Strings.appName,
     );
   }
@@ -155,7 +175,12 @@ class SignInPageContents extends ConsumerWidget {
                               key: emailSignupButtonKey,
                               onPressed: viewModel!.isLoading
                                   ? null
+<<<<<<< HEAD
                                   : () => _showEmailPasswordRegisterPage(
+=======
+                                  : () =>
+                                      _showEmailPasswordRegisterPage(
+>>>>>>> master
                                       ref, context),
                               child: const Text(
                                 EmailPasswordSignInStrings

@@ -3,6 +3,7 @@
 // Package imports:
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,7 +26,22 @@ import 'app_widgets/sign_in/sign_in_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: 'AIzaSyD-dA6WeTVXsxsGJYXro9EUqHf1LHcL7J8',
+        appId: '1:535566369970:web:f39cb9e1b6dc4cd8fcb5ab',
+        messagingSenderId: '535566369970',
+        projectId: 'prasso-app',
+      ),
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
+
+
+
+
   try {
     await Qonversion.setAdvertisingID();
     await Qonversion.launch(Strings.qonversionId,
@@ -131,6 +147,6 @@ FirebaseMessaging.onMessage.listen((message) async {
 });
 
 
-    getFCMToken();
+    if (!kIsWeb) getFCMToken();
   }
 }

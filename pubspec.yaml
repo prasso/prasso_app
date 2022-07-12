@@ -2,7 +2,7 @@ name: prasso_app
 description: change your habits to change your life
 publish_to: 'none' 
 
-version: 1.0.8+21
+version: 1.0.8+23
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

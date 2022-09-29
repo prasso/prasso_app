@@ -1,4 +1,4 @@
-# Prasso App - A Flutter - Riverpod Mobile App Template.
+# Prasso App - A Flutter / Riverpod Mobile App Template.
 
 ## Prasso is a mobile app platform that allows you to rapidly view your design, make changes, and view the updated screen in both iOS and Android.
 

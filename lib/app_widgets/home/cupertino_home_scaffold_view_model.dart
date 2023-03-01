@@ -41,42 +41,9 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   List<TabItemData> moreItems = [];
   Map<TabItem, TabItemData> allTabs = {
-    TabItem.position1: TabItemData(
-        key: Keys.appsTab,
-        title: Strings.apps,
-        icon: Icons.work,
-        pageUrl: 'AppsPage()',
-        pageTitle: Strings.apps,
-        extraHeaderInfo: '',
-        iconImageFileName: 'add_circle',
-        isActive: true,
-        sortOrder: 1,
-        parent: 0,
-        subscriptionRequired: false),
-    TabItem.position2: TabItemData(
-        key: Keys.asdefinedTab,
-        title: Strings.appsTabTitle,
-        icon: Icons.star,
-        pageUrl: 'AppRunPage.create',
-        pageTitle: Strings.appsTabTitle,
-        extraHeaderInfo: '',
-        iconImageFileName: 'add_circle',
-        isActive: true,
-        sortOrder: 1,
-        parent: 0,
-        subscriptionRequired: false),
-    TabItem.position3: TabItemData(
-        key: Keys.accountTab,
-        title: Strings.account,
-        icon: Icons.person,
-        pageUrl: 'AccountPage()',
-        pageTitle: Strings.account,
-        extraHeaderInfo: '',
-        iconImageFileName: 'add_circle',
-        isActive: true,
-        sortOrder: 1,
-        parent: 0,
-        subscriptionRequired: false),
+    TabItem.position1: TabItemData(key: Keys.appsTab, title: Strings.apps, icon: Icons.work, pageUrl: 'AppsPage()', pageTitle: Strings.apps, extraHeaderInfo: '', iconImageFileName: 'add_circle', isActive: true, sortOrder: 1, parent: 0, subscriptionRequired: false),
+    TabItem.position2: TabItemData(key: Keys.asdefinedTab, title: Strings.appsTabTitle, icon: Icons.star, pageUrl: 'AppRunPage.create', pageTitle: Strings.appsTabTitle, extraHeaderInfo: '', iconImageFileName: 'add_circle', isActive: true, sortOrder: 1, parent: 0, subscriptionRequired: false),
+    TabItem.position3: TabItemData(key: Keys.accountTab, title: Strings.account, icon: Icons.person, pageUrl: 'AccountPage()', pageTitle: Strings.account, extraHeaderInfo: '', iconImageFileName: 'add_circle', isActive: true, sortOrder: 1, parent: 0, subscriptionRequired: false),
   };
   Map<TabItem, WidgetBuilder?> widgetBuilders = {
     TabItem.position1: (_) => AppsPage(),
@@ -111,8 +78,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     isDisposed = true;
   }
 
-  factory CupertinoHomeScaffoldViewModel.initializeFromLocalStorage(
-      SharedPreferencesService sharedPreferencesService) {
+  factory CupertinoHomeScaffoldViewModel.initializeFromLocalStorage(SharedPreferencesService sharedPreferencesService) {
     final _vm = CupertinoHomeScaffoldViewModel(sharedPreferencesService);
     _vm.isInitializing = true;
     isDisposed = false;
@@ -192,8 +158,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 100));
 
     // this takes you all the way back to login page
-    Navigator.of(context, rootNavigator: true)
-        .popUntil((route) => route.isFirst);
+    Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
     await Future.delayed(const Duration(milliseconds: 100));
 
     //now change to Dashboard tab, using the property here to get the notifications out
@@ -260,30 +225,18 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     moreItems = [];
 
     for (int i = 0; i < tabsFromAPI.length; i++) {
-      final TabItemData t1 = TabItemData(
-          key: UniqueKey().toString(),
-          title: tabsFromAPI[i]['label'],
-          icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']),
-          iconImageFileName: tabsFromAPI[i]['icon'],
-          pageUrl: tabsFromAPI[i]['page_url'],
-          pageTitle: tabsFromAPI[i]['page_title'],
-          extraHeaderInfo: tabsFromAPI[i]['request_header'],
-          isActive: true,
-          sortOrder: tabsFromAPI[i]['sort_order'],
-          parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
-              ? 0
-              : tabsFromAPI[i]['parent'],
-          subscriptionRequired: false
+      final TabItemData t1 =
+          TabItemData(key: UniqueKey().toString(), title: tabsFromAPI[i]['label'], icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']), iconImageFileName: tabsFromAPI[i]['icon'], pageUrl: tabsFromAPI[i]['page_url'], pageTitle: tabsFromAPI[i]['page_title'], extraHeaderInfo: tabsFromAPI[i]['request_header'], isActive: true, sortOrder: tabsFromAPI[i]['sort_order'], parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl) ? 0 : tabsFromAPI[i]['parent'], subscriptionRequired: false
 
-          //         fill these in
+              //         fill these in
 /*
       @required this.iconImageFileName,
       @required this.isActive,
       @required this.subscriptionRequired});*/
-          );
+              );
 
       final int position = allTabs.length;
-      if (position <= TabItem.values.length && t1.parent == 0) {
+      /*if (position <= TabItem.values.length && t1.parent == 0) {
         if ((position > 3 && t1.pageUrl != Strings.morePageUrl) || t1.parent! > 0) {
           moreItems.add(t1);
         } else {
@@ -291,6 +244,14 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
         }
 
+      }*/
+      if (position <= TabItem.values.length && t1.parent == 0) {
+        allTabs[TabItem.values[position]] = t1;
+
+        widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
+      }
+      if (t1.parent != 0) {
+        moreItems.add(t1);
       }
     }
 

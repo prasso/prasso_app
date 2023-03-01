@@ -55,7 +55,8 @@ dependencies:
   webview_flutter: ^3.0.0
 
 dependency_overrides:
-  test_api: 0.4.9
+  #test_api: 0.4.9
+  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_driver:

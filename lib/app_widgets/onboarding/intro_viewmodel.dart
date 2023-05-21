@@ -6,7 +6,6 @@ import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 
-
 final introViewModelProvider = ChangeNotifierProvider<IntroViewModel>((ref) {
   final SharedPreferencesService localSharedPreferencesService =
       ref.watch(sharedPreferencesService);
@@ -24,8 +23,6 @@ class IntroViewModel extends ChangeNotifier {
 
   Future<void> completeIntro(BuildContext context, PrassoApiRepository auth,
       FirestoreDatabase database, EditUserProfileViewModel _viewmodel) async {
-    //save to api and this gets the yourhealth token and yourhealth profile updated
-
     state = true;
     const bool canPop = false;
     await _viewmodel.saveUser(context, auth, database, canPop: canPop);

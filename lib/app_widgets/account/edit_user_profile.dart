@@ -31,8 +31,7 @@ class EditUserProfile extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(_viewmodel.usr == null ? Strings.newuser : Strings.edituser,
-            style: TextStyle(color: Theme.of(context).backgroundColor)),
+        title: Text(_viewmodel.usr == null ? Strings.newuser : Strings.edituser, style: TextStyle(color: Theme.of(context).colorScheme.background)),
         actions: <Widget>[
           TextButton(
             child: const Text(
@@ -44,14 +43,13 @@ class EditUserProfile extends HookConsumerWidget {
         ],
       ),
       body: InitialProfile(Strings.fromClassEditUserProfile),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
     );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty(
-        'editUserProfileViewModel', editUserProfileViewModel));
+    properties.add(DiagnosticsProperty('editUserProfileViewModel', editUserProfileViewModel));
   }
 }

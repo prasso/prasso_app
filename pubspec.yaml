@@ -44,7 +44,6 @@ dependencies:
   pedantic: any
   percent_indicator: ^4.2.2
   permission_handler: ^10.0.0  
-  qonversion_flutter: 4.3.2
   # For asking permission to load the pdf
   rxdart: ^0.27.3
   shared_preferences: ^2.0.11

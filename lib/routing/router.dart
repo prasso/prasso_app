@@ -35,15 +35,13 @@ class Router {
         );
       case Routes.emailPasswordSignInPage:
         return MaterialPageRoute<dynamic>(
-          builder: (dynamic _) => EmailPasswordSignInPage(
-              onSignedIn: args as void Function()?, formType: EmailPasswordSignInFormType.signIn),
+          builder: (dynamic _) => EmailPasswordSignInPage(onSignedIn: args as void Function()?, formType: EmailPasswordSignInFormType.signIn),
           settings: settings,
           fullscreenDialog: true,
         );
       case Routes.editAppPage:
         return MaterialPageRoute<dynamic>(
-          builder: (dynamic _) =>
-              EditAppPage(key: GlobalKey<FormState>(), appinfo: args as AppModel?),
+          builder: (dynamic _) => EditAppPage(key: GlobalKey<FormState>(), appinfo: args is AppModel ? args : null),
           settings: settings,
           fullscreenDialog: true,
         );

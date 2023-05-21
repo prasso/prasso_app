@@ -26,8 +26,8 @@ class ProfileFormChildren extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _viewmodel = ref.watch(editUserProfileViewModel);
-    final auth = ref.watch(prassoApiService as ProviderListenable<PrassoApiRepository>);
-    final database = ref.watch(databaseProvider as ProviderListenable<FirestoreDatabase>);
+    final auth = ref.watch<PrassoApiRepository>(prassoApiService);
+    final database = ref.watch<ProviderListenable<FirestoreDatabase>>(databaseProvider);
 
     return SingleChildScrollView(
       child: Padding(
@@ -40,8 +40,7 @@ class ProfileFormChildren extends HookConsumerWidget {
     );
   }
 
-  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context,
-      PrassoApiRepository auth, FirestoreDatabase database) {
+  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context, PrassoApiRepository auth, FirestoreDatabase database) {
     return Form(
       key: _viewmodel.formKey,
       child: Column(
@@ -51,77 +50,66 @@ class ProfileFormChildren extends HookConsumerWidget {
     );
   }
 
-  List<Widget> _buildFormChildren(
-      EditUserProfileViewModel _viewmodel,
-      BuildContext context,
-      PrassoApiRepository auth,
-      FirestoreDatabase database) {
+  List<Widget> _buildFormChildren(EditUserProfileViewModel _viewmodel, BuildContext context, PrassoApiRepository auth, FirestoreDatabase database) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double algo = screenWidth / perfectWidth;
 
     return [
       SingleChildScrollView(
-        child: Stack(
-            children: [
-              Opacity(
-                opacity: _viewmodel.uploadingDp ? 0.5 : 1.0,
-                child: Hero(
-                  tag: 'myProfile',
-                  child: CircleAvatar(
-                    radius: algo * 120.0,
+          child: Stack(children: [
+        Opacity(
+          opacity: _viewmodel.uploadingDp ? 0.5 : 1.0,
+          child: Hero(
+            tag: 'myProfile',
+            child: CircleAvatar(
+              radius: algo * 120.0,
+              backgroundColor: Colors.white,
+              backgroundImage: _viewmodel.profileImage,
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: _viewmodel.uploadingDp
+                ? const CircularProgressIndicator(
                     backgroundColor: Colors.white,
-                    backgroundImage: _viewmodel.profileImage,
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: _viewmodel.uploadingDp
-                      ? const CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        )
-                      : Container(),
-                ),
-              ),
-              Positioned(
-                bottom: algo * 5.0,
-                right: algo * 10.0,
-                child: GestureDetector(
-                  onTap: () {
-                    _viewmodel.pickImage(context, auth, database);
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: PrassoColors.lightGray,
-                    radius: algo * 30.0,
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: PrassoColors.olive,
-                      size: algo * 33.0,
-                    ),
-                  ),
-                ),
-              ),
-           
-          TextFormField(
-            decoration: const InputDecoration(labelText: Strings.emailLabel),
-            keyboardAppearance: Brightness.light,
-            initialValue: _viewmodel.email,
-            validator: (value) =>
-                value!.isNotEmpty ? null : Strings.emailCantbeEmpty,
-            onSaved: (value) => _viewmodel.email = value!,
+                  )
+                : Container(),
           ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: Strings.nameLabel),
-            keyboardAppearance: Brightness.light,
-            initialValue: _viewmodel.displayName,
-            onSaved: (value) => _viewmodel.displayName = value,
+        ),
+        Positioned(
+          bottom: algo * 5.0,
+          right: algo * 10.0,
+          child: GestureDetector(
+            onTap: () {
+              _viewmodel.pickImage(context, auth, database);
+            },
+            child: CircleAvatar(
+              backgroundColor: PrassoColors.lightGray,
+              radius: algo * 30.0,
+              child: Icon(
+                Icons.camera_alt,
+                color: PrassoColors.olive,
+                size: algo * 33.0,
+              ),
+            ),
           ),
-          
-          
-        ]))]
-
-    ;
+        ),
+        TextFormField(
+          decoration: const InputDecoration(labelText: Strings.emailLabel),
+          keyboardAppearance: Brightness.light,
+          initialValue: _viewmodel.email,
+          validator: (value) => value!.isNotEmpty ? null : Strings.emailCantbeEmpty,
+          onSaved: (value) => _viewmodel.email = value!,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(labelText: Strings.nameLabel),
+          keyboardAppearance: Brightness.light,
+          initialValue: _viewmodel.displayName,
+          onSaved: (value) => _viewmodel.displayName = value,
+        ),
+      ]))
+    ];
   }
-
 }

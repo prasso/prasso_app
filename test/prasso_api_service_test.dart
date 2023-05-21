@@ -31,13 +31,12 @@ void main() {
 
     void stubTabsParsingYields() {
       final dynamic data = jsonDecode(testjson);
-      final appdata = data['data']['app_data'] as String;
+      final appdata = data['data']['app_data'].toString();
       final dynamic alldata = jsonDecode(appdata);
 
-      final tabslist = alldata['tabs'] as List;
+      final tabslist = List.from(alldata['tabs']);
 
-      final CupertinoHomeScaffoldViewModel model =
-          CupertinoHomeScaffoldViewModel(SharedPreferencesService(null));
+      final CupertinoHomeScaffoldViewModel model = CupertinoHomeScaffoldViewModel(SharedPreferencesService(null));
       model.buildAllTabs(tabslist);
     }
 

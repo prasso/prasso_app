@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -65,21 +66,24 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
 
     if (usr == null) {
       if (authService != null && authService.userIsRegistering) {
-        final navigator = Navigator.of(context);
-        navigator.pushNamed(
-          Routes.introPages,
-          arguments: () => navigator.pop(),
-        );
-      } else {
-        //take it back we missed something
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop(); //takes you back to the sign in screen.
-        } else {
-          //go to login
+        SchedulerBinding.instance.addPostFrameCallback((_) {
           Navigator.of(context).pushNamed(
-            Routes.emailPasswordSignInPage,
+            Routes.introPages,
             arguments: () => Navigator.of(context).pop(),
           );
+        });
+      } else {
+        if (Navigator.of(context).canPop()) {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pop(); // Takes you back to the sign-in screen.
+          });
+        } else {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushNamed(
+              Routes.emailPasswordSignInPage,
+              arguments: () => Navigator.of(context).pop(),
+            );
+          });
         }
       }
     }

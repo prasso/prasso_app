@@ -11,10 +11,10 @@ import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/apps/apps_page.dart';
 import 'package:prasso_app/app_widgets/more/more_page.dart';
-import 'package:prasso_app/app_widgets/subscriptions/subscribe.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/tab_item.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 // Package imports:
 import 'package:prasso_app/utils/icons_helper.dart';
@@ -41,9 +41,42 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   List<TabItemData> moreItems = [];
   Map<TabItem, TabItemData> allTabs = {
-    TabItem.position1: TabItemData(key: Keys.appsTab, title: Strings.apps, icon: Icons.work, pageUrl: 'AppsPage()', pageTitle: Strings.apps, extraHeaderInfo: '', iconImageFileName: 'add_circle', isActive: true, sortOrder: 1, parent: 0, subscriptionRequired: false),
-    TabItem.position2: TabItemData(key: Keys.asdefinedTab, title: Strings.appsTabTitle, icon: Icons.star, pageUrl: 'AppRunPage.create', pageTitle: Strings.appsTabTitle, extraHeaderInfo: '', iconImageFileName: 'add_circle', isActive: true, sortOrder: 1, parent: 0, subscriptionRequired: false),
-    TabItem.position3: TabItemData(key: Keys.accountTab, title: Strings.account, icon: Icons.person, pageUrl: 'AccountPage()', pageTitle: Strings.account, extraHeaderInfo: '', iconImageFileName: 'add_circle', isActive: true, sortOrder: 1, parent: 0, subscriptionRequired: false),
+    TabItem.position1: TabItemData(
+        key: Keys.appsTab,
+        title: Strings.apps,
+        icon: Icons.work,
+        pageUrl: 'AppsPage()',
+        pageTitle: Strings.apps,
+        extraHeaderInfo: '',
+        iconImageFileName: 'add_circle',
+        isActive: true,
+        sortOrder: 1,
+        parent: 0,
+        subscriptionRequired: false),
+    TabItem.position2: TabItemData(
+        key: Keys.asdefinedTab,
+        title: Strings.appsTabTitle,
+        icon: Icons.star,
+        pageUrl: 'AppRunPage.create',
+        pageTitle: Strings.appsTabTitle,
+        extraHeaderInfo: '',
+        iconImageFileName: 'add_circle',
+        isActive: true,
+        sortOrder: 1,
+        parent: 0,
+        subscriptionRequired: false),
+    TabItem.position3: TabItemData(
+        key: Keys.accountTab,
+        title: Strings.account,
+        icon: Icons.person,
+        pageUrl: 'AccountPage()',
+        pageTitle: Strings.account,
+        extraHeaderInfo: '',
+        iconImageFileName: 'add_circle',
+        isActive: true,
+        sortOrder: 1,
+        parent: 0,
+        subscriptionRequired: false),
   };
   Map<TabItem, WidgetBuilder?> widgetBuilders = {
     TabItem.position1: (_) => AppsPage(),
@@ -78,7 +111,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     isDisposed = true;
   }
 
-  factory CupertinoHomeScaffoldViewModel.initializeFromLocalStorage(SharedPreferencesService sharedPreferencesService) {
+  factory CupertinoHomeScaffoldViewModel.initializeFromLocalStorage(
+      SharedPreferencesService sharedPreferencesService) {
     final _vm = CupertinoHomeScaffoldViewModel(sharedPreferencesService);
     _vm.isInitializing = true;
     isDisposed = false;
@@ -167,6 +201,21 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     return true;
   }
 
+  ///
+  /// This method is called when the user clicks on a link text view from many screens
+  /// It will open the link in a new tab
+  Future<bool> showWebViewWithUrl(
+      String pageTitle, String pageUrl, String extraHeaderInfo, BuildContext context) async {
+    //show the webview with this url.
+    await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
+        builder: (dynamic context) => AppRunWebView(
+              title: pageTitle,
+              selectedUrl: pageUrl,
+              extraHeaderInfo: extraHeaderInfo,
+            )));
+    return true;
+  }
+
   Future<bool> clear() async {
     await sharedPreferencesServiceProvider.saveAppData('');
 
@@ -181,7 +230,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
       return;
     }
     final dynamic alldata = jsonDecode(defaultTabsJson!);
-    final tabslist = alldata['tabs'] as List;
+    final tabslist = List.from(alldata['tabs']);
     buildAllTabs(tabslist);
   }
 
@@ -225,15 +274,26 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     moreItems = [];
 
     for (int i = 0; i < tabsFromAPI.length; i++) {
-      final TabItemData t1 =
-          TabItemData(key: UniqueKey().toString(), title: tabsFromAPI[i]['label'], icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']), iconImageFileName: tabsFromAPI[i]['icon'], pageUrl: tabsFromAPI[i]['page_url'], pageTitle: tabsFromAPI[i]['page_title'], extraHeaderInfo: tabsFromAPI[i]['request_header'], isActive: true, sortOrder: tabsFromAPI[i]['sort_order'], parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl) ? 0 : tabsFromAPI[i]['parent'], subscriptionRequired: false
+      final TabItemData t1 = TabItemData(
+          key: UniqueKey().toString(),
+          title: tabsFromAPI[i]['label'],
+          icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']),
+          iconImageFileName: tabsFromAPI[i]['icon'],
+          pageUrl: tabsFromAPI[i]['page_url'],
+          pageTitle: tabsFromAPI[i]['page_title'],
+          extraHeaderInfo: tabsFromAPI[i]['request_header'],
+          isActive: true,
+          sortOrder: tabsFromAPI[i]['sort_order'],
+          parent:
+              (tabsFromAPI[i]['page_url'] == Strings.morePageUrl) ? 0 : tabsFromAPI[i]['parent'],
+          subscriptionRequired: false
 
-              //         fill these in
+          //         fill these in
 /*
       @required this.iconImageFileName,
       @required this.isActive,
       @required this.subscriptionRequired});*/
-              );
+          );
 
       final int position = allTabs.length;
       /*if (position <= TabItem.values.length && t1.parent == 0) {
@@ -265,9 +325,6 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     //filter out the known links ( links that are pointing to native views)
     //if not a known link then do the web view action
 
-    if (actionString.endsWith(Strings.subscribePageUrl)) {
-      return (_) => SubscribePage();
-    }
     if (actionString == Strings.accountPageUrl) {
       return (_) => AccountPage();
     }
@@ -303,5 +360,19 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         builder: _actionFromString(t1)!,
       ),
     );
+  }
+
+  void buildTabsFromStorage() {
+    final appdata = sharedPreferencesServiceProvider.getAppData();
+    if (appdata == null || appdata == 'null') {
+      try {
+        final prassoApiRepository = PrassoApiRepository.instance;
+        final user = prassoApiRepository.currentUser;
+
+        prassoApiRepository.getAppConfig(user);
+      } catch (e) {
+        showErrorToast(Strings.refreshFailed);
+      }
+    }
   }
 }

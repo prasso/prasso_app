@@ -19,12 +19,10 @@ class CupertinoHomeScaffold extends StatefulHookConsumerWidget {
   const CupertinoHomeScaffold({Key? key}) : super(key: key);
 
   @override
-  CupertinoHomeScaffoldPageState createState() =>
-      CupertinoHomeScaffoldPageState();
+  CupertinoHomeScaffoldPageState createState() => CupertinoHomeScaffoldPageState();
 }
 
-class CupertinoHomeScaffoldPageState
-    extends ConsumerState<CupertinoHomeScaffold> {
+class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
   CupertinoHomeScaffoldViewModel? vm;
 
@@ -32,8 +30,7 @@ class CupertinoHomeScaffoldPageState
     if (tabItem == vm.currentTab) {
       // pop to first route
       if (mounted) {
-        setState(() => vm.navigatorKeys[tabItem]!.currentState!
-            .popUntil((route) => route.isFirst));
+        setState(() => vm.navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst));
       }
     } else {
       if (mounted) {
@@ -77,6 +74,12 @@ class CupertinoHomeScaffoldPageState
         //take it back we missed something
         if (Navigator.of(context).canPop()) {
           Navigator.of(context).pop(); //takes you back to the sign in screen.
+        } else {
+          //go to login
+          Navigator.of(context).pushNamed(
+            Routes.emailPasswordSignInPage,
+            arguments: () => Navigator.of(context).pop(),
+          );
         }
       }
     }
@@ -92,7 +95,7 @@ class CupertinoHomeScaffoldPageState
 
     if (vm!.tabs.length < 2) {
       return const Scaffold(
-        body: Center(
+          body: Center(
               child: Padding(
         padding: EdgeInsets.all(28.0),
         child: Text(
@@ -129,7 +132,6 @@ class CupertinoHomeScaffoldPageState
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
+    properties.add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
   }
 }

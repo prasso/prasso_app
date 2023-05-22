@@ -17,6 +17,7 @@ import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/api_user.dart';
+import 'package:prasso_app/routing/router.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
@@ -31,6 +32,10 @@ class AccountPage extends HookConsumerWidget {
       await sharedPreferencesServiceProvider.saveUserToken('');
       await sharedPreferencesServiceProvider.setthirdPartyToken('');
       await PrassoApiRepository.instance.signOut();
+      unawaited(Navigator.of(context).pushNamed(
+        Routes.emailPasswordSignInPage,
+        arguments: () => Navigator.of(context).pop(),
+      ));
     } catch (e) {
       unawaited(showExceptionAlertDialog(
         context: context,

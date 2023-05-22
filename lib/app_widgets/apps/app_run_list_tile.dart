@@ -6,14 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 
 class AppRunListTileModel {
-  const AppRunListTileModel(
-      {required this.leadingText,
-      required this.pageUrl,
-      this.pageTitle,
-      this.extraHeaderInfo,
-      this.sortOrder,
-      this.isHeader = false,
-      this.isLoading = false});
+  const AppRunListTileModel({required this.leadingText, required this.pageUrl, this.pageTitle, this.extraHeaderInfo, this.sortOrder, this.isHeader = false, this.isLoading = false});
   final String leadingText;
   final String? pageUrl;
   final String? pageTitle;
@@ -28,8 +21,7 @@ class AppRunListTile extends StatelessWidget {
 
   final AppRunListTileModel model;
 
-  Future<void> _showWebViewWithUrl(String pageTitle, String pageUrl,
-      String extraHeaderInfo, BuildContext context) async {
+  Future<void> _showWebViewWithUrl(String pageTitle, String pageUrl, String extraHeaderInfo, BuildContext context) async {
     //show the webview with this url.
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
         builder: (dynamic context) => AppRunWebView(
@@ -43,14 +35,13 @@ class AppRunListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     const fontSize = 16.0;
     return Container(
-      color: model.isHeader ? Theme.of(context).backgroundColor : null,
+      color: model.isHeader ? Theme.of(context).colorScheme.background : null,
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Row(
         children: <Widget>[
           Text(
             model.pageTitle ?? 'no page title',
-            style: TextStyle(
-                color: Theme.of(context).primaryColorDark, fontSize: fontSize),
+            style: TextStyle(color: Theme.of(context).primaryColorDark, fontSize: fontSize),
             textAlign: TextAlign.left,
           ),
           Expanded(child: Container()),
@@ -58,13 +49,7 @@ class AppRunListTile extends StatelessWidget {
             width: 90.0,
             child: TextButton(
               child: const Text('Open'),
-              onPressed: model.isLoading
-                  ? null
-                  : () => _showWebViewWithUrl(
-                      model.pageTitle ?? '',
-                      model.pageUrl ?? '',
-                      model.extraHeaderInfo ?? '{}',
-                      context),
+              onPressed: model.isLoading ? null : () => _showWebViewWithUrl(model.pageTitle ?? '', model.pageUrl ?? '', model.extraHeaderInfo ?? '{}', context),
             ),
           ),
         ],

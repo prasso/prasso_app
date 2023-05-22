@@ -11,7 +11,6 @@ class TeamMemberModel {
   }
 
   factory TeamMemberModel.fromMap(Map<String, dynamic> data) {
-
     return TeamMemberModel(data['uid'].toInt(), data['id'].toInt());
   }
 
@@ -26,15 +25,14 @@ class TeamMemberModel {
   }
 
   static List<TeamMemberModel> convertFromJson(String? json) {
-    if (json == null) return [];
+    if (json == null || json == 'null') return [];
 
-    final alldata = jsonDecode(json) as List<dynamic>?;
-    if (alldata == null) return [];
+    final alldata = List<dynamic>.from(jsonDecode(json));
+
     final List<TeamMemberModel> roleObjs = [];
     for (final tm in alldata) {
       if (tm['firebaseUid'] != null) {
-        roleObjs.add(
-            TeamMemberModel.fromJson(tm['firebaseUid'], tm['userId'].toInt()));
+        roleObjs.add(TeamMemberModel.fromJson(tm['firebaseUid'], tm['userId'].toInt()));
       }
       if (tm['uid'] != null) {
         roleObjs.add(TeamMemberModel.fromJson(tm['uid'], tm['id'].toInt()));

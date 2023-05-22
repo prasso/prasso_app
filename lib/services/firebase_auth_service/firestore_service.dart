@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_as
+
 library firestore_service;
 
 // Package imports:
@@ -35,10 +37,7 @@ class FirestoreService {
     }
     final Stream<QuerySnapshot> snapshots = query.snapshots();
     return snapshots.map((snapshot) {
-      final result = snapshot.docs
-          .map((snapshot) => builder(snapshot.data() as Map<String, dynamic>, snapshot.id))
-          .where((value) => value != null)
-          .toList();
+      final result = snapshot.docs.map((snapshot) => builder(snapshot.data() as Map<String, dynamic>, snapshot.id)).where((value) => value != null).toList();
       if (sort != null) {
         result.sort(sort);
       }
@@ -52,6 +51,7 @@ class FirestoreService {
   }) {
     final DocumentReference reference = FirebaseFirestore.instance.doc(path);
     final Stream<DocumentSnapshot> snapshots = reference.snapshots();
+
     return snapshots.map((snapshot) => builder(snapshot.data() as Map<String, dynamic>?, snapshot.id));
   }
 }

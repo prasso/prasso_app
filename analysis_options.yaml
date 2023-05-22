@@ -64,8 +64,6 @@ linter:
     avoid_print: false
     # Not including author name in small projects
     flutter_style_todos: false
-    # Sometimes used
-    avoid_as: false
     # Not sure how to address this
     use_raw_strings: false
     # Need to fix this

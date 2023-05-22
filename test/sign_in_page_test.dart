@@ -28,9 +28,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            prassoApiService
-                .overrideWithProvider(
-                Provider<PrassoApiRepository?>((ref) => mockPrassoAuth)),
+            prassoApiService.overrideWithProvider(Provider<PrassoApiRepository?>((ref) => mockPrassoAuth)),
           ],
           child: Consumer(builder: (context, watch, __) {
             return MaterialApp(
@@ -57,8 +55,7 @@ void main() {
     testWidgets('email & password navigation', (tester) async {
       await pumpSignInPage(tester);
 
-      final emailPasswordButton =
-          find.byKey(SignInPageContents.emailPasswordButtonKey);
+      final emailPasswordButton = find.byKey(SignInPageContents.emailPasswordButtonKey);
       expect(emailPasswordButton, findsOneWidget);
 
       await tester.tap(emailPasswordButton);

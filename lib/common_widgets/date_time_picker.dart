@@ -38,8 +38,7 @@ class DateTimePicker extends StatelessWidget {
   }
 
   Future<void> _selectTime(BuildContext context) async {
-    final pickedTime =
-        await showTimePicker(context: context, initialTime: selectedTime!);
+    final pickedTime = await showTimePicker(context: context, initialTime: selectedTime!);
     if (pickedTime != null && pickedTime != selectedTime) {
       onSelectedTime!(pickedTime);
     }
@@ -47,7 +46,7 @@ class DateTimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final valueStyle = Theme.of(context).textTheme.headline6;
+    final valueStyle = Theme.of(context).textTheme.titleLarge;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
@@ -78,11 +77,8 @@ class DateTimePicker extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('labelText', labelText));
     properties.add(DiagnosticsProperty<DateTime>('selectedDate', selectedDate));
-    properties
-        .add(DiagnosticsProperty<TimeOfDay>('selectedTime', selectedTime));
-    properties.add(ObjectFlagProperty<ValueChanged<DateTime>>.has(
-        'onSelectedDate', onSelectedDate));
-    properties.add(ObjectFlagProperty<ValueChanged<TimeOfDay>>.has(
-        'onSelectedTime', onSelectedTime));
+    properties.add(DiagnosticsProperty<TimeOfDay>('selectedTime', selectedTime));
+    properties.add(ObjectFlagProperty<ValueChanged<DateTime>>.has('onSelectedDate', onSelectedDate));
+    properties.add(ObjectFlagProperty<ValueChanged<TimeOfDay>>.has('onSelectedTime', onSelectedTime));
   }
 }

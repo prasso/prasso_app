@@ -38,13 +38,13 @@ class AuthWidget extends ConsumerWidget {
         error: (_, __) => nonSignedInBuilder(context));
   }
 
-  Widget _data(
-      BuildContext context,
-      ApiUser? user,
-      CupertinoHomeScaffoldViewModel cupertinoVM,
+  Widget _data(BuildContext context, ApiUser? user, CupertinoHomeScaffoldViewModel cupertinoVM,
       SharedPreferencesService sharedPreferences) {
-    if (user != null &&
-        cupertinoVM.tabs.isNotEmpty) {
+    if (user != null) {
+      if (cupertinoVM.tabs.isEmpty) {
+        cupertinoVM.buildTabsFromStorage();
+        //tabs are based on api endpoint not user login
+      }
       return signedInBuilder(context);
     }
     return nonSignedInBuilder(context);
@@ -53,9 +53,7 @@ class AuthWidget extends ConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<WidgetBuilder>.has(
-        'nonSignedInBuilder', nonSignedInBuilder));
-    properties.add(ObjectFlagProperty<WidgetBuilder>.has(
-        'signedInBuilder', signedInBuilder));
+    properties.add(ObjectFlagProperty<WidgetBuilder>.has('nonSignedInBuilder', nonSignedInBuilder));
+    properties.add(ObjectFlagProperty<WidgetBuilder>.has('signedInBuilder', signedInBuilder));
   }
 }

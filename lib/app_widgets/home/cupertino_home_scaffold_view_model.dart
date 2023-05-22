@@ -11,10 +11,10 @@ import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
 import 'package:prasso_app/app_widgets/apps/apps_page.dart';
 import 'package:prasso_app/app_widgets/more/more_page.dart';
-import 'package:prasso_app/app_widgets/subscriptions/subscribe.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/tab_item.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 // Package imports:
 import 'package:prasso_app/utils/icons_helper.dart';
@@ -192,13 +192,27 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 100));
 
     // this takes you all the way back to login page
-    Navigator.of(context, rootNavigator: true)
-        .popUntil((route) => route.isFirst);
+    Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
     await Future.delayed(const Duration(milliseconds: 100));
 
     //now change to Dashboard tab, using the property here to get the notifications out
     doBuildTabs = true;
     currentTab = TabItem.position1;
+    return true;
+  }
+
+  ///
+  /// This method is called when the user clicks on a link text view from many screens
+  /// It will open the link in a new tab
+  Future<bool> showWebViewWithUrl(
+      String pageTitle, String pageUrl, String extraHeaderInfo, BuildContext context) async {
+    //show the webview with this url.
+    await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
+        builder: (dynamic context) => AppRunWebView(
+              title: pageTitle,
+              selectedUrl: pageUrl,
+              extraHeaderInfo: extraHeaderInfo,
+            )));
     return true;
   }
 
@@ -216,7 +230,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
       return;
     }
     final dynamic alldata = jsonDecode(defaultTabsJson!);
-    final tabslist = alldata['tabs'] as List;
+    final tabslist = List.from(alldata['tabs']);
     buildAllTabs(tabslist);
   }
 
@@ -270,9 +284,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           extraHeaderInfo: tabsFromAPI[i]['request_header'],
           isActive: true,
           sortOrder: tabsFromAPI[i]['sort_order'],
-          parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
-              ? 0
-              : tabsFromAPI[i]['parent'],
+          parent:
+              (tabsFromAPI[i]['page_url'] == Strings.morePageUrl) ? 0 : tabsFromAPI[i]['parent'],
           subscriptionRequired: false
 
           //         fill these in
@@ -283,7 +296,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           );
 
       final int position = allTabs.length;
-      if (position <= TabItem.values.length && t1.parent == 0) {
+      /*if (position <= TabItem.values.length && t1.parent == 0) {
         if ((position > 3 && t1.pageUrl != Strings.morePageUrl) || t1.parent! > 0) {
           moreItems.add(t1);
         } else {
@@ -291,6 +304,14 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
         }
 
+      }*/
+      if (position <= TabItem.values.length && t1.parent == 0) {
+        allTabs[TabItem.values[position]] = t1;
+
+        widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
+      }
+      if (t1.parent != 0) {
+        moreItems.add(t1);
       }
     }
 
@@ -304,9 +325,6 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     //filter out the known links ( links that are pointing to native views)
     //if not a known link then do the web view action
 
-    if (actionString.endsWith(Strings.subscribePageUrl)) {
-      return (_) => SubscribePage();
-    }
     if (actionString == Strings.accountPageUrl) {
       return (_) => AccountPage();
     }
@@ -342,5 +360,19 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         builder: _actionFromString(t1)!,
       ),
     );
+  }
+
+  void buildTabsFromStorage() {
+    final appdata = sharedPreferencesServiceProvider.getAppData();
+    if (appdata == null || appdata == 'null') {
+      try {
+        final prassoApiRepository = PrassoApiRepository.instance;
+        final user = prassoApiRepository.currentUser;
+
+        prassoApiRepository.getAppConfig(user);
+      } catch (e) {
+        showErrorToast(Strings.refreshFailed);
+      }
+    }
   }
 }

@@ -6,6 +6,5 @@ class SliderModel {
   final String? localImageSrc;
   final Color? backgroundColor;
 
-  SliderModel(
-      {this.title, this.description, this.localImageSrc, this.backgroundColor});
+  SliderModel({this.title, this.description, this.localImageSrc, this.backgroundColor});
 }

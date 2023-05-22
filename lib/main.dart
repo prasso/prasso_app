@@ -12,11 +12,9 @@ import 'package:prasso_app/app_widgets/auth_widget.dart';
 import 'package:prasso_app/app_widgets/home/home_page.dart';
 import 'package:prasso_app/app_widgets/onboarding/intro_page.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/routing/router.dart' as _rtr;
 import 'package:prasso_app/services/shared_preferences_service.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
-import 'package:qonversion_flutter/qonversion_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_widgets/onboarding/intro_viewmodel.dart';
@@ -26,7 +24,7 @@ import 'app_widgets/sign_in/sign_in_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-if (kIsWeb) {
+  if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
         apiKey: 'AIzaSyD-dA6WeTVXsxsGJYXro9EUqHf1LHcL7J8',
@@ -39,17 +37,6 @@ if (kIsWeb) {
     await Firebase.initializeApp();
   }
 
-
-
-
-  try {
-    await Qonversion.setAdvertisingID();
-    await Qonversion.launch(Strings.qonversionId,
-      isObserveMode: false);
-      
-  } catch (e) {
-    print(e);
-  }
   final sharedPreferences = await SharedPreferences.getInstance();
 
   runApp(ProviderScope(
@@ -68,8 +55,8 @@ class PrassoCore extends StatefulWidget {
 }
 
 class _PrassoCoreState extends State<PrassoCore> {
-
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -83,8 +70,7 @@ class _PrassoCoreState extends State<PrassoCore> {
         home: AuthWidget(
           nonSignedInBuilder: (_) => Consumer(
             builder: (context, ref, _) {
-              final bool didCompleteOnboarding =
-                  ref.watch(onboardingViewModelProvider).state;
+              final bool didCompleteOnboarding = ref.watch(onboardingViewModelProvider).state;
               return didCompleteOnboarding ? SignInPage() : OnboardingPage();
             },
           ),
@@ -92,10 +78,8 @@ class _PrassoCoreState extends State<PrassoCore> {
           /// Signed In Builder will show intro pages ( video and profile editor ) if the user is newly registered
           signedInBuilder: (_) => Consumer(
             builder: (context, ref, _) {
-              final bool didCompleteProfile =
-                  ref.watch(introViewModelProvider).state;
+              final bool didCompleteProfile = ref.watch(introViewModelProvider).state;
               return didCompleteProfile ? const HomePage() : IntroPage();
-
             },
           ),
         ),
@@ -113,39 +97,33 @@ class _PrassoCoreState extends State<PrassoCore> {
 
   @override
   void initState() {
-
     const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     const initializationSettingsIOS = IOSInitializationSettings();
     const initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
+    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
 
     super.initState();
 
-FirebaseMessaging.onMessage.listen((message) async {
+    FirebaseMessaging.onMessage.listen((message) async {
       print('onMessage: $message');
 
       const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-          'Prasso',
-          'Prasso Android',
+        'Prasso',
+        'Prasso Android',
         channelDescription: 'Prasso Android Channel',
         importance: Importance.max,
         priority: Priority.high,
-        ); // Android
+      ); // Android
 
       const iOSPlatformChannelSpecifics = IOSNotificationDetails(); // IOS
 
       const platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics,
-          iOS: iOSPlatformChannelSpecifics);
-        await _flutterLocalNotificationsPlugin.show(
-            0,
-            message.data['title'],
-          message.data['body'],
-            platformChannelSpecifics
-        );
-});
-
+          android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+      await _flutterLocalNotificationsPlugin.show(
+          0, message.data['title'], message.data['body'], platformChannelSpecifics);
+    });
 
     if (!kIsWeb) getFCMToken();
   }

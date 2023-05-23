@@ -466,7 +466,7 @@ class PrassoApiRepository {
   Map<String, String> _setHeaders() {
     final String? userToken = sharedPreferencesServiceProvider.getUserToken();
 
-    if (userToken != null) {
+    if (userToken != null && userToken.isNotEmpty) {
       print('Authorization: Bearer $userToken');
       return {
         'Content-type': 'application/json',

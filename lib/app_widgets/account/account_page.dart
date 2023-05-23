@@ -3,6 +3,7 @@ import 'dart:async';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -32,10 +33,14 @@ class AccountPage extends HookConsumerWidget {
       await sharedPreferencesServiceProvider.saveUserToken('');
       await sharedPreferencesServiceProvider.setthirdPartyToken('');
       await PrassoApiRepository.instance.signOut();
-      unawaited(Navigator.of(context).pushNamed(
-        Routes.emailPasswordSignInPage,
-        arguments: () => Navigator.of(context).pop(),
-      ));
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            Routes.emailPasswordSignInPage,
+            arguments: () => Navigator.of(context).pop(),
+          );
+        });
+      });
     } catch (e) {
       unawaited(showExceptionAlertDialog(
         context: context,

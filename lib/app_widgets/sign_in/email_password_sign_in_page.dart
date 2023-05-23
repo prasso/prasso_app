@@ -242,6 +242,7 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false, //turns off the x to close the dialog
           elevation: 2.0,
           centerTitle: true,
           title: Text(

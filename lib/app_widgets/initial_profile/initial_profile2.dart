@@ -292,10 +292,10 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
         child: Column(
           children: [
             const SizedBox(height: 8),
-            Column(
+            const Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(2.0),
                     child: Text(
                       'Profile',

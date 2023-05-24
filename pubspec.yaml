@@ -44,7 +44,6 @@ dependencies:
   pedantic: any
   percent_indicator: ^4.2.2
   permission_handler: ^10.0.0  
-  qonversion_flutter: 4.3.2
   # For asking permission to load the pdf
   rxdart: ^0.27.3
   shared_preferences: ^2.0.11
@@ -55,7 +54,8 @@ dependencies:
   webview_flutter: ^3.0.0
 
 dependency_overrides:
-  test_api: 0.4.9
+  #test_api: 0.4.9
+  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_driver:

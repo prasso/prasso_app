@@ -14,12 +14,11 @@ class CupertinoTabViewRouter {
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case CupertinoTabViewRoutes.webViewPage:
-        final AppModel? app = settings.arguments as AppModel?;
+        // ignore: avoid_as
+        final AppModel? app = settings.arguments is AppModel ? settings.arguments as AppModel : null;
+
         return CupertinoPageRoute(
-          builder: (dynamic _) => AppRunWebView(
-              title: app!.pageTitle,
-              selectedUrl: app.pageUrl,
-              extraHeaderInfo: app.extraHeaderInfo),
+          builder: (dynamic _) => AppRunWebView(title: app!.pageTitle, selectedUrl: app.pageUrl, extraHeaderInfo: app.extraHeaderInfo),
           settings: settings,
           fullscreenDialog: false,
         );

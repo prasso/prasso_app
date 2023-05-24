@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,12 +20,10 @@ class CupertinoHomeScaffold extends StatefulHookConsumerWidget {
   const CupertinoHomeScaffold({Key? key}) : super(key: key);
 
   @override
-  CupertinoHomeScaffoldPageState createState() =>
-      CupertinoHomeScaffoldPageState();
+  CupertinoHomeScaffoldPageState createState() => CupertinoHomeScaffoldPageState();
 }
 
-class CupertinoHomeScaffoldPageState
-    extends ConsumerState<CupertinoHomeScaffold> {
+class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
   CupertinoHomeScaffoldViewModel? vm;
 
@@ -32,8 +31,7 @@ class CupertinoHomeScaffoldPageState
     if (tabItem == vm.currentTab) {
       // pop to first route
       if (mounted) {
-        setState(() => vm.navigatorKeys[tabItem]!.currentState!
-            .popUntil((route) => route.isFirst));
+        setState(() => vm.navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst));
       }
     } else {
       if (mounted) {
@@ -68,15 +66,24 @@ class CupertinoHomeScaffoldPageState
 
     if (usr == null) {
       if (authService != null && authService.userIsRegistering) {
-        final navigator = Navigator.of(context);
-        navigator.pushNamed(
-          Routes.introPages,
-          arguments: () => navigator.pop(),
-        );
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).pushNamed(
+            Routes.introPages,
+            arguments: () => Navigator.of(context).pop(),
+          );
+        });
       } else {
-        //take it back we missed something
         if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop(); //takes you back to the sign in screen.
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pop(); // Takes you back to the sign-in screen.
+          });
+        } else {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushNamed(
+              Routes.emailPasswordSignInPage,
+              arguments: () => Navigator.of(context).pop(),
+            );
+          });
         }
       }
     }
@@ -92,7 +99,7 @@ class CupertinoHomeScaffoldPageState
 
     if (vm!.tabs.length < 2) {
       return const Scaffold(
-        body: Center(
+          body: Center(
               child: Padding(
         padding: EdgeInsets.all(28.0),
         child: Text(
@@ -129,7 +136,6 @@ class CupertinoHomeScaffoldPageState
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
+    properties.add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
   }
 }

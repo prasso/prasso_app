@@ -15,7 +15,6 @@ import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 
-
 DateTime selectedDate = DateTime(2000, 1, 1);
 String? fromClass;
 
@@ -37,10 +36,8 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
     }
   }
 
-  static final TextEditingController _firsNameTextController =
-      TextEditingController();
-  static final TextEditingController _lastNameTextController =
-      TextEditingController();
+  static final TextEditingController _firsNameTextController = TextEditingController();
+  static final TextEditingController _lastNameTextController = TextEditingController();
 
   bool _isApiRequired = false;
   bool _isApiFinished = false;
@@ -82,8 +79,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
     if (_isApiRequired) {
       if (_isApiFinished) {
         if (_profileModel != null) {
-          if (_profileModel?.statusCode == 200 &&
-              _profileModel?.message == null) {
+          if (_profileModel?.statusCode == 200 && _profileModel?.message == null) {
             return LoadingOverlay(
               isLoading: _isProgressLoading,
               child: Padding(
@@ -91,8 +87,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
                 child: _buildProfileData(ref, context, _profileModel!),
               ),
             );
-          } else if (_profileModel?.statusCode == 401 ||
-              _profileModel?.statusCode == 404) {
+          } else if (_profileModel?.statusCode == 401 || _profileModel?.statusCode == 404) {
             showErrorToast('Authorization has been denied for this request');
             return Container();
           } else if (_profileModel != null && _profileModel?.message != null) {
@@ -137,12 +132,11 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            primary: PrassoColors.brightOrange,
-            onPrimary: Colors.white,
+            backgroundColor: PrassoColors.brightOrange,
+            foregroundColor: Colors.white,
             shadowColor: PrassoColors.olive,
             elevation: 3,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),
             minimumSize: const Size(100, 40), //////// HERE
           ),
           onPressed: () {
@@ -159,8 +153,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
     final auth = ref.read(prassoApiService);
     final user = auth?.currentUser;
 
-    final CreateProfileInputModel createProfileInputModel =
-        CreateProfileInputModel();
+    final CreateProfileInputModel createProfileInputModel = CreateProfileInputModel();
     createProfileInputModel.setReasonableDefaults(user);
 
     if (_firsNameTextController.text.isNotEmpty) {
@@ -175,25 +168,22 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
     }
 
     setState(() {
-       _isProgressLoading = true;
-     });
+      _isProgressLoading = true;
+    });
     createProfileApi(ref, context, createProfileInputModel);
   }
 
   // Save Profile API
-  Future<void> createProfileApi(WidgetRef ref, BuildContext context,
-      CreateProfileInputModel createProfileInputModel) async {
+  Future<void> createProfileApi(WidgetRef ref, BuildContext context, CreateProfileInputModel createProfileInputModel) async {
     final _profileViewModel = ref.read(profileViewModelProvider);
-    final result = await _profileViewModel.createProfileAPI(
-        ref, createProfileInputModel, context);
+    final result = await _profileViewModel.createProfileAPI(ref, createProfileInputModel, context);
     print(result);
     setState(() {
-       _isProgressLoading = false;
-     });
+      _isProgressLoading = false;
+    });
     if (result != null) {
       showSuccessToast('Saved successfully');
-      await PrassoApiRepository.instance.cupertinoHomeScaffoldVM
-          .goToDashboard(context);
+      await PrassoApiRepository.instance.cupertinoHomeScaffoldVM.goToDashboard(context);
     } else {
       showErrorToast('The data was not saved, an error occurred');
     }
@@ -205,30 +195,22 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
     _lastNameTextController.clear();
   }
 
-  Widget _customTextFieldForm(String textLabel, String hintText,
-      TextEditingController inputController, String inputType) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            child: Text(
-              textLabel,
-              style: const TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
-            ),
-            padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-          ),
-          TextField(
-            controller: inputController,
-            keyboardType: getInputKeyboardType(inputType),
-            style: getInputTextStyle(),
-            decoration: getTextInputDecorator(hintText),
-          )
-        ]);
+  Widget _customTextFieldForm(String textLabel, String hintText, TextEditingController inputController, String inputType) {
+    return Column(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+      Padding(
+        child: Text(
+          textLabel,
+          style: const TextStyle(fontSize: 12.0, color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+      ),
+      TextField(
+        controller: inputController,
+        keyboardType: getInputKeyboardType(inputType),
+        style: getInputTextStyle(),
+        decoration: getTextInputDecorator(hintText),
+      )
+    ]);
   }
 
 // Get TextInput Keyboard type
@@ -241,11 +223,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1900, 8),
-        lastDate: DateTime(2101));
+    final DateTime? picked = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(1900, 8), lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -255,8 +233,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
 
   // Get Text Input TextStyle
   TextStyle getInputTextStyle() {
-    return const TextStyle(
-        fontSize: 12.0, color: Colors.black, fontFamily: 'Roboto');
+    return const TextStyle(fontSize: 12.0, color: Colors.black, fontFamily: 'Roboto');
   }
 
   Widget dateOfBirth() {
@@ -268,10 +245,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
           children: <Widget>[
             const Text(
               'Date of birth',
-              style: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 12.0, color: Colors.black, fontWeight: FontWeight.bold),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,7 +255,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
                 //SizedBox(height: 20.0,),
                 ElevatedButton(
                   onPressed: () => _selectDate(context),
-                  style: ElevatedButton.styleFrom(primary: Colors.grey),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
                   child: Text('${selectedDate.toLocal()}'.split(' ')[0]),
                 )
               ],
@@ -318,17 +292,14 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
         child: Column(
           children: [
             const SizedBox(height: 8),
-            Column(
+            const Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(2.0),
                     child: Text(
                       'Profile',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   )
                 ]),
@@ -336,19 +307,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
               padding: const EdgeInsets.all(5.0),
               alignment: Alignment.center,
               margin: const EdgeInsets.all(3),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const PickImageLayout(),
-                    _customTextFieldForm('FIRST NAME', 'First Name',
-                        _firsNameTextController, Strings.inputTypeText),
-                    _customTextFieldForm('LAST NAME', 'Last Name',
-                        _lastNameTextController, Strings.inputTypeText),
-                    showSaveProfileButton(ref, context),
-                    const SizedBox(height: 64)
-                  ]),
+              child: Column(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[const PickImageLayout(), _customTextFieldForm('FIRST NAME', 'First Name', _firsNameTextController, Strings.inputTypeText), _customTextFieldForm('LAST NAME', 'Last Name', _lastNameTextController, Strings.inputTypeText), showSaveProfileButton(ref, context), const SizedBox(height: 64)]),
             )
           ],
         ));
@@ -382,64 +341,52 @@ class PickImageState extends State<PickImageLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (_imageFile == null)
-            const CircleAvatar(
-              radius: 40.0,
-              backgroundImage: AssetImage('media/avatar.png'),
-            )
-          else
-            ClipOval(
-                child: Image.file(_imageFile!,
-                    width: 80, height: 80, fit: BoxFit.cover)),
-          SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                        padding: const EdgeInsets.only(left: 0.0, right: 5.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.grey,
-                            shadowColor: Colors.grey,
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0)),
-                            minimumSize: const Size(100, 40), //////// HERE
-                          ),
-                          onPressed: () {
-                            getImageFromGallery();
-                          },
-                          child: const Text('SELECT A NEW PHOTO'),
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 5.0, right: 0.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.grey,
-                            shadowColor: Colors.grey,
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0)),
-                            minimumSize: const Size(100, 40), //////// HERE
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _imageFile = null;
-                            });
-                          },
-                          child: const Text('REMOVE PHOTO'),
-                        ))
-                  ]))
-        ]);
+    return Column(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+      if (_imageFile == null)
+        const CircleAvatar(
+          radius: 40.0,
+          backgroundImage: AssetImage('media/avatar.png'),
+        )
+      else
+        ClipOval(child: Image.file(_imageFile!, width: 80, height: 80, fit: BoxFit.cover)),
+      SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(left: 0.0, right: 5.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.grey,
+                    shadowColor: Colors.grey,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),
+                    minimumSize: const Size(100, 40), //////// HERE
+                  ),
+                  onPressed: () {
+                    getImageFromGallery();
+                  },
+                  child: const Text('SELECT A NEW PHOTO'),
+                )),
+            Padding(
+                padding: const EdgeInsets.only(left: 5.0, right: 0.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.grey,
+                    shadowColor: Colors.grey,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0)),
+                    minimumSize: const Size(100, 40), //////// HERE
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _imageFile = null;
+                    });
+                  },
+                  child: const Text('REMOVE PHOTO'),
+                ))
+          ]))
+    ]);
   }
 }

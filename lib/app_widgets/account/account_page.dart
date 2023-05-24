@@ -3,6 +3,7 @@ import 'dart:async';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,6 +18,7 @@ import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/models/api_user.dart';
+import 'package:prasso_app/routing/router.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
@@ -31,6 +33,14 @@ class AccountPage extends HookConsumerWidget {
       await sharedPreferencesServiceProvider.saveUserToken('');
       await sharedPreferencesServiceProvider.setthirdPartyToken('');
       await PrassoApiRepository.instance.signOut();
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            Routes.emailPasswordSignInPage,
+            arguments: () => Navigator.of(context).pop(),
+          );
+        });
+      });
     } catch (e) {
       unawaited(showExceptionAlertDialog(
         context: context,
@@ -57,8 +67,7 @@ class AccountPage extends HookConsumerWidget {
     }
   }
 
-  static Future<void> _showProfileEditor(
-      BuildContext context, ApiUser? user) async {
+  static Future<void> _showProfileEditor(BuildContext context, ApiUser? user) async {
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
       builder: (dynamic context) => const EditUserProfile(),
       fullscreenDialog: true,
@@ -71,8 +80,7 @@ class AccountPage extends HookConsumerWidget {
     final user = authService?.currentUser;
     return Scaffold(
       appBar: AppBar(
-          title: const Text(Strings.accountPage,
-              style: TextStyle(color: PrassoColors.lightGray)),
+          title: const Text(Strings.accountPage, style: TextStyle(color: PrassoColors.lightGray)),
           actions: <Widget>[
             const SizedBox(height: 8),
             TextButton(
@@ -111,13 +119,13 @@ class AccountPage extends HookConsumerWidget {
         const SizedBox(height: 8),
         Text(
           user?.displayName ?? '',
-            style: const TextStyle(color: Colors.black),
-          ),
+          style: const TextStyle(color: Colors.black),
+        ),
         const SizedBox(height: 8),
         Text(
           user?.email ?? '',
-            style: const TextStyle(color: Colors.black),
-          ),
+          style: const TextStyle(color: Colors.black),
+        ),
         const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -127,10 +135,7 @@ class AccountPage extends HookConsumerWidget {
             child: SizedBox(
                 child: Text(
               Strings.shortEditProfileText,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
             )),
           ),
         ),

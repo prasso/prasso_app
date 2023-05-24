@@ -11,8 +11,8 @@ class Strings {
   static const String apiUrl = 'API_URL';
   static const String appId = 'appId';
 
-  static const String prodUrl = 'https://prasso.io/api/';
-  //static const String prodUrl = 'http://localhost:8000/api/';
+  //static const String prodUrl = 'https://prasso.io/api/';
+  static const String prodUrl = 'http://localhost:8000/api/';
 
   static const String awsIdentityPool = 'AWS_IDENTITY_POOL';
   static const String awsRegion = 'AWS_REGION';
@@ -32,8 +32,7 @@ class Strings {
   // Logout
   static const String logout = 'Logout';
   static const String reload = 'Reload';
-  static const String logoutAreYouSure =
-      'Are you sure that you want to logout?';
+  static const String logoutAreYouSure = 'Are you sure that you want to logout?';
   static const String logoutFailed = 'Logout failed';
   static const String refreshFailed = 'Refresh failed';
 
@@ -45,9 +44,6 @@ class Strings {
   static const String goAnonymous = 'Go anonymous';
   static const String or = 'or';
   static const String signInFailed = 'Sign in failed';
-
-  // Subscription Page
-  static const String qonversionId = 'QONVERSION_ID';
 
   // Home page
   static const String homePage = 'Home Page';

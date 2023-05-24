@@ -15,20 +15,16 @@ class SubListItem extends StatelessWidget {
     return Row(
       children: [
         Padding(
-            padding:
-                const EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 0),
+            padding: const EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 0),
             child: Icon(
-              icon != null
-                  ? getIconUsingPrefix(name: icon!)
-                  : getIconUsingPrefix(name: 'add_circle'),
+              icon != null ? getIconUsingPrefix(name: icon!) : getIconUsingPrefix(name: 'add_circle'),
               color: PrassoColors.primary,
             )),
         Padding(
-            padding:
-                const EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 0),
+            padding: const EdgeInsets.only(right: 16, left: 16, top: 16, bottom: 0),
             child: Text(
               title!,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ))
       ],
     );

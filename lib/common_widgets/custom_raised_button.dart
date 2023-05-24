@@ -23,7 +23,7 @@ class CustomRaisedButton extends StatelessWidget {
   Widget buildSpinner(BuildContext context) {
     final ThemeData data = Theme.of(context);
     return Theme(
-      data: data.copyWith(secondaryHeaderColor: Colors.white70),
+      data: data.copyWith(secondaryHeaderColor: data.primaryColor),
       child: const SizedBox(
         width: 28,
         height: 28,
@@ -41,14 +41,14 @@ class CustomRaisedButton extends StatelessWidget {
       child: ElevatedButton(
         child: loading ? buildSpinner(context) : child,
         style: ElevatedButton.styleFrom(
-          primary: color,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(borderRadius),
             ),
           ), // height / 2
-          onSurface: color,
-          onPrimary: textColor,
+          disabledForegroundColor: color,
+          foregroundColor: textColor,
         ),
         onPressed: onPressed,
       ),
@@ -62,8 +62,7 @@ class CustomRaisedButton extends StatelessWidget {
     properties.add(ColorProperty('textColor', textColor));
     properties.add(DoubleProperty('height', height));
     properties.add(DoubleProperty('borderRadius', borderRadius));
-    properties
-        .add(ObjectFlagProperty<VoidCallback>.has('onPressed', onPressed));
+    properties.add(ObjectFlagProperty<VoidCallback>.has('onPressed', onPressed));
     properties.add(DiagnosticsProperty<bool>('loading', loading));
   }
 }

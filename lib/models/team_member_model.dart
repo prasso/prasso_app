@@ -18,7 +18,8 @@ class TeamMemberModel {
     return {'uid': firebaseUid, 'id': userId};
   }
 
-  Map toJson() => {'firebaseUid': firebaseUid, 'userId': userId};
+  Map<String, dynamic> toJson() =>
+      {'firebaseUid': firebaseUid, 'userId': userId};
 
   factory TeamMemberModel.fromJson(String? fuid, int? uid) {
     return TeamMemberModel(fuid, uid);
@@ -32,7 +33,8 @@ class TeamMemberModel {
     final List<TeamMemberModel> roleObjs = [];
     for (final tm in alldata) {
       if (tm['firebaseUid'] != null) {
-        roleObjs.add(TeamMemberModel.fromJson(tm['firebaseUid'], tm['userId'].toInt()));
+        roleObjs.add(
+            TeamMemberModel.fromJson(tm['firebaseUid'], tm['userId'].toInt()));
       }
       if (tm['uid'] != null) {
         roleObjs.add(TeamMemberModel.fromJson(tm['uid'], tm['id'].toInt()));

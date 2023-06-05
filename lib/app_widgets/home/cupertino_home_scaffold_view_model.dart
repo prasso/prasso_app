@@ -192,7 +192,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 100));
 
     // this takes you all the way back to login page
-    Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
+    Navigator.of(context, rootNavigator: true)
+        .popUntil((route) => route.isFirst);
     await Future.delayed(const Duration(milliseconds: 100));
 
     //now change to Dashboard tab, using the property here to get the notifications out
@@ -204,15 +205,16 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   ///
   /// This method is called when the user clicks on a link text view from many screens
   /// It will open the link in a new tab
-  Future<bool> showWebViewWithUrl(
-      String pageTitle, String pageUrl, String extraHeaderInfo, BuildContext context) async {
+  Future<bool> showWebViewWithUrl(String pageTitle, String pageUrl,
+      String extraHeaderInfo, BuildContext context) async {
     //show the webview with this url.
-    await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
-        builder: (dynamic context) => AppRunWebView(
-              title: pageTitle,
-              selectedUrl: pageUrl,
-              extraHeaderInfo: extraHeaderInfo,
-            )));
+    await Navigator.of(context)
+        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
+            builder: (dynamic context) => AppRunWebView(
+                  title: pageTitle,
+                  selectedUrl: pageUrl,
+                  extraHeaderInfo: extraHeaderInfo,
+                )) as Route<MaterialPageRoute<String>>);
     return true;
   }
 
@@ -269,7 +271,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     );
   }
 
-  void buildAllTabs(List tabsFromAPI) {
+  void buildAllTabs(List<dynamic> tabsFromAPI) {
     allTabs.clear();
     moreItems = [];
 
@@ -284,8 +286,9 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
           extraHeaderInfo: tabsFromAPI[i]['request_header'],
           isActive: true,
           sortOrder: tabsFromAPI[i]['sort_order'],
-          parent:
-              (tabsFromAPI[i]['page_url'] == Strings.morePageUrl) ? 0 : tabsFromAPI[i]['parent'],
+          parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
+              ? 0
+              : tabsFromAPI[i]['parent'],
           subscriptionRequired: false
 
           //         fill these in
@@ -354,11 +357,11 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   void navigateToMoreItem(int index, BuildContext context) {
     final TabItemData t1 = moreItems[index];
-    Navigator.push<MaterialPageRoute>(
+    Navigator.push<MaterialPageRoute<String>>(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<String>(
         builder: _actionFromString(t1)!,
-      ),
+      ) as Route<MaterialPageRoute<String>>,
     );
   }
 

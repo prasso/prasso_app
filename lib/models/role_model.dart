@@ -17,7 +17,8 @@ class RoleModel {
     return RoleModel(modelId: modelId, userId: userId, roleId: roleId);
   }
 
-  Map toJson() => {'modelId': modelId, 'userId': userId, 'roleId': roleId};
+  Map<String, dynamic> toJson() =>
+      {'modelId': modelId, 'userId': userId, 'roleId': roleId};
 
   static List<RoleModel> defaultRole() {
     final List<RoleModel> defaultRoles = [];
@@ -27,7 +28,9 @@ class RoleModel {
 
   factory RoleModel.fromMap(Map<String, dynamic> data, int modelId) {
     return RoleModel(
-        modelId: modelId, userId: data['user_id'].toInt(), roleId: data['role_id'].toInt());
+        modelId: modelId,
+        userId: data['user_id'].toInt(),
+        roleId: data['role_id'].toInt());
   }
 
   static List<RoleModel> convertFromJson(String? json) {
@@ -38,9 +41,11 @@ class RoleModel {
     final List<RoleModel> roleObjs = [];
     for (final role in alldata) {
       if (role != null && role.containsKey('id') == true) {
-        roleObjs.add(RoleModel.fromData(role['id'], role['user_id'], role['role_id']));
+        roleObjs.add(
+            RoleModel.fromData(role['id'], role['user_id'], role['role_id']));
       } else {
-        roleObjs.add(RoleModel.fromData(role['modelId'], role['userId'], role['roleId']));
+        roleObjs.add(RoleModel.fromData(
+            role['modelId'], role['userId'], role['roleId']));
       }
     }
 

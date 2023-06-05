@@ -16,10 +16,11 @@ class EditUserProfile extends HookConsumerWidget {
   const EditUserProfile({Key? key}) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
-    await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
+    await Navigator.of(context)
+        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
       builder: (dynamic context) => const EditUserProfile(),
       fullscreenDialog: true,
-    ));
+    ) as Route<MaterialPageRoute<String>>);
   }
 
   @override
@@ -31,7 +32,8 @@ class EditUserProfile extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text(_viewmodel.usr == null ? Strings.newuser : Strings.edituser, style: TextStyle(color: Theme.of(context).colorScheme.background)),
+        title: Text(_viewmodel.usr == null ? Strings.newuser : Strings.edituser,
+            style: TextStyle(color: Theme.of(context).colorScheme.background)),
         actions: <Widget>[
           TextButton(
             child: const Text(
@@ -50,6 +52,7 @@ class EditUserProfile extends HookConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('editUserProfileViewModel', editUserProfileViewModel));
+    properties.add(DiagnosticsProperty(
+        'editUserProfileViewModel', editUserProfileViewModel));
   }
 }

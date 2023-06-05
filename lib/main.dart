@@ -70,7 +70,8 @@ class _PrassoCoreState extends State<PrassoCore> {
         home: AuthWidget(
           nonSignedInBuilder: (_) => Consumer(
             builder: (context, ref, _) {
-              final bool didCompleteOnboarding = ref.watch(onboardingViewModelProvider).state;
+              final bool didCompleteOnboarding =
+                  ref.watch(onboardingViewModelProvider).state;
               return didCompleteOnboarding ? SignInPage() : OnboardingPage();
             },
           ),
@@ -78,7 +79,8 @@ class _PrassoCoreState extends State<PrassoCore> {
           /// Signed In Builder will show intro pages ( video and profile editor ) if the user is newly registered
           signedInBuilder: (_) => Consumer(
             builder: (context, ref, _) {
-              final bool didCompleteProfile = ref.watch(introViewModelProvider).state;
+              final bool didCompleteProfile =
+                  ref.watch(introViewModelProvider).state;
               return didCompleteProfile ? const HomePage() : IntroPage();
             },
           ),
@@ -91,13 +93,14 @@ class _PrassoCoreState extends State<PrassoCore> {
     print('FCM Token:$token');
   }
 
-  Future selectNotification(String? payload) async {
+  Future<void> selectNotification(String? payload) async {
     await _flutterLocalNotificationsPlugin.cancelAll();
   }
 
   @override
   void initState() {
-    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const initializationSettingsIOS = IOSInitializationSettings();
     const initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -120,9 +123,10 @@ class _PrassoCoreState extends State<PrassoCore> {
       const iOSPlatformChannelSpecifics = IOSNotificationDetails(); // IOS
 
       const platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
-      await _flutterLocalNotificationsPlugin.show(
-          0, message.data['title'], message.data['body'], platformChannelSpecifics);
+          android: androidPlatformChannelSpecifics,
+          iOS: iOSPlatformChannelSpecifics);
+      await _flutterLocalNotificationsPlugin.show(0, message.data['title'],
+          message.data['body'], platformChannelSpecifics);
     });
 
     if (!kIsWeb) getFCMToken();

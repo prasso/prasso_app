@@ -20,11 +20,12 @@ class AppsPageViewModel extends ChangeNotifier {
   final FirestoreDatabase? database;
 
   Future<void> show({required BuildContext context, AppModel? app}) async {
-    await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
+    await Navigator.of(context)
+        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
       builder: (dynamic context) =>
           EditAppPage(key: GlobalKey<FormState>(), appinfo: app),
       fullscreenDialog: true,
-    ));
+    ) as Route<MaterialPageRoute<String>>);
   }
 
   Future<void> delete(BuildContext context, AppModel app) async {

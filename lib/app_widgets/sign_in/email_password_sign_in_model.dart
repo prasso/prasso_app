@@ -12,8 +12,9 @@ class EmailAndPasswordValidators {
       NonEmptyStringValidator();
 }
 
-final emailPasswordSigninViewModelProvider = ChangeNotifierProvider<EmailPasswordSignInModel>(
-    (ref) => EmailPasswordSignInModel(auth: ref.watch(prassoApiService)));
+final emailPasswordSigninViewModelProvider =
+    ChangeNotifierProvider<EmailPasswordSignInModel>(
+        (ref) => EmailPasswordSignInModel(auth: ref.watch(prassoApiService)));
 
 class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailPasswordSignInModel({
@@ -39,7 +40,7 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> submit() async {
+  Future<bool> submit(BuildContext context) async {
     try {
       updateWith(submitted: true);
       if (!canSubmit) {
@@ -51,7 +52,16 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
           await auth!.signInWithEmailAndPassword(email, password);
           break;
         case EmailPasswordSignInFormType.register:
-          unawaited(auth!.createUserWithEmailAndPassword(email, password));
+          await auth!.createUserWithEmailAndPassword(email, password);
+          // Navigate to the intro pages after the user is registered.
+          await Navigator.pushReplacement<IntroPage, bool>(
+            context,
+            MaterialPageRoute<IntroPage>(
+              builder: (dynamic _) => IntroPage(),
+              settings: const RouteSettings(),
+              fullscreenDialog: true,
+            ),
+          );
           break;
         case EmailPasswordSignInFormType.forgotPassword:
           await auth!.sendPasswordResetEmail(email);

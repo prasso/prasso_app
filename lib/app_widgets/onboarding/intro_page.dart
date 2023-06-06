@@ -15,10 +15,22 @@ class IntroPage extends HookConsumerWidget {
     await introViewModel.incrementIntro();
 
     //this trick is to reload the screen since it was navigated to directly and the view model state change is not initiating a redraw
-    //(context as Element).reassemble();
+    (context as Element).reassemble();
   }
 
-  final List<SliderModel> slides = [SliderModel(description: 'Rapid Prototyping\n. Plug Your Designs In.\n Play Your App\n', title: 'Why Prasso?', localImageSrc: 'media/Screen1-Movingforward-pana.svg', backgroundColor: PrassoColors.lightGray), SliderModel(description: 'Tell us about you\n', title: 'Personal Prototype', localImageSrc: 'media/Screen2-Teaching-cuate.svg', backgroundColor: PrassoColors.lightGray)];
+  final List<SliderModel> slides = [
+    SliderModel(
+        description:
+            'Rapid Prototyping\n. Plug Your Designs In.\n Play Your App\n',
+        title: 'Why Prasso?',
+        localImageSrc: 'media/Screen1-Movingforward-pana.svg',
+        backgroundColor: PrassoColors.lightGray),
+    SliderModel(
+        description: 'Tell us about you\n',
+        title: 'Personal Prototype',
+        localImageSrc: 'media/Screen2-Teaching-cuate.svg',
+        backgroundColor: PrassoColors.lightGray)
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +44,8 @@ class IntroPage extends HookConsumerWidget {
     }
   }
 
-  Widget _showVideoIntroScreen(WidgetRef ref, BuildContext context, IntroViewModel introViewModel) {
+  Widget _showVideoIntroScreen(
+      WidgetRef ref, BuildContext context, IntroViewModel introViewModel) {
     return Scaffold(
         body: SingleChildScrollView(
             child: Padding(
@@ -72,7 +85,10 @@ class IntroPage extends HookConsumerWidget {
                 height: 50,
                 child: Text(
                   'Continue to the app',
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ),
@@ -83,7 +99,8 @@ class IntroPage extends HookConsumerWidget {
     )));
   }
 
-  Widget _showProfileEditorScreen(BuildContext context, IntroViewModel introViewModel) {
+  Widget _showProfileEditorScreen(
+      BuildContext context, IntroViewModel introViewModel) {
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(5.0),

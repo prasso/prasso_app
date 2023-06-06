@@ -357,11 +357,12 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
 
   void navigateToMoreItem(int index, BuildContext context) {
     final TabItemData t1 = moreItems[index];
-    Navigator.push<MaterialPageRoute<String>>(
+    // ignore: strict_raw_type
+    Navigator.push<MaterialPageRoute>(
       context,
-      MaterialPageRoute<String>(
+      MaterialPageRoute(
         builder: _actionFromString(t1)!,
-      ) as Route<MaterialPageRoute<String>>,
+      ),
     );
   }
 

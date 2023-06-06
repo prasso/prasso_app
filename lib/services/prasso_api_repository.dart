@@ -417,7 +417,7 @@ class PrassoApiRepository {
       await signOut();
       return null;
     }
-    final userToken = token!;
+    final userToken = token;
     if (userToken.isEmpty) {
       await signOut();
       return null;

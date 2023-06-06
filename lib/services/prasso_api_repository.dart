@@ -44,7 +44,8 @@ void showSuccessToast(String message) {
 }
 
 class PrassoApiRepository {
-  PrassoApiRepository(this.sharedPreferencesServiceProvider, this.cupertinoHomeScaffoldVM);
+  PrassoApiRepository(
+      this.sharedPreferencesServiceProvider, this.cupertinoHomeScaffoldVM);
   final SharedPreferencesService sharedPreferencesServiceProvider;
   final CupertinoHomeScaffoldViewModel cupertinoHomeScaffoldVM;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -63,10 +64,12 @@ class PrassoApiRepository {
   bool userIsRegistering = false;
   bool doBuildTabs = false;
 
-  factory PrassoApiRepository.empty(SharedPreferencesService sharedPreferencesServiceProvider,
+  factory PrassoApiRepository.empty(
+      SharedPreferencesService sharedPreferencesServiceProvider,
       CupertinoHomeScaffoldViewModel cupertinoHomeScaffoldVM) {
     _prassoApiInstance = _prassoApiInstance ??
-        PrassoApiRepository(sharedPreferencesServiceProvider, cupertinoHomeScaffoldVM);
+        PrassoApiRepository(
+            sharedPreferencesServiceProvider, cupertinoHomeScaffoldVM);
     return PrassoApiRepository.instance;
   }
   static PrassoApiRepository get instance {
@@ -96,7 +99,8 @@ class PrassoApiRepository {
 
   dynamic authData(String data, String apiUrl) {
     final fullUrl = _apiServer + apiUrl;
-    return http.post(Uri.parse(fullUrl), body: jsonEncode(data), headers: _setHeaders());
+    return http.post(Uri.parse(fullUrl),
+        body: jsonEncode(data), headers: _setHeaders());
   }
 
   Future<dynamic> getData(String apiUrl) async {
@@ -104,13 +108,14 @@ class PrassoApiRepository {
     return http.get(Uri.parse(fullUrl), headers: _setHeaders());
   }
 
-  Future<ApiUser?> signInWithEmailAndPassword(String email, String password) async {
+  Future<ApiUser?> signInWithEmailAndPassword(
+      String email, String password) async {
     final String _signinUrl = _apiServer + Strings.signinUrl;
 
     userIsSigningIn = true;
 
-    final UserCredential usr =
-        await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    final UserCredential usr = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password);
     if (usr.user != null) {
       String? _pnToken = '';
       final apiuser = ApiUser.fromAPIJson(
@@ -154,29 +159,38 @@ class PrassoApiRepository {
     //app tabs decoded here and added to route
     final dynamic data = jsonDecode(resBody);
 
-    personalAppToken = data['data']['token'] is String ? data['data']['token'].toString() : null;
+    personalAppToken = data['data']['token'] is String
+        ? data['data']['token'].toString()
+        : null;
     personalAppToken = personalAppToken!.replaceAll('"', '');
-    appConfig = data['data']['app_data'] is String ? data['data']['app_data'].toString() : null;
+    appConfig = data['data']['app_data'] is String
+        ? data['data']['app_data'].toString()
+        : null;
     thirdPartyToken = data['data']['thirdPartyToken'] is String
         ? data['data']['thirdPartyToken'].toString()
         : null;
 
-    ApiUser user = ApiUser.fromAPIJson(jsonEncode(data['data']), appConfig, personalAppToken);
+    ApiUser user = ApiUser.fromAPIJson(
+        jsonEncode(data['data']), appConfig, personalAppToken);
 
     //update unreadmessages in the user from storage
     final unreadMessages = sharedPreferencesServiceProvider.getUnreadMessages();
     if (unreadMessages) {
       data['data']['unreadmessages'] = true;
-      user = ApiUser.fromAPIJson(jsonEncode(data['data']), appConfig, personalAppToken);
+      user = ApiUser.fromAPIJson(
+          jsonEncode(data['data']), appConfig, personalAppToken);
     }
     final firestoreDatabase = FirestoreDatabase(uid: user.uid);
     await firestoreDatabase.setUser(user);
 
-    unawaited(sharedPreferencesServiceProvider.saveUserData(jsonEncode(user.toMap())));
+    unawaited(sharedPreferencesServiceProvider
+        .saveUserData(jsonEncode(user.toMap())));
 
-    unawaited(sharedPreferencesServiceProvider.setthirdPartyToken(thirdPartyToken));
+    unawaited(
+        sharedPreferencesServiceProvider.setthirdPartyToken(thirdPartyToken));
     unawaited(sharedPreferencesServiceProvider.saveAppData(appConfig!));
-    unawaited(sharedPreferencesServiceProvider.saveUserToken(personalAppToken!));
+    unawaited(
+        sharedPreferencesServiceProvider.saveUserToken(personalAppToken!));
     cupertinoHomeScaffoldVM.defaultTabsJson = appConfig;
     if (doBuildTabs) {
       cupertinoHomeScaffoldVM.doBuildTabs = true;
@@ -261,7 +275,8 @@ class PrassoApiRepository {
       BuildContext context, AppModel widget, FirestoreDatabase database) async {
     try {
       final apps = await database.appsStream().first;
-      final allLowerCaseNames = apps.map((app) => app.documentId?.toLowerCase()).toList();
+      final allLowerCaseNames =
+          apps.map((app) => app.documentId?.toLowerCase()).toList();
       allLowerCaseNames.remove(widget.pageTitle!.toLowerCase());
 
       if (allLowerCaseNames.contains(widget.pageTitle!.toLowerCase())) {
@@ -300,8 +315,8 @@ class PrassoApiRepository {
       name: 'prasso.app.getAppConfig',
       error: clientAppUrl,
     );
-    final dynamic res =
-        await http.post(Uri.parse(Uri.encodeFull(clientAppUrl)), headers: _setHeaders());
+    final dynamic res = await http.post(Uri.parse(Uri.encodeFull(clientAppUrl)),
+        headers: _setHeaders());
     if (res.statusCode == 200) {
       final appConfig = res.body.toString();
       unawaited(sharedPreferencesServiceProvider.saveAppData(appConfig));
@@ -318,7 +333,8 @@ class PrassoApiRepository {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> createUserWithEmailAndPassword(String email, String password) async {
+  Future<void> createUserWithEmailAndPassword(
+      String email, String password) async {
     userIsSigningIn = userIsRegistering = true;
     //SET to show the intro
     await sharedPreferencesServiceProvider.unSetIntroComplete();
@@ -326,8 +342,8 @@ class PrassoApiRepository {
     String _pnToken = '';
     String _userUid = '';
     try {
-      final UserCredential fbusr =
-          await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      final UserCredential fbusr = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       _userUid = fbusr.user != null ? fbusr.user!.uid : '';
       unawaited(_firebaseMessaging.subscribeToTopic('all'));
@@ -356,12 +372,19 @@ class PrassoApiRepository {
       userIsSigningIn = false;
       return;
     }
-    await _firebaseMessaging.getToken().then((token) => _pnToken = token is String ? token : '');
+    await _firebaseMessaging
+        .getToken()
+        .then((token) => _pnToken = token is String ? token : '');
     unawaited(_firebaseMessaging.subscribeToTopic('all'));
 
     final apiUser = ApiUser(
-        uid: _userUid, displayName: email, email: email, initialized: false, pnToken: _pnToken);
-    unawaited(sharedPreferencesServiceProvider.saveUserData(jsonEncode(apiUser.toMap())));
+        uid: _userUid,
+        displayName: email,
+        email: email,
+        initialized: false,
+        pnToken: _pnToken);
+    unawaited(sharedPreferencesServiceProvider
+        .saveUserData(jsonEncode(apiUser.toMap())));
 
     final String _registerUrl = '${_apiServer}register';
     final dynamic res = await http.post(Uri.parse(Uri.encodeFull(_registerUrl)),
@@ -388,8 +411,13 @@ class PrassoApiRepository {
   Future<bool?> saveUserProfileData(
       BuildContext context, ApiUser? user, FirestoreDatabase database) async {
     final String _setUserUrl = '${_apiServer}save_user/${user?.uid}';
-    final userToken = sharedPreferencesServiceProvider.getUserToken()!;
-
+    final token = sharedPreferencesServiceProvider.getUserToken();
+    if (token == null) {
+      print('error getting user token. Login required.');
+      await signOut();
+      return null;
+    }
+    final userToken = token!;
     if (userToken.isEmpty) {
       await signOut();
       return null;
@@ -434,13 +462,14 @@ class PrassoApiRepository {
     request.headers.addAll(headerArray);
 
     // multipart that takes file
-    final multipartFile =
-        http.MultipartFile('image', stream, length, filename: basename(imageFile.path));
+    final multipartFile = http.MultipartFile('image', stream, length,
+        filename: basename(imageFile.path));
 
     // add file to multipart
     request.files.add(multipartFile);
 
-    final http.Response response = await http.Response.fromStream(await request.send());
+    final http.Response response =
+        await http.Response.fromStream(await request.send());
 
     print('Result: ${response.body}');
     if (response.statusCode == 200) {
@@ -453,12 +482,14 @@ class PrassoApiRepository {
 
       userdata['photoURL'] = data['data']['photoURL'];
 
-      final user = ApiUser.fromAPIJson(jsonEncode(userdata), appConfig, personalAppToken);
+      final user = ApiUser.fromAPIJson(
+          jsonEncode(userdata), appConfig, personalAppToken);
 
       final firestoreDatabase = FirestoreDatabase(uid: user.uid);
       unawaited(firestoreDatabase.setUser(user));
 
-      unawaited(sharedPreferencesServiceProvider.saveUserData(jsonEncode(user.toMap())));
+      unawaited(sharedPreferencesServiceProvider
+          .saveUserData(jsonEncode(user.toMap())));
     }
     return response.body;
   }

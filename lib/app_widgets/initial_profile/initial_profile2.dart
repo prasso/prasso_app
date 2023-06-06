@@ -319,10 +319,10 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
         child: Column(
           children: [
             const SizedBox(height: 8),
-            Column(
+            const Column(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(2.0),
                     child: Text(
                       'Profile',
@@ -367,14 +367,14 @@ class PickImageLayout extends StatefulWidget {
 class PickImageState extends State<PickImageLayout> {
   File? _imageFile;
 
-  Future getImageFromCamera() async {
+  Future<void> getImageFromCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _imageFile = File(image!.path);
     });
   }
 
-  Future getImageFromGallery() async {
+  Future<void> getImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       _imageFile = File(image!.path);

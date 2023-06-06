@@ -11,14 +11,19 @@ class CupertinoTabViewRoutes {
 
 // ignore: avoid_classes_with_only_static_members
 class CupertinoTabViewRouter {
-  static Route? generateRoute(RouteSettings settings) {
+  static Route<String>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case CupertinoTabViewRoutes.webViewPage:
         // ignore: avoid_as
-        final AppModel? app = settings.arguments is AppModel ? settings.arguments as AppModel : null;
+        final AppModel? app = settings.arguments is AppModel
+            ? settings.arguments as AppModel
+            : null;
 
         return CupertinoPageRoute(
-          builder: (dynamic _) => AppRunWebView(title: app!.pageTitle, selectedUrl: app.pageUrl, extraHeaderInfo: app.extraHeaderInfo),
+          builder: (dynamic _) => AppRunWebView(
+              title: app!.pageTitle,
+              selectedUrl: app.pageUrl,
+              extraHeaderInfo: app.extraHeaderInfo),
           settings: settings,
           fullscreenDialog: false,
         );

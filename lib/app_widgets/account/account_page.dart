@@ -34,12 +34,10 @@ class AccountPage extends HookConsumerWidget {
       await sharedPreferencesServiceProvider.setthirdPartyToken('');
       await PrassoApiRepository.instance.signOut();
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          Navigator.of(context, rootNavigator: true).pushNamed(
-            Routes.emailPasswordSignInPage,
-            arguments: () => Navigator.of(context).pop(),
-          );
-        });
+        Navigator.of(context, rootNavigator: true).pushNamed(
+          Routes.emailPasswordSignInPage,
+          arguments: () => Navigator.of(context).pop(),
+        );
       });
     } catch (e) {
       unawaited(showExceptionAlertDialog(
@@ -67,11 +65,13 @@ class AccountPage extends HookConsumerWidget {
     }
   }
 
-  static Future<void> _showProfileEditor(BuildContext context, ApiUser? user) async {
-    await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
+  static Future<void> _showProfileEditor(
+      BuildContext context, ApiUser? user) async {
+    await Navigator.of(context)
+        .push<MaterialPageRoute<String>>(MaterialPageRoute<EditUserProfile>(
       builder: (dynamic context) => const EditUserProfile(),
       fullscreenDialog: true,
-    ));
+    ) as Route<MaterialPageRoute<String>>);
   }
 
   @override
@@ -80,7 +80,8 @@ class AccountPage extends HookConsumerWidget {
     final user = authService?.currentUser;
     return Scaffold(
       appBar: AppBar(
-          title: const Text(Strings.accountPage, style: TextStyle(color: PrassoColors.lightGray)),
+          title: const Text(Strings.accountPage,
+              style: TextStyle(color: PrassoColors.lightGray)),
           actions: <Widget>[
             const SizedBox(height: 8),
             TextButton(
@@ -135,7 +136,10 @@ class AccountPage extends HookConsumerWidget {
             child: SizedBox(
                 child: Text(
               Strings.shortEditProfileText,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall!
+                  .copyWith(color: Colors.white),
             )),
           ),
         ),

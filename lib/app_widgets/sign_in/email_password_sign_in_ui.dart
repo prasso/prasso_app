@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pedantic/pedantic.dart';
+import 'package:prasso_app/app_widgets/onboarding/intro_page.dart';
 import 'package:prasso_app/app_widgets/top_level_providers.dart';
 
 // Project imports:

@@ -11,15 +11,16 @@ environment:
 dependencies:
 
   cached_network_image: ^3.2.0
-  cloud_firestore: ^3.1.6
-  cloud_functions: ^3.2.5
+  cloud_firestore: ^4.8.0
+  cloud_firestore_platform_interface: ^5.15.0
+  cloud_functions: ^4.3.2
   cupertino_icons: ^1.0.4
-  device_info_plus: ^3.2.2
+  device_info_plus: ^9.0.2
   extended_image: any
-  firebase_auth: ^3.3.5
-  firebase_core: ^1.11.0
-  firebase_messaging: ^11.2.5
-  firebase_storage: ^10.2.5
+  firebase_auth: ^4.6.2
+  firebase_core: ^2.13.1
+  firebase_messaging: ^14.6.2
+  firebase_storage: ^11.2.2
   flutter:
     sdk: flutter  
   flutter_cache_manager: any
@@ -39,7 +40,7 @@ dependencies:
   intl: ^0.17.0
   loading_overlay: ^0.3.0
   logger: ^1.1.0
-  package_info_plus: ^1.4.0
+  package_info_plus: ^4.0.2
   path_provider: any
   pedantic: any
   percent_indicator: ^4.2.2
@@ -52,10 +53,6 @@ dependencies:
   toggle_switch: ^2.0.1
   url_launcher: ^6.0.5
   webview_flutter: ^3.0.0
-
-dependency_overrides:
-  #test_api: 0.4.9
-  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_driver:

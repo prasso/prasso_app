@@ -1,42 +1,52 @@
 part of email_password_sign_in_ui;
 
 class EmailPasswordSignInPage extends HookConsumerWidget {
-  const EmailPasswordSignInPage({Key? key, this.onSignedIn, this.formType}) : super(key: key);
+  const EmailPasswordSignInPage({Key? key, this.onSignedIn, this.formType})
+      : super(key: key);
   final VoidCallback? onSignedIn;
   final EmailPasswordSignInFormType? formType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final EmailPasswordSignInModel _thismodel = ref.watch(emailPasswordSigninViewModelProvider);
+    final EmailPasswordSignInModel _thismodel =
+        ref.watch(emailPasswordSigninViewModelProvider);
 
-    return EmailPasswordSignInPageContents(model: _thismodel, onSignedIn: onSignedIn);
+    return EmailPasswordSignInPageContents(
+        model: _thismodel, onSignedIn: onSignedIn);
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<VoidCallback>.has('onSignedIn', onSignedIn));
-    properties.add(EnumProperty<EmailPasswordSignInFormType>('formType', formType));
+    properties
+        .add(ObjectFlagProperty<VoidCallback>.has('onSignedIn', onSignedIn));
+    properties
+        .add(EnumProperty<EmailPasswordSignInFormType>('formType', formType));
   }
 }
 
 class EmailPasswordSignInPageContents extends StatefulWidget {
-  const EmailPasswordSignInPageContents({Key? key, required this.model, this.onSignedIn})
+  const EmailPasswordSignInPageContents(
+      {Key? key, required this.model, this.onSignedIn})
       : super(key: key);
   final EmailPasswordSignInModel model;
   final VoidCallback? onSignedIn;
 
   @override
-  _EmailPasswordSignInPageContentsState createState() => _EmailPasswordSignInPageContentsState();
+  _EmailPasswordSignInPageContentsState createState() =>
+      _EmailPasswordSignInPageContentsState();
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<EmailPasswordSignInModel>('model', model));
-    properties.add(ObjectFlagProperty<VoidCallback>.has('onSignedIn', onSignedIn));
+    properties
+        .add(DiagnosticsProperty<EmailPasswordSignInModel>('model', model));
+    properties
+        .add(ObjectFlagProperty<VoidCallback>.has('onSignedIn', onSignedIn));
   }
 }
 
-class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPageContents> {
+class _EmailPasswordSignInPageContentsState
+    extends State<EmailPasswordSignInPageContents> {
   final FocusScopeNode _node = FocusScopeNode();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -96,9 +106,9 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
     });
   }
 
-  Future<void> _submit() async {
+  Future<void> _submit(BuildContext context) async {
     try {
-      final bool success = await model.submit();
+      final bool success = await model.submit(context);
       if (success) {
         if (model.formType == EmailPasswordSignInFormType.forgotPassword) {
           await showAlertDialog(
@@ -109,7 +119,8 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
           );
         } else {
           if (model.formType == EmailPasswordSignInFormType.register) {
-            final SharedPreferences prefs = await SharedPreferences.getInstance();
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
             final SharedPreferencesService sharedPreferencesServiceProvider =
                 SharedPreferencesService(prefs);
             final savedUser = sharedPreferencesServiceProvider.getUserData();
@@ -141,7 +152,6 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
       _node.previousFocus();
       return;
     }
-    _submit();
   }
 
   void _updateFormType(EmailPasswordSignInFormType? formType) {
@@ -183,7 +193,9 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
         suffixIcon: InkWell(
           onTap: _passwordToggle,
           child: Icon(
-            _obscureText ? Icons.remove_red_eye_outlined : Icons.remove_red_eye_sharp,
+            _obscureText
+                ? Icons.remove_red_eye_outlined
+                : Icons.remove_red_eye_sharp,
             size: 15.0,
             color: Colors.black,
           ),
@@ -206,7 +218,8 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
         children: <Widget>[
           const SizedBox(height: 10.0),
           _buildEmailField(),
-          if (model.formType != EmailPasswordSignInFormType.forgotPassword) ...<Widget>[
+          if (model.formType !=
+              EmailPasswordSignInFormType.forgotPassword) ...<Widget>[
             const SizedBox(height: 10.0),
             _buildPasswordField(),
           ],
@@ -216,22 +229,25 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
             color: Theme.of(context).secondaryHeaderColor,
             text: model.primaryButtonText!,
             loading: model.isLoading,
-            onPressed: model.isLoading ? null : _submit,
+            onPressed: model.isLoading ? null : () => _submit(context),
           ),
           const SizedBox(height: 10.0),
           TextButton(
             key: const Key('secondary-button'),
             child: Text(model.secondaryButtonText!),
-            onPressed:
-                model.isLoading ? null : () => _updateFormType(model.secondaryActionFormType),
+            onPressed: model.isLoading
+                ? null
+                : () => _updateFormType(model.secondaryActionFormType),
           ),
           if (model.formType == EmailPasswordSignInFormType.signIn)
             TextButton(
               key: const Key('tertiary-button'),
-              child: const Text(EmailPasswordSignInStrings.forgotPasswordQuestion),
+              child:
+                  const Text(EmailPasswordSignInStrings.forgotPasswordQuestion),
               onPressed: model.isLoading
                   ? null
-                  : () => _updateFormType(EmailPasswordSignInFormType.forgotPassword),
+                  : () => _updateFormType(
+                      EmailPasswordSignInFormType.forgotPassword),
             ),
         ],
       ),
@@ -242,7 +258,8 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false, //turns off the x to close the dialog
+          automaticallyImplyLeading:
+              false, //turns off the x to close the dialog
           elevation: 2.0,
           centerTitle: true,
           title: Text(
@@ -272,6 +289,7 @@ class _EmailPasswordSignInPageContentsState extends State<EmailPasswordSignInPag
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<EmailPasswordSignInModel>('model', model));
+    properties
+        .add(DiagnosticsProperty<EmailPasswordSignInModel>('model', model));
   }
 }

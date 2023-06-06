@@ -11,12 +11,15 @@ import 'onboarding_viewmodel.dart';
 // ignore: must_be_immutable
 class OnboardingPage extends HookConsumerWidget {
   Future<void> onGetStarted(WidgetRef ref, BuildContext context) async {
-    final OnboardingViewModel onboardingViewModel = ref.read(onboardingViewModelProvider);
+    final OnboardingViewModel onboardingViewModel =
+        ref.read(onboardingViewModelProvider);
     await onboardingViewModel.completeOnboarding();
   }
 
-  Future<void> _showWebViewWithUrl(String pageTitle, String pageUrl, BuildContext context) async {
+  Future<void> _showWebViewWithUrl(
+      String pageTitle, String pageUrl, BuildContext context) async {
     //show the webview with this url.
+    // ignore: strict_raw_type
     await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
         builder: (dynamic context) => AppRunWebView(
               title: pageTitle,
@@ -26,19 +29,34 @@ class OnboardingPage extends HookConsumerWidget {
   }
 
   Future<void> onNext(WidgetRef ref, BuildContext context) async {
-    final OnboardingViewModel onboardingViewModel = ref.read(onboardingViewModelProvider);
+    final OnboardingViewModel onboardingViewModel =
+        ref.read(onboardingViewModelProvider);
     await onboardingViewModel.incrementOnboarding();
   }
 
   final List<SliderModel> slides = [
-    SliderModel(description: 'create your own mobile app from scratch\n', title: 'Why Prasso?', localImageSrc: 'media/Mobilewireframe-rafiki.svg', backgroundColor: Colors.grey[200]),
-    SliderModel(description: 'Create your prototype.\nReview the results in the Prasso app.\n', title: 'Rapid Prototype', localImageSrc: 'media/Operatingsystemupgrade-pana.svg', backgroundColor: Colors.grey[200]),
-    SliderModel(description: 'Personalize your mobile app with branding and content.\n', title: 'Full Control', localImageSrc: 'media/Phonemaintenance-rafiki.svg', backgroundColor: Colors.grey[200]),
+    SliderModel(
+        description: 'create your own mobile app from scratch\n',
+        title: 'Why Prasso?',
+        localImageSrc: 'media/Mobilewireframe-rafiki.svg',
+        backgroundColor: Colors.grey[200]),
+    SliderModel(
+        description:
+            'Create your prototype.\nReview the results in the Prasso app.\n',
+        title: 'Rapid Prototype',
+        localImageSrc: 'media/Operatingsystemupgrade-pana.svg',
+        backgroundColor: Colors.grey[200]),
+    SliderModel(
+        description: 'Personalize your mobile app with branding and content.\n',
+        title: 'Full Control',
+        localImageSrc: 'media/Phonemaintenance-rafiki.svg',
+        backgroundColor: Colors.grey[200]),
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final OnboardingViewModel onboardingViewModel = ref.read(onboardingViewModelProvider);
+    final OnboardingViewModel onboardingViewModel =
+        ref.read(onboardingViewModelProvider);
 
     return Scaffold(
         body: Padding(
@@ -55,7 +73,8 @@ class OnboardingPage extends HookConsumerWidget {
             Expanded(
                 child: FractionallySizedBox(
               widthFactor: 0.7,
-              child: SvgPicture.asset(slides[onboardingViewModel.index].localImageSrc!),
+              child: SvgPicture.asset(
+                  slides[onboardingViewModel.index].localImageSrc!),
             )),
             Align(
               alignment: Alignment.bottomCenter,
@@ -71,14 +90,20 @@ class OnboardingPage extends HookConsumerWidget {
                 borderRadius: 15,
                 height: 50,
                 child: Text(
-                  onboardingViewModel.index == slides.length - 1 ? 'Get Started' : 'Next',
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+                  onboardingViewModel.index == slides.length - 1
+                      ? 'Get Started'
+                      : 'Next',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ),
             Center(
               child: TextButton(
-                onPressed: () => _showWebViewWithUrl('storyset', 'https://storyset.com/people', context),
+                onPressed: () => _showWebViewWithUrl(
+                    'storyset', 'https://storyset.com/people', context),
                 child: const Text(
                   'Illustration by Freepik Storyset', // ${Strings.prodUrl}',
                   style: TextStyle(fontSize: 8, color: Colors.black),

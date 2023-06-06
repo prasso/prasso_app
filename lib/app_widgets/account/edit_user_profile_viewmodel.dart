@@ -18,14 +18,14 @@ import 'package:prasso_app/services/firestore_database.dart';
 import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/utils/filename_helper.dart';
 
-final editUserProfileViewModel = ChangeNotifierProvider<EditUserProfileViewModel>((ref) =>
-    EditUserProfileViewModel(
-        usr: ref.read(prassoApiService)!.currentUser!,
-        photoviewmodel: ref.read(profilePicUrlState)));
+final editUserProfileViewModel =
+    ChangeNotifierProvider<EditUserProfileViewModel>((ref) =>
+        EditUserProfileViewModel(
+            usr: ref.read(prassoApiService)!.currentUser!,
+            photoviewmodel: ref.read(profilePicUrlState)));
 
 class EditUserProfileViewModel extends ChangeNotifier {
-  EditUserProfileViewModel(
-      {required this.usr, required this.photoviewmodel}) {
+  EditUserProfileViewModel({required this.usr, required this.photoviewmodel}) {
     //(usr == null) happens on new app installs and failed registrations
     email = usr?.email;
     photoURL = usr?.photoURL;
@@ -78,7 +78,6 @@ class EditUserProfileViewModel extends ChangeNotifier {
   List<String> availableTimezones = <String>[];
 
   Future<void> _initData() async {
- 
     try {
       availableTimezones = await FlutterNativeTimezone.getAvailableTimezones();
     } catch (e) {
@@ -101,8 +100,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  Future pickImage(BuildContext context, PrassoApiRepository auth,
+  Future<void> pickImage(BuildContext context, PrassoApiRepository auth,
       FirestoreDatabase database) async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {

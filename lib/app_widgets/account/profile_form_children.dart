@@ -17,17 +17,19 @@ class ProfileFormChildren extends HookConsumerWidget {
   const ProfileFormChildren({Key? key}) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
-    await Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(
+    await Navigator.of(context)
+        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
       builder: (dynamic context) => const ProfileFormChildren(),
       fullscreenDialog: true,
-    ));
+    ) as Route<MaterialPageRoute<String>>);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _viewmodel = ref.watch(editUserProfileViewModel);
     final auth = ref.watch<PrassoApiRepository>(prassoApiService);
-    final database = ref.watch<ProviderListenable<FirestoreDatabase>>(databaseProvider);
+    final database =
+        ref.watch<ProviderListenable<FirestoreDatabase>>(databaseProvider);
 
     return SingleChildScrollView(
       child: Padding(
@@ -40,7 +42,8 @@ class ProfileFormChildren extends HookConsumerWidget {
     );
   }
 
-  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context, PrassoApiRepository auth, FirestoreDatabase database) {
+  Widget _buildForm(EditUserProfileViewModel _viewmodel, BuildContext context,
+      PrassoApiRepository auth, FirestoreDatabase database) {
     return Form(
       key: _viewmodel.formKey,
       child: Column(
@@ -50,7 +53,11 @@ class ProfileFormChildren extends HookConsumerWidget {
     );
   }
 
-  List<Widget> _buildFormChildren(EditUserProfileViewModel _viewmodel, BuildContext context, PrassoApiRepository auth, FirestoreDatabase database) {
+  List<Widget> _buildFormChildren(
+      EditUserProfileViewModel _viewmodel,
+      BuildContext context,
+      PrassoApiRepository auth,
+      FirestoreDatabase database) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double algo = screenWidth / perfectWidth;
 
@@ -100,7 +107,8 @@ class ProfileFormChildren extends HookConsumerWidget {
           decoration: const InputDecoration(labelText: Strings.emailLabel),
           keyboardAppearance: Brightness.light,
           initialValue: _viewmodel.email,
-          validator: (value) => value!.isNotEmpty ? null : Strings.emailCantbeEmpty,
+          validator: (value) =>
+              value!.isNotEmpty ? null : Strings.emailCantbeEmpty,
           onSaved: (value) => _viewmodel.email = value!,
         ),
         TextFormField(

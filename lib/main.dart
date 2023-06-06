@@ -90,7 +90,7 @@ class _PrassoCoreState extends State<PrassoCore> {
 
   Future<void> getFCMToken() async {
     final String? token = await _firebaseMessaging.getToken();
-    print('FCM Token:$token');
+    debugPrint('FCM Token:$token');
   }
 
   Future<void> selectNotification(String? payload) async {

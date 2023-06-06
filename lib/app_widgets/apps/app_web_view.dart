@@ -6,11 +6,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:prasso_app/routing/router.dart';
 // Project imports:
-//import 'package:prasso_app/app_widgets/top_level_providers.dart';
-//import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-//import 'package:prasso_app/constants/keys.dart';
-//import 'package:prasso_app/constants/strings.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
 // Package imports:
 import 'package:webview_flutter/webview_flutter.dart';
@@ -92,6 +90,21 @@ class AppRunWebView extends StatelessWidget {
               webViewController.loadUrl(selectedUrl!, headers: null);
             }
             controllerCompleter.complete(webViewController);
+          },
+          navigationDelegate: (navigation) async {
+            debugPrint('selectedUrl: $selectedUrl');
+            debugPrint('extraHeaderInfo: $extraHeaderInfo');
+            if (navigation.url.contains('login')) {
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(context, rootNavigator: true).pushNamed(
+                  Routes.emailPasswordSignInPage,
+                  arguments: () => Navigator.of(context).pop(),
+                );
+              });
+              return NavigationDecision.prevent;
+            }
+
+            return NavigationDecision.navigate;
           },
         ));
   }

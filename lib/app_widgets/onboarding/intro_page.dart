@@ -15,6 +15,7 @@ class IntroPage extends HookConsumerWidget {
     await introViewModel.incrementIntro();
 
     //this trick is to reload the screen since it was navigated to directly and the view model state change is not initiating a redraw
+    // ignore: invalid_use_of_protected_member
     (context as Element).reassemble();
   }
 

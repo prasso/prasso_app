@@ -159,16 +159,45 @@ The Laravel framework (api side) is open-sourced software licensed under the [MI
 10. Create an Apple app and place the `GoogleService-info.plist` file into the `ios/Runner` folder of Prasso.
 11. Create an Android app and place the `google-services.json` file into the `android/app` folder of Prasso.
 12. Create a Cloud Firestore database. Consider using the provided rules for security.
-13. For Firestore setup continued:
+    * To create a Cloud Firestore database in Firebase and use the provided rules for security, you can follow these steps:
+        - Go to the Firebase console and select your project.
+        - Click on the "Firestore Database" tab on the left-hand side. If you don't see it, look under Build.
+        - Click on the "Create database" button.
+        - Choose a location for your database and select "Start in test mode".
+        - Click on "Enable".
+        - Click on the "Rules" tab.
+        - Replace the existing rules with the following:
+          ```
+            rules_version = '2';
+            service cloud.firestore {
+              match /databases/{database}/documents {
+                match /{document=**} {
+                  allow read, write: if request.auth != null;
+                }
+              }
+            }
+          ```
+        These rules allow read and write access to authenticated users only. You can modify the rules to fit your specific use case.
+
+Enable Authentication with Email and Password.
+create a
+
+14. For Firestore setup continued:
     - Create a web app to obtain the API key.
     - Copy the config settings to `index.html`.
     - Replace the Prasso Firebase config in `main.dart` with the new configuration.
-14. Obtain the server key from the Cloud Messaging tab under project settings and add it to the `.env` file of the API.
-15. In Firebase, add the APNS key to the Cloud Messaging tab of project settings for the iOS app.
-16. In Firebase, go to Authentication and enable email and password authentication.
-17. Update the images for both Google and Firebase. Use apetools (https://apetools.webprofusion.com/#/tools/imagegorilla) and pass an existing PNG to update the images.
-18. Once you have downloaded the apetools image package, place the images into your app's assets folder and replace the existing Prasso images. Use Android Studio and XCode's built-in resource editors for this step to ensure the index files are correctly updated.
-19. Modify the welcome screen in `lib/app_widgets/onboarding/intro_page.dart` to include content specific to your app's needs.
+15. Obtain the server key from the Cloud Messaging tab under project settings and add it to the `.env` file of the API.
+16. In Firebase, add the APNS key to the Cloud Messaging tab of project settings for the iOS app.
+17. In Firebase, go to Authentication and enable email and password authentication.
+    * To enable authentication with email and password in Firebase, you can follow these steps:
+        - Go to the Firebase console and select your project.
+        - Click on the "Authentication" tab on the left-hand side. If you don't see it initially, look under Engage tab.
+        - Click on the "Sign-in method" tab.
+        - Enable the "Email/Password" sign-in method.
+    That's it! Now your users can sign in to your Firebase app using their email and password.
+18. Update the images for both Google and Firebase. Use apetools (https://apetools.webprofusion.com/#/tools/imagegorilla) and pass an existing PNG to update the images.
+19. Once you have downloaded the apetools image package, place the images into your app's assets folder and replace the existing Prasso images. Use Android Studio and XCode's built-in resource editors for this step to ensure the index files are correctly updated.
+20. Modify the welcome screen in `lib/app_widgets/onboarding/intro_page.dart` to include content specific to your app's needs.
 
 
 

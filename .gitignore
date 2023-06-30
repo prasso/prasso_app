@@ -53,3 +53,4 @@ web/firebase-config.js
 .env
 .vscode
 pubspec.lock
+android/.settings/org.eclipse.buildship.core.prefs

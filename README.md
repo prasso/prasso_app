@@ -155,7 +155,9 @@ create a
 18. Update the images for both Google and Firebase. Use apetools (https://apetools.webprofusion.com/#/tools/imagegorilla) and pass an existing PNG to update the images.
 19. Once you have downloaded the apetools image package, place the images into your app's assets folder and replace the existing Prasso images. Use Android Studio and XCode's built-in resource editors for this step to ensure the index files are correctly updated.
 20. Modify the welcome screen in `lib/app_widgets/onboarding/intro_page.dart` to include content specific to your app's needs.
-
+21. Modify the name of the app (CFBundleName) in ios/Flutter/AppFrameworkInfo.plist, ios/Runner/Info.plist.
+22. Insert the correct Firebase configuration data into lib/main.dart
+23. Update the androidPlatformChannelSpecifics variable in lib/main.dart
 
 
 

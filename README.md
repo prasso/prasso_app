@@ -91,53 +91,10 @@ And a framework that creates an app dynamically based on the server configuratio
 7. TEAMS have APPS. When a user who is a member of a team logs into the Prasso app, the default-designated app will be loaded for use. 
 9. APPS have TABS. USERS "build" their apps in the Prasso Admin tool. APP TABS are web page urls. Custom header information can be sent to the url with the request to enable application specific sessions.
 
-## Prasso setup
-### Setup instructions such as they are:
+# Prasso App setup
 
-### Firebase
-Firebase is required for the Prasso app, since users are authenticated at Firebase, but the app data is stored at the API site. 
-  Add a Firebase project. Enable Authentication with Email and Password.  Enable Cloud Firestore and create a database. 
-- If you don't have a Firebase project configured, create one for your app. 
-- Download the files for adding to your iOS and Android projects.
-- Enable Authentication for email/password
-- Create a Cloud Firestore database.
-
-Three tiers of user roles exist
-Super-Admin , Site Admin, and App User
-
-## Admin Site (prasso_api)
-### Sites
-How sites and sites pages work (prasso_api)
-1. At least one site must be configured in the site table. (example: prasso.io ) When the site loads, the host is checked to see if it's url/domain is recorded in the site table.
-2. if the site is recorded, the site object from the table is kept available in the app session for use. The site object is the UI configuration of the site.
-3. site pages reference the site table, so if a site has pages they can be used in the display as links. These links look like https://prasso.io/page/Welcome-OLDPRASSO
-4. Code that runs when a site is loaded uses the current domain to compare with the stored site url to look up the landing page contents. if an entry is found in the site pages table for the site and with label of Welcome, that will be what is shown to the web visitor on the home page.
-
-### Visual Editing (CMS) (the api side code prasso_api)
-This code is integrating the GrapesJS editor (https://grapesjs.com) 
-When you edit your site you will be able to use the included components to assemble your pages
-
-
-## AWS
-### Image storage
-#### 
-
-For more info, I'm happy to help if I can. Shoot me an email or ping me on Twitter if you need info. Contact info is on the Prasso main page, https://prasso.io
-
-## [License: MIT](LICENSE.md)
-
-## License
-
-Prasso is licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-The Laravel framework (api side) is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-
-# The following is a checklist for making this Prasso code into another app.
-# Checklist: Steps to Convert Prasso
-
-### Steps to Setup Apps for the App Stores
+## The following is a checklist for making this Prasso code into another app.
+### Checklist: Steps to Convert/Run Prasso and Setup Apps for the App Stores
 
 1. Modify the name of the app in the code's `pubspec.yaml` file. Change `name: prasso_app` to `name: gogo_delivery` (replace with your app name).
 2. Update the output file name in `android/app/build.gradle`. Replace "Prasso_" with your app name.
@@ -201,14 +158,18 @@ create a
 
 
 
-## Historical Information
-Project Timeline started in 2020
-#### originally forked from  Demo for Flutter & Firebase Realtime Apps
+
+
+## [License: MIT](LICENSE.md)
+
+## License
+
+Prasso is licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+The Laravel framework (api side) is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 This project, Prasso App, started out as a fork of the **reference architecture demo** that can be used as a **starting point** for apps using Flutter & Firebase. The code is modified to support running web apps which can be built from various no-code sites around the web.
 
 *Also see the marvelous [codewithandrea_flutter_packages repo](https://github.com/bizz84/codewithandrea_flutter_packages), which contains the most reusable parts of this project as packages.*
-
-Then the code was migrated into a format closer to what you would see in MVVM architecture. And then Riverpod Hooks has been added.
 
 

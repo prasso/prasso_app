@@ -1,17 +1,16 @@
 // Flutter imports:
+// Project imports:
+import 'package:delegate_app/common_widgets/alert_dialogs.dart';
+import 'package:delegate_app/models/app.dart';
+import 'package:delegate_app/services/firestore_database.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pedantic/pedantic.dart';
 
-// Project imports:
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-import 'package:prasso_app/models/app.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-
-final editAppViewModel = ChangeNotifierProvider<EditAppViewModel>((ref) => EditAppViewModel());
+final editAppViewModel =
+    ChangeNotifierProvider<EditAppViewModel>((ref) => EditAppViewModel());
 
 class EditAppViewModel extends ChangeNotifier {
   EditAppViewModel();

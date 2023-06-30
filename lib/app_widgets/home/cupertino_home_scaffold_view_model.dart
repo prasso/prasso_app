@@ -1,23 +1,23 @@
 // Dart imports:
 import 'dart:convert';
 
+// Project imports:
+import 'package:delegate_app/app_widgets/account/account_page.dart';
+import 'package:delegate_app/app_widgets/apps/app_pdf_view.dart';
+import 'package:delegate_app/app_widgets/apps/app_run_page.dart';
+import 'package:delegate_app/app_widgets/apps/app_web_view.dart';
+import 'package:delegate_app/app_widgets/apps/apps_page.dart';
+import 'package:delegate_app/app_widgets/more/more_page.dart';
+import 'package:delegate_app/constants/keys.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/models/tab_item.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/services/shared_preferences_service.dart';
+// Package imports:
+import 'package:delegate_app/utils/icons_helper.dart';
 // Flutter imports:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/account/account_page.dart';
-import 'package:prasso_app/app_widgets/apps/app_pdf_view.dart';
-import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
-import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
-import 'package:prasso_app/app_widgets/apps/apps_page.dart';
-import 'package:prasso_app/app_widgets/more/more_page.dart';
-import 'package:prasso_app/constants/keys.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/models/tab_item.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
-// Package imports:
-import 'package:prasso_app/utils/icons_helper.dart';
 
 class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   CupertinoHomeScaffoldViewModel(this.sharedPreferencesServiceProvider) {

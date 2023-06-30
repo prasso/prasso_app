@@ -1,10 +1,10 @@
+import 'package:delegate_app/app_widgets/account/edit_user_profile_viewmodel.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/services/firestore_database.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/services/shared_preferences_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
 
 final introViewModelProvider = ChangeNotifierProvider<IntroViewModel>((ref) {
   final SharedPreferencesService localSharedPreferencesService =

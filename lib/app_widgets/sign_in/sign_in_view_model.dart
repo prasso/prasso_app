@@ -1,9 +1,8 @@
 // Flutter imports:
-import 'package:flutter/foundation.dart';
-
 // Project imports:
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:flutter/foundation.dart';
 
 class SignInViewModel with ChangeNotifier {
   SignInViewModel({required this.auth});

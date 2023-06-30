@@ -1,5 +1,5 @@
 // Project imports:
-import 'package:prasso_app/models/tab_item.dart';
+import 'package:delegate_app/models/tab_item.dart';
 
 class AppModel {
   AppModel(this.documentId, this.pageTitle, this.pageUrl, this.tabIcon,
@@ -27,8 +27,6 @@ class AppModel {
   }
 
   factory AppModel.fromMap(Map<String, dynamic> data, String documentId) {
-
-
     return AppModel(
         documentId,
         data['page_title'].toString(),

@@ -4,6 +4,16 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:io';
 
+// Project imports:
+import 'package:delegate_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
+import 'package:delegate_app/common_widgets/alert_dialogs.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/models/app.dart';
+import 'package:delegate_app/models/tab_item.dart';
+import 'package:delegate_app/services/firestore_database.dart';
+import 'package:delegate_app/services/shared_preferences_service.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,16 +23,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:pedantic/pedantic.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/models/app.dart';
-import 'package:prasso_app/models/tab_item.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 // Show ErrorToast
 void showErrorToast(String message) {

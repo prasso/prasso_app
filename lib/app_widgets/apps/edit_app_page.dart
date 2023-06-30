@@ -1,14 +1,12 @@
 // Flutter imports:
+// Project imports:
+import 'package:delegate_app/app_widgets/apps/edit_app_view_model.dart';
+import 'package:delegate_app/models/app.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/apps/edit_app_view_model.dart';
-import 'package:prasso_app/models/app.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 class EditAppPage extends HookConsumerWidget {
   const EditAppPage({Key? key, this.appinfo}) : super(key: key);

@@ -1,6 +1,6 @@
 // Flutter imports:
+import 'package:delegate_app/utils/prasso_themedata.dart';
 import 'package:flutter/material.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 //
 // TabItem outlines the maximum tabs this app could have

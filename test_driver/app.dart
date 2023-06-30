@@ -1,14 +1,14 @@
 // Flutter imports:
 // Package imports:
+// Project imports:
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/main.dart';
+import 'package:delegate_app/services/firestore_database.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/main.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
 
 import '../test/mocks.dart';
 
@@ -26,8 +26,7 @@ Future<void> main() async {
   // any widget you are interested in testing.
   runApp(ProviderScope(
     overrides: [
-      prassoApiService
-          .overrideWithProvider(
+      prassoApiService.overrideWithProvider(
           Provider<PrassoApiRepository?>((ref) => MockAuthService())),
       databaseProvider.overrideWithProvider(
           Provider<FirestoreDatabase?>((ref) => MockDatabase())),

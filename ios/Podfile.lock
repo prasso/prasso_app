@@ -68,21 +68,21 @@ PODS:
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseAppCheckInterop (10.10.0)
+  - FirebaseAppCheckInterop (10.11.0)
   - FirebaseAuth (10.9.0):
     - FirebaseAppCheckInterop (~> 10.0)
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
-  - FirebaseAuthInterop (10.10.0)
+  - FirebaseAuthInterop (10.11.0)
   - FirebaseCore (10.9.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreExtension (10.10.0):
+  - FirebaseCoreExtension (10.11.0):
     - FirebaseCore (~> 10.0)
-  - FirebaseCoreInternal (10.10.0):
+  - FirebaseCoreInternal (10.11.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseCrashlytics (10.9.0):
     - FirebaseCore (~> 10.5)
@@ -108,7 +108,7 @@ PODS:
     - FirebaseMessagingInterop (~> 10.0)
     - FirebaseSharedSwift (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
-  - FirebaseInstallations (10.10.0):
+  - FirebaseInstallations (10.11.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
@@ -122,8 +122,8 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseMessagingInterop (10.10.0)
-  - FirebaseSessions (10.10.0):
+  - FirebaseMessagingInterop (10.11.0)
+  - FirebaseSessions (10.11.0):
     - FirebaseCore (~> 10.5)
     - FirebaseCoreExtension (~> 10.0)
     - FirebaseInstallations (~> 10.0)
@@ -131,7 +131,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.10)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesSwift (~> 2.1)
-  - FirebaseSharedSwift (10.10.0)
+  - FirebaseSharedSwift (10.11.0)
   - FirebaseStorage (10.9.0):
     - FirebaseAppCheckInterop (~> 10.0)
     - FirebaseAuthInterop (~> 10.0)
@@ -145,8 +145,6 @@ PODS:
     - SDWebImage
     - SDWebImageWebPCoder
   - flutter_local_notifications (0.0.1):
-    - Flutter
-  - flutter_native_timezone (0.0.1):
     - Flutter
   - flutter_pdfview (1.0.2):
     - Flutter
@@ -229,7 +227,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.0.4):
+  - permission_handler_apple (9.1.0):
     - Flutter
   - PromisesObjC (2.2.0)
   - PromisesSwift (2.2.0):
@@ -237,9 +235,9 @@ PODS:
   - SDWebImage (5.16.0):
     - SDWebImage/Core (= 5.16.0)
   - SDWebImage/Core (5.16.0)
-  - SDWebImageWebPCoder (0.11.0):
+  - SDWebImageWebPCoder (0.12.0):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.15)
+    - SDWebImage/Core (~> 5.16)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -266,7 +264,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_image_compress_common (from `.symlinks/plugins/flutter_image_compress_common/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_native_timezone (from `.symlinks/plugins/flutter_native_timezone/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
@@ -337,8 +334,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_image_compress_common/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_native_timezone:
-    :path: ".symlinks/plugins/flutter_native_timezone/ios"
   flutter_pdfview:
     :path: ".symlinks/plugins/flutter_pdfview/ios"
   fluttertoast:
@@ -375,25 +370,24 @@ SPEC CHECKSUMS:
   firebase_messaging: 42912365e62efc1ea3e00724e5eecba6068ddb88
   firebase_storage: 7e99be67d69a310a307f7be32b93c7412ffc2282
   FirebaseAnalytics: 5ea0db4893825e7b0149d575352cd838236313dc
-  FirebaseAppCheckInterop: 7d3521f56872cf74a01792c0a095a30e054ff6ae
+  FirebaseAppCheckInterop: 255b6c0292fe5da995c8b2df0c02f6a3ca7f61b4
   FirebaseAuth: 21d5e902fcea44d0d961540fc4742966ae6118cc
-  FirebaseAuthInterop: edf6ead0428515d8efc10810c2dabc3a4ec70501
+  FirebaseAuthInterop: 44e34efef7145776a107b9e7f79ed44beb4738fa
   FirebaseCore: b68d3616526ec02e4d155166bbafb8eca64af557
-  FirebaseCoreExtension: 8d93ebbf6838a874b4ed82a564c9d6705f8365dd
-  FirebaseCoreInternal: 971029061d326000d65bfdc21f5502c75c8b0893
+  FirebaseCoreExtension: cacdad57fdb60e0b86dcbcac058ec78237946759
+  FirebaseCoreInternal: 9e46c82a14a3b3a25be4e1e151ce6d21536b89c0
   FirebaseCrashlytics: b60329455285aff853e54139d8ddbfe1e5f2b9f9
   FirebaseFirestore: 8418f3a8d5892bf386b05d5f988b6e7e253a2ea6
   FirebaseFunctions: e8da9bbc42bd6e2089cb5f563dddf6501c68b6f0
-  FirebaseInstallations: 52153982b057d3afcb4e1fbb3eb0b6d00611e681
+  FirebaseInstallations: 2a2c6859354cbec0a228a863d4daf6de7c74ced4
   FirebaseMessaging: 6b7052cc3da7bc8e5f72bef871243e8f04a14eed
-  FirebaseMessagingInterop: b7dc8717556f583cceb05fca3105b6be40b58dcd
-  FirebaseSessions: 5f9e62cd4096e24d2011cbd845b0efceffaee1ec
-  FirebaseSharedSwift: e6563601d23a27079051d2b6036bad2602851485
+  FirebaseMessagingInterop: c78a2df8002e0b51fc446a687b5ba357b81e9e90
+  FirebaseSessions: a62ba5c45284adb7714f4126cfbdb32b17c260bd
+  FirebaseSharedSwift: c590d181c8b80ebf85f2606f4d366cf72f82f184
   FirebaseStorage: 075a0c10ec43f24193018c539d65e991db65d9ef
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_image_compress_common: ec1d45c362c9d30a3f6a0426c297f47c52007e3e
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  flutter_native_timezone: 5f05b2de06c9776b4cc70e1839f03de178394d22
   flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
   fluttertoast: fafc4fa4d01a6a9e4f772ecd190ffa525e9e2d9c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -409,11 +403,11 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
-  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  permission_handler_apple: 8f116445eff3c0e7c65ad60f5fef5490aa94b4e4
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
   SDWebImage: 2aea163b50bfcb569a2726b6a754c54a4506fcf6
-  SDWebImageWebPCoder: 295a6573c512f54ad2dd58098e64e17dcf008499
+  SDWebImageWebPCoder: f0f287cee4cd96a59937fbf3c77a8cfda9ba67b0
   shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196

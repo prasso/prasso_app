@@ -1,11 +1,11 @@
+import 'package:delegate_app/app_widgets/Onboarding/slider_model.dart';
+import 'package:delegate_app/app_widgets/initial_profile/initial_profile2.dart';
+import 'package:delegate_app/common_widgets/custom_buttons.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:prasso_app/app_widgets/Onboarding/slider_model.dart';
-import 'package:prasso_app/app_widgets/initial_profile/initial_profile2.dart';
-import 'package:prasso_app/common_widgets/custom_buttons.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 import 'intro_viewmodel.dart';
 

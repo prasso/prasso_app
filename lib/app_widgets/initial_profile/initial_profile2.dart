@@ -1,19 +1,19 @@
 // Flutter imports:
 import 'dart:io';
 
+// Project imports:
+import 'package:delegate_app/app_widgets/initial_profile/create_profile_input_model.dart';
+import 'package:delegate_app/app_widgets/initial_profile/profile_model.dart';
+import 'package:delegate_app/app_widgets/initial_profile/profile_view_model.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Package imports:
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/initial_profile/create_profile_input_model.dart';
-import 'package:prasso_app/app_widgets/initial_profile/profile_model.dart';
-import 'package:prasso_app/app_widgets/initial_profile/profile_view_model.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 DateTime selectedDate = DateTime(2000, 1, 1);
 String? fromClass;

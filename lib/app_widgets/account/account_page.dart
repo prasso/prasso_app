@@ -1,27 +1,25 @@
 // Dart imports:
 import 'dart:async';
 
+// Project imports:
+import 'package:delegate_app/app_widgets/account/edit_user_profile.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/common_widgets/alert_dialogs.dart';
+import 'package:delegate_app/common_widgets/avatar.dart';
+import 'package:delegate_app/common_widgets/custom_buttons.dart';
+import 'package:delegate_app/constants/keys.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/routing/router.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/services/shared_preferences_service.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pedantic/pedantic.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/account/edit_user_profile.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-import 'package:prasso_app/common_widgets/avatar.dart';
-import 'package:prasso_app/common_widgets/custom_buttons.dart';
-import 'package:prasso_app/constants/keys.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/routing/router.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountPage extends HookConsumerWidget {

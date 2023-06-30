@@ -1,6 +1,7 @@
+import 'package:delegate_app/services/shared_preferences_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
+
 import '../top_level_providers.dart';
 
 final onboardingViewModelProvider =

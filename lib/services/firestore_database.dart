@@ -2,10 +2,10 @@
 import 'dart:async';
 
 // Project imports:
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/models/app.dart';
-import 'package:prasso_app/services/firebase_auth_service/firestore_service.dart';
-import 'package:prasso_app/services/firestore_path.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/models/app.dart';
+import 'package:delegate_app/services/firebase_auth_service/firestore_service.dart';
+import 'package:delegate_app/services/firestore_path.dart';
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
 
@@ -21,8 +21,8 @@ class FirestoreDatabase {
       );
 
   Future<void>? setUser(ApiUser usr) => _service.setData(
-          path: FirestorePath.users(usr.uid),
-          data: usr.toMap(),
+        path: FirestorePath.users(usr.uid),
+        data: usr.toMap(),
       );
 
   Future<void> deleteApp(AppModel app) async {

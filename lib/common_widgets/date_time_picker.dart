@@ -1,13 +1,12 @@
 // Dart imports:
 import 'dart:async';
 
+// Project imports:
+import 'package:delegate_app/common_widgets/format.dart';
+import 'package:delegate_app/common_widgets/input_dropdown.dart';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-// Project imports:
-import 'package:prasso_app/common_widgets/format.dart';
-import 'package:prasso_app/common_widgets/input_dropdown.dart';
 
 class DateTimePicker extends StatelessWidget {
   const DateTimePicker({
@@ -38,7 +37,8 @@ class DateTimePicker extends StatelessWidget {
   }
 
   Future<void> _selectTime(BuildContext context) async {
-    final pickedTime = await showTimePicker(context: context, initialTime: selectedTime!);
+    final pickedTime =
+        await showTimePicker(context: context, initialTime: selectedTime!);
     if (pickedTime != null && pickedTime != selectedTime) {
       onSelectedTime!(pickedTime);
     }
@@ -77,8 +77,11 @@ class DateTimePicker extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('labelText', labelText));
     properties.add(DiagnosticsProperty<DateTime>('selectedDate', selectedDate));
-    properties.add(DiagnosticsProperty<TimeOfDay>('selectedTime', selectedTime));
-    properties.add(ObjectFlagProperty<ValueChanged<DateTime>>.has('onSelectedDate', onSelectedDate));
-    properties.add(ObjectFlagProperty<ValueChanged<TimeOfDay>>.has('onSelectedTime', onSelectedTime));
+    properties
+        .add(DiagnosticsProperty<TimeOfDay>('selectedTime', selectedTime));
+    properties.add(ObjectFlagProperty<ValueChanged<DateTime>>.has(
+        'onSelectedDate', onSelectedDate));
+    properties.add(ObjectFlagProperty<ValueChanged<TimeOfDay>>.has(
+        'onSelectedTime', onSelectedTime));
   }
 }

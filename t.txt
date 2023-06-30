@@ -1,6 +1,0 @@
-Building com.faxt.prasso for device (ios-release)...
-Automatically signing iOS for device deployment using specified development team in Xcode project: MJBXHH6KZ5
-Running Xcode build...                                          
- └─Compiling, linking and signing...                        23.8s
-Xcode build done.                                           80.4s
-Built /Users/Bobbi/Documents/GitHub/faxt/prasso/prasso_app/build/ios/iphoneos/Runner.app.

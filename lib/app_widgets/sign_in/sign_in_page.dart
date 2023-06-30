@@ -1,6 +1,15 @@
 // Dart imports:
 import 'dart:math';
 
+// Project imports:
+import 'package:delegate_app/app_widgets/sign_in/sign_in_view_model.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/common_widgets/alert_dialogs.dart';
+import 'package:delegate_app/common_widgets/custom_buttons.dart';
+import 'package:delegate_app/constants/keys.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/routing/router.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +17,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/sign_in/sign_in_view_model.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-import 'package:prasso_app/common_widgets/custom_buttons.dart';
-import 'package:prasso_app/constants/keys.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/routing/router.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 import 'email_password_sign_in_ui.dart';
 
@@ -45,15 +45,19 @@ class SignInPage extends ConsumerWidget {
 }
 
 class SignInPageContents extends ConsumerWidget {
-  const SignInPageContents({Key? key, this.viewModel, this.title = Strings.appName}) : super(key: key);
+  const SignInPageContents(
+      {Key? key, this.viewModel, this.title = Strings.appName})
+      : super(key: key);
   final SignInViewModel? viewModel;
   final String title;
 
   static const Key emailPasswordButtonKey = Key(Keys.emailPassword);
   static const Key emailSignupButtonKey = Key(Keys.emailSignup);
 
-  Future<void> _showEmailPasswordSignInPage(WidgetRef ref, BuildContext context) async {
-    final EmailPasswordSignInModel _thismodel = ref.read(emailPasswordSigninViewModelProvider);
+  Future<void> _showEmailPasswordSignInPage(
+      WidgetRef ref, BuildContext context) async {
+    final EmailPasswordSignInModel _thismodel =
+        ref.read(emailPasswordSigninViewModelProvider);
     _thismodel.formType = EmailPasswordSignInFormType.signIn;
     final navigator = Navigator.of(context);
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -65,8 +69,10 @@ class SignInPageContents extends ConsumerWidget {
     });
   }
 
-  Future<void> _showEmailPasswordRegisterPage(WidgetRef ref, BuildContext context) async {
-    final EmailPasswordSignInModel _thismodel = ref.read(emailPasswordSigninViewModelProvider);
+  Future<void> _showEmailPasswordRegisterPage(
+      WidgetRef ref, BuildContext context) async {
+    final EmailPasswordSignInModel _thismodel =
+        ref.read(emailPasswordSigninViewModelProvider);
     _thismodel.formType = EmailPasswordSignInFormType.register;
     final navigator = Navigator.of(context);
     await navigator.pushNamed(
@@ -106,7 +112,9 @@ class SignInPageContents extends ConsumerWidget {
                 Text(
                   EmailPasswordSignInStrings.noPlan,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).primaryColorDark, fontSize: fontSize),
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: fontSize),
                 ),
                 Expanded(
                     child: FractionallySizedBox(
@@ -122,11 +130,16 @@ class SignInPageContents extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: CustomRaisedButton(
                     color: PrassoColors.olive,
-                    onPressed: viewModel!.isLoading ? null : () => _showEmailPasswordSignInPage(ref, context),
+                    onPressed: viewModel!.isLoading
+                        ? null
+                        : () => _showEmailPasswordSignInPage(ref, context),
                     child: SizedBox(
                         child: Text(
                       EmailPasswordSignInStrings.createAPlan,
-                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(color: Colors.white),
                     )),
                   ),
                 ),
@@ -135,28 +148,43 @@ class SignInPageContents extends ConsumerWidget {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       color: Theme.of(context).secondaryHeaderColor,
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                        TextButton(
-                          key: emailSignupButtonKey,
-                          onPressed: viewModel!.isLoading ? null : () => _showEmailPasswordRegisterPage(ref, context),
-                          child: const Text(
-                            EmailPasswordSignInStrings.signUpWithEmailPassword,
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          ),
-                        ),
-                        Text(
-                          '-or-',
-                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.white),
-                        ),
-                        TextButton(
-                          key: emailPasswordButtonKey,
-                          onPressed: viewModel!.isLoading ? null : () => _showEmailPasswordSignInPage(ref, context),
-                          child: const Text(
-                            EmailPasswordSignInStrings.signInWithEmailPassword,
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          ),
-                        ),
-                      ]),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              key: emailSignupButtonKey,
+                              onPressed: viewModel!.isLoading
+                                  ? null
+                                  : () => _showEmailPasswordRegisterPage(
+                                      ref, context),
+                              child: const Text(
+                                EmailPasswordSignInStrings
+                                    .signUpWithEmailPassword,
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black),
+                              ),
+                            ),
+                            Text(
+                              '-or-',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(color: Colors.white),
+                            ),
+                            TextButton(
+                              key: emailPasswordButtonKey,
+                              onPressed: viewModel!.isLoading
+                                  ? null
+                                  : () => _showEmailPasswordSignInPage(
+                                      ref, context),
+                              child: const Text(
+                                EmailPasswordSignInStrings
+                                    .signInWithEmailPassword,
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black),
+                              ),
+                            ),
+                          ]),
                     )),
                 const SizedBox(height: 16.0),
               ],
@@ -168,7 +196,8 @@ class SignInPageContents extends ConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<SignInViewModel>('viewModel', viewModel));
+    properties
+        .add(DiagnosticsProperty<SignInViewModel>('viewModel', viewModel));
     properties.add(StringProperty('title', title));
   }
 }

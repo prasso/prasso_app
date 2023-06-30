@@ -2,14 +2,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:delegate_app/routing/router.dart';
+// Project imports:
+import 'package:delegate_app/utils/prasso_themedata.dart';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:prasso_app/routing/router.dart';
-// Project imports:
-import 'package:prasso_app/utils/prasso_themedata.dart';
 // Package imports:
 import 'package:webview_flutter/webview_flutter.dart';
 

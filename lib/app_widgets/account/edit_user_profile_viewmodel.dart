@@ -1,22 +1,21 @@
 // Flutter imports:
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delegate_app/app_widgets/initial_profile/create_profile_input_model.dart';
+// Project imports:
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/common_widgets/alert_dialogs.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/models/role_model.dart';
+import 'package:delegate_app/models/team_member_model.dart';
+import 'package:delegate_app/providers/profile_pic_url_state.dart';
+import 'package:delegate_app/services/firestore_database.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/utils/filename_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:prasso_app/app_widgets/initial_profile/create_profile_input_model.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/common_widgets/alert_dialogs.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/models/role_model.dart';
-import 'package:prasso_app/models/team_member_model.dart';
-import 'package:prasso_app/providers/profile_pic_url_state.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-import 'package:prasso_app/utils/filename_helper.dart';
 
 final editUserProfileViewModel =
     ChangeNotifierProvider<EditUserProfileViewModel>((ref) =>
@@ -77,13 +76,7 @@ class EditUserProfileViewModel extends ChangeNotifier {
 
   List<String> availableTimezones = <String>[];
 
-  Future<void> _initData() async {
-    try {
-      availableTimezones = await FlutterNativeTimezone.getAvailableTimezones();
-    } catch (e) {
-      print('Could not get available timezones');
-    }
-  }
+  Future<void> _initData() async {}
 
   void setMaleFemale(String value) {
     maleFemale = value;

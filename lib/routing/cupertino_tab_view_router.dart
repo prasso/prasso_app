@@ -1,9 +1,8 @@
 // Flutter imports:
-import 'package:flutter/cupertino.dart';
-
 // Project imports:
-import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
-import 'package:prasso_app/models/app.dart';
+import 'package:delegate_app/app_widgets/apps/app_web_view.dart';
+import 'package:delegate_app/models/app.dart';
+import 'package:flutter/cupertino.dart';
 
 class CupertinoTabViewRoutes {
   static const webViewPage = '/app_web_view';

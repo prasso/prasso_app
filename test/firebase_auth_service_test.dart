@@ -1,8 +1,7 @@
 // Package imports:
-import 'package:flutter_test/flutter_test.dart';
-
 // Project imports:
-import 'package:prasso_app/models/api_user.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('User', () {

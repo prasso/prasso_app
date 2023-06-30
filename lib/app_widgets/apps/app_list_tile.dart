@@ -1,9 +1,8 @@
 // Flutter imports:
+// Project imports:
+import 'package:delegate_app/models/app.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-// Project imports:
-import 'package:prasso_app/models/app.dart';
 
 class AppListTile extends StatelessWidget {
   const AppListTile({Key? key, required this.app, this.onTap})

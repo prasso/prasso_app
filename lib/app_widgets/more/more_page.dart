@@ -1,16 +1,14 @@
 // Flutter imports:
+// Project imports:
+import 'package:delegate_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 class MorePage extends HookConsumerWidget {
   @override
@@ -26,8 +24,8 @@ class MorePage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildMoreInfo(
-      WidgetRef ref, BuildContext context, CupertinoHomeScaffoldViewModel model) {
+  Widget _buildMoreInfo(WidgetRef ref, BuildContext context,
+      CupertinoHomeScaffoldViewModel model) {
     final authService = ref.read(prassoApiService);
     final user = authService?.currentUser;
 

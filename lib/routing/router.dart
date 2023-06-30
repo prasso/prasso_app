@@ -1,12 +1,11 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
-
 // Project imports:
-import 'package:prasso_app/app_widgets/apps/edit_app_page.dart';
-import 'package:prasso_app/app_widgets/home/home_page.dart';
-import 'package:prasso_app/app_widgets/onboarding/intro_page.dart';
-import 'package:prasso_app/app_widgets/sign_in/email_password_sign_in_ui.dart';
-import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
+import 'package:delegate_app/app_widgets/apps/edit_app_page.dart';
+import 'package:delegate_app/app_widgets/home/home_page.dart';
+import 'package:delegate_app/app_widgets/onboarding/intro_page.dart';
+import 'package:delegate_app/app_widgets/sign_in/email_password_sign_in_ui.dart';
+import 'package:delegate_app/app_widgets/sign_in/sign_in_page.dart';
+import 'package:flutter/material.dart';
 
 import '../models/app.dart';
 
@@ -35,13 +34,17 @@ class Router {
         );
       case Routes.emailPasswordSignInPage:
         return MaterialPageRoute<dynamic>(
-          builder: (dynamic _) => EmailPasswordSignInPage(onSignedIn: args as void Function()?, formType: EmailPasswordSignInFormType.signIn),
+          builder: (dynamic _) => EmailPasswordSignInPage(
+              onSignedIn: args as void Function()?,
+              formType: EmailPasswordSignInFormType.signIn),
           settings: settings,
           fullscreenDialog: true,
         );
       case Routes.editAppPage:
         return MaterialPageRoute<dynamic>(
-          builder: (dynamic _) => EditAppPage(key: GlobalKey<FormState>(), appinfo: args is AppModel ? args : null),
+          builder: (dynamic _) => EditAppPage(
+              key: GlobalKey<FormState>(),
+              appinfo: args is AppModel ? args : null),
           settings: settings,
           fullscreenDialog: true,
         );

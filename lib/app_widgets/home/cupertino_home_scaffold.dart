@@ -1,29 +1,29 @@
 // Flutter imports:
+// Project imports:
+import 'package:delegate_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/models/tab_item.dart';
+import 'package:delegate_app/routing/cupertino_tab_view_router.dart';
+import 'package:delegate_app/routing/router.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/models/tab_item.dart';
-import 'package:prasso_app/routing/cupertino_tab_view_router.dart';
-import 'package:prasso_app/routing/router.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 @immutable
 class CupertinoHomeScaffold extends StatefulHookConsumerWidget {
   const CupertinoHomeScaffold({Key? key}) : super(key: key);
 
   @override
-  CupertinoHomeScaffoldPageState createState() => CupertinoHomeScaffoldPageState();
+  CupertinoHomeScaffoldPageState createState() =>
+      CupertinoHomeScaffoldPageState();
 }
 
-class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold> {
+class CupertinoHomeScaffoldPageState
+    extends ConsumerState<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
   CupertinoHomeScaffoldViewModel? vm;
 
@@ -31,7 +31,8 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
     if (tabItem == vm.currentTab) {
       // pop to first route
       if (mounted) {
-        setState(() => vm.navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst));
+        setState(() => vm.navigatorKeys[tabItem]!.currentState!
+            .popUntil((route) => route.isFirst));
       }
     } else {
       if (mounted) {
@@ -75,7 +76,8 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
       } else {
         if (Navigator.of(context).canPop()) {
           SchedulerBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pop(); // Takes you back to the sign-in screen.
+            Navigator.of(context)
+                .pop(); // Takes you back to the sign-in screen.
           });
         } else {
           SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -136,6 +138,7 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
+    properties
+        .add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
   }
 }

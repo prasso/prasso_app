@@ -1,16 +1,14 @@
 library custom_buttons;
 
+// Project imports:
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/services/shared_preferences_service.dart';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
 
 import 'home/cupertino_home_scaffold_view_model.dart';
 
@@ -38,7 +36,10 @@ class AuthWidget extends ConsumerWidget {
         error: (_, __) => nonSignedInBuilder(context));
   }
 
-  Widget _data(BuildContext context, ApiUser? user, CupertinoHomeScaffoldViewModel cupertinoVM,
+  Widget _data(
+      BuildContext context,
+      ApiUser? user,
+      CupertinoHomeScaffoldViewModel cupertinoVM,
       SharedPreferencesService sharedPreferences) {
     if (user != null) {
       if (cupertinoVM.tabs.isEmpty) {
@@ -53,7 +54,9 @@ class AuthWidget extends ConsumerWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(ObjectFlagProperty<WidgetBuilder>.has('nonSignedInBuilder', nonSignedInBuilder));
-    properties.add(ObjectFlagProperty<WidgetBuilder>.has('signedInBuilder', signedInBuilder));
+    properties.add(ObjectFlagProperty<WidgetBuilder>.has(
+        'nonSignedInBuilder', nonSignedInBuilder));
+    properties.add(ObjectFlagProperty<WidgetBuilder>.has(
+        'signedInBuilder', signedInBuilder));
   }
 }

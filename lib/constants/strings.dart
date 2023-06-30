@@ -11,7 +11,7 @@ class Strings {
   static const String apiUrl = 'API_URL';
   static const String appId = 'appId';
 
-  //static const String prodUrl = 'https://prasso.io/api/';
+  //static const String prodUrl = 'https://delegate.prasso.io/api/';
   static const String prodUrl = 'http://localhost:8000/api/';
 
   static const String awsIdentityPool = 'AWS_IDENTITY_POOL';
@@ -32,7 +32,8 @@ class Strings {
   // Logout
   static const String logout = 'Logout';
   static const String reload = 'Reload';
-  static const String logoutAreYouSure = 'Are you sure that you want to logout?';
+  static const String logoutAreYouSure =
+      'Are you sure that you want to logout?';
   static const String logoutFailed = 'Logout failed';
   static const String refreshFailed = 'Refresh failed';
 

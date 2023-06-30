@@ -1,4 +1,4 @@
-import 'package:prasso_app/models/api_user.dart';
+import 'package:delegate_app/models/api_user.dart';
 
 class CreateProfileInputModel {
   String? fkUserId;
@@ -108,7 +108,8 @@ class CreateProfileInputModel {
   CreateProfileInputModel.fromJson(Map<String, dynamic> json) {
     fkUserId = json['fkUserId'] is String ? json['fkUserId'].toString() : null;
     userName = json['UserName'] is String ? json['UserName'].toString() : null;
-    firstName = json['FirstName'] is String ? json['FirstName'].toString() : null;
+    firstName =
+        json['FirstName'] is String ? json['FirstName'].toString() : null;
     lastName = json['LastName'] is String ? json['LastName'].toString() : null;
     address1 = json['Address1'] is String ? json['Address1'].toString() : null;
     address2 = json['Address2'] is String ? json['Address2'].toString() : null;
@@ -121,23 +122,43 @@ class CreateProfileInputModel {
     fem = json['Fem'] is String ? json['Fem'].toString() : null;
     birthDay = json['BirthDay'] is String ? json['BirthDay'].toString() : null;
     isFemale = json['IsFemale'] is String ? json['IsFemale'].toString() : null;
-    pregnentorBreastfeeding = json['PregnentorBreastfeeding'] is String ? json['PregnentorBreastfeeding'].toString() : null;
-    currentWeight = json['CurrentWeight'] is String ? json['CurrentWeight'].toString() : null;
-    goalWeight = json['GoalWeight'] is String ? json['GoalWeight'].toString() : null;
-    heightFeet = json['HeightFeet'] is String ? json['HeightFeet'].toString() : null;
-    heightInches = json['HeightInches'] is String ? json['HeightInches'].toString() : null;
-    currentActivityLevel = json['CurrentActivityLevel'] is String ? json['CurrentActivityLevel'].toString() : null;
-    goalActivityLevel = json['GoalActivityLevel'] is String ? json['GoalActivityLevel'].toString() : null;
+    pregnentorBreastfeeding = json['PregnentorBreastfeeding'] is String
+        ? json['PregnentorBreastfeeding'].toString()
+        : null;
+    currentWeight = json['CurrentWeight'] is String
+        ? json['CurrentWeight'].toString()
+        : null;
+    goalWeight =
+        json['GoalWeight'] is String ? json['GoalWeight'].toString() : null;
+    heightFeet =
+        json['HeightFeet'] is String ? json['HeightFeet'].toString() : null;
+    heightInches =
+        json['HeightInches'] is String ? json['HeightInches'].toString() : null;
+    currentActivityLevel = json['CurrentActivityLevel'] is String
+        ? json['CurrentActivityLevel'].toString()
+        : null;
+    goalActivityLevel = json['GoalActivityLevel'] is String
+        ? json['GoalActivityLevel'].toString()
+        : null;
     bMI = json['BMI'] is String ? json['BMI'].toString() : null;
     bMR = json['BMR'] is String ? json['BMR'].toString() : null;
-    caloriesAllowed = json['CaloriesAllowed'] is String ? json['CaloriesAllowed'].toString() : null;
+    caloriesAllowed = json['CaloriesAllowed'] is String
+        ? json['CaloriesAllowed'].toString()
+        : null;
     image = json['Image'] is String ? json['Image'].toString() : null;
-    fatAllowed = json['FatAllowed'] is String ? json['FatAllowed'].toString() : null;
-    carbsAllowed = json['CarbsAllowed'] is String ? json['CarbsAllowed'].toString() : null;
-    proteinAllowed = json['ProteinAllowed'] is String ? json['ProteinAllowed'].toString() : null;
-    userTimeZone = json['UserTimeZone'] is String ? json['UserTimeZone'].toString() : null;
-    createdDate = json['CreatedDate'] is String ? json['CreatedDate'].toString() : null;
-    isNewUser = json['isNewUser'] is String ? json['isNewUser'].toString() : null;
+    fatAllowed =
+        json['FatAllowed'] is String ? json['FatAllowed'].toString() : null;
+    carbsAllowed =
+        json['CarbsAllowed'] is String ? json['CarbsAllowed'].toString() : null;
+    proteinAllowed = json['ProteinAllowed'] is String
+        ? json['ProteinAllowed'].toString()
+        : null;
+    userTimeZone =
+        json['UserTimeZone'] is String ? json['UserTimeZone'].toString() : null;
+    createdDate =
+        json['CreatedDate'] is String ? json['CreatedDate'].toString() : null;
+    isNewUser =
+        json['isNewUser'] is String ? json['isNewUser'].toString() : null;
   }
 
   Map<String, dynamic> toJson() {

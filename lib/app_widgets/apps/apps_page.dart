@@ -1,17 +1,15 @@
 // Flutter imports:
+// Project imports:
+import 'package:delegate_app/app_widgets/apps/app_list_tile.dart';
+import 'package:delegate_app/app_widgets/apps/apps_page_view_model.dart';
+import 'package:delegate_app/app_widgets/apps/list_items_builder.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/constants/strings.dart';
+import 'package:delegate_app/models/app.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/apps/app_list_tile.dart';
-import 'package:prasso_app/app_widgets/apps/apps_page_view_model.dart';
-import 'package:prasso_app/app_widgets/apps/list_items_builder.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/constants/strings.dart';
-import 'package:prasso_app/models/app.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 
 class AppsPage extends HookConsumerWidget {
   @override
@@ -35,7 +33,8 @@ class AppsPage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildContents(WidgetRef ref, BuildContext context, AppsPageViewModel _viewModel) {
+  Widget _buildContents(
+      WidgetRef ref, BuildContext context, AppsPageViewModel _viewModel) {
     final logprovider = ref.watch(loggerProvider);
 
     return StreamBuilder<List<AppModel>>(

@@ -1,8 +1,7 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
-
 // Project imports:
-import 'package:prasso_app/common_widgets/custom_buttons.dart';
+import 'package:delegate_app/common_widgets/custom_buttons.dart';
+import 'package:flutter/material.dart';
 
 class SignInButton extends CustomRaisedButton {
   SignInButton({

@@ -2,15 +2,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+// Project imports:
+import 'package:delegate_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/services/shared_preferences_service.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
 
 class MockJsonService extends Mock implements PrassoApiRepository {}
 
@@ -36,7 +35,8 @@ void main() {
 
       final tabslist = List.from(alldata['tabs']);
 
-      final CupertinoHomeScaffoldViewModel model = CupertinoHomeScaffoldViewModel(SharedPreferencesService(null));
+      final CupertinoHomeScaffoldViewModel model =
+          CupertinoHomeScaffoldViewModel(SharedPreferencesService(null));
       model.buildAllTabs(tabslist);
     }
 

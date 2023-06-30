@@ -1,4 +1,4 @@
-import 'package:prasso_app/app_widgets/initial_profile/create_profile_input_model.dart';
+import 'package:delegate_app/app_widgets/initial_profile/create_profile_input_model.dart';
 
 class ProfileModel {
   int? id;
@@ -67,7 +67,8 @@ class ProfileModel {
     id = json['Id'] is int ? int.parse(json['Id']) : null;
     fkUserId = json['fkUserId'] is int ? int.parse(json['fkUserId']) : null;
     userName = json['UserName'] is String ? json['UserName'].toString() : null;
-    firstName = json['FirstName'] is String ? json['FirstName'].toString() : null;
+    firstName =
+        json['FirstName'] is String ? json['FirstName'].toString() : null;
     lastName = json['LastName'] is String ? json['LastName'].toString() : null;
     address1 = json['Address1'] is String ? json['Address1'].toString() : null;
     address2 = json['Address2'] is String ? json['Address2'].toString() : null;
@@ -77,8 +78,11 @@ class ProfileModel {
     phone = json['Phone'] is String ? json['Phone'].toString() : null;
     email = json['Email'] is String ? json['Email'].toString() : null;
 
-    createdDate = json['CreatedDate'] is String ? json['CreatedDate'].toString() : null;
-    isNewUser = json['isNewUser'] is bool ? bool.fromEnvironment(json['isNewUser']) : null;
+    createdDate =
+        json['CreatedDate'] is String ? json['CreatedDate'].toString() : null;
+    isNewUser = json['isNewUser'] is bool
+        ? bool.fromEnvironment(json['isNewUser'])
+        : null;
     message = json['Message'] is String ? json['Message'].toString() : null;
   }
 

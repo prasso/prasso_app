@@ -1,14 +1,13 @@
 // Package imports:
+// Project imports:
+import 'package:delegate_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
+import 'package:delegate_app/models/api_user.dart';
+import 'package:delegate_app/providers/profile_pic_url_state.dart';
+import 'package:delegate_app/services/firestore_database.dart';
+import 'package:delegate_app/services/prasso_api_repository.dart';
+import 'package:delegate_app/services/shared_preferences_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
-
-// Project imports:
-import 'package:prasso_app/app_widgets/home/cupertino_home_scaffold_view_model.dart';
-import 'package:prasso_app/models/api_user.dart';
-import 'package:prasso_app/providers/profile_pic_url_state.dart';
-import 'package:prasso_app/services/firestore_database.dart';
-import 'package:prasso_app/services/prasso_api_repository.dart';
-import 'package:prasso_app/services/shared_preferences_service.dart';
 
 final sharedPreferencesService =
     Provider<SharedPreferencesService>((ref) => SharedPreferencesService(null));
@@ -25,8 +24,8 @@ final prassoApiService = Provider<PrassoApiRepository?>((ref) =>
 final profilePicUrlState =
     ChangeNotifierProvider<ProfilePicUrlState>((ref) => ProfilePicUrlState());
 
-final userChangesProvider =
-    StreamProvider<ApiUser>((ref) => ref.watch(prassoApiService)!.userChanges());
+final userChangesProvider = StreamProvider<ApiUser>(
+    (ref) => ref.watch(prassoApiService)!.userChanges());
 
 final databaseProvider = Provider<FirestoreDatabase?>((ref) {
   final usr = ref.watch(prassoApiService)!.currentUser;

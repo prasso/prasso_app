@@ -1,5 +1,13 @@
 // Flutter imports:
 
+// Project imports:
+import 'package:delegate_app/app_widgets/auth_widget.dart';
+import 'package:delegate_app/app_widgets/home/home_page.dart';
+import 'package:delegate_app/app_widgets/onboarding/intro_page.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/routing/router.dart' as _rtr;
+import 'package:delegate_app/services/shared_preferences_service.dart';
+import 'package:delegate_app/utils/prasso_themedata.dart';
 // Package imports:
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -7,14 +15,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/auth_widget.dart';
-import 'package:prasso_app/app_widgets/home/home_page.dart';
-import 'package:prasso_app/app_widgets/onboarding/intro_page.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/routing/router.dart' as _rtr;
-import 'package:prasso_app/services/shared_preferences_service.dart';
-import 'package:prasso_app/utils/prasso_themedata.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_widgets/onboarding/intro_viewmodel.dart';

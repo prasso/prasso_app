@@ -3,14 +3,14 @@
 // Dart imports:
 import 'dart:convert';
 
+import 'package:delegate_app/app_widgets/account/edit_user_profile_viewmodel.dart';
+import 'package:delegate_app/models/role_model.dart';
+import 'package:delegate_app/models/team_member_model.dart';
 // Package imports:
 import 'package:firebase_auth/firebase_auth.dart';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
-import 'package:prasso_app/models/role_model.dart';
-import 'package:prasso_app/models/team_member_model.dart';
 
 @immutable
 class ApiUser {
@@ -47,7 +47,8 @@ class ApiUser {
   final String? coachUid;
   final bool? unreadmessages;
 
-  factory ApiUser.fromLocatorUpdated(ApiUser? user, EditUserProfileViewModel vm) {
+  factory ApiUser.fromLocatorUpdated(
+      ApiUser? user, EditUserProfileViewModel vm) {
     return ApiUser(
         uid: user == null ? '' : user.uid,
         email: vm.email,
@@ -65,7 +66,8 @@ class ApiUser {
         unreadmessages: vm.unreadmessages);
   }
 
-  factory ApiUser.fromAPIJson(dynamic _user, String? appConfig, String? appToken) {
+  factory ApiUser.fromAPIJson(
+      dynamic _user, String? appConfig, String? appToken) {
     if (_user == null) {
       return ApiUser(
           uid: '',
@@ -102,13 +104,14 @@ class ApiUser {
               initialized: true,
               roles: jsonAppData['data']['roles'] == null
                   ? RoleModel.defaultRole()
-                  : List<RoleModel>.from(RoleModel.convertFromJson(jsonAppData['data']['roles'])),
+                  : List<RoleModel>.from(
+                      RoleModel.convertFromJson(jsonAppData['data']['roles'])),
               personalTeamId: jsonAppData['data']['personal_team_id'],
               teamCoachId: jsonAppData['data']['team_coach_id'],
               teamMembers: jsonAppData['data']['team_members'] == null
                   ? defaultTeamMembers()
-                  : List<TeamMemberModel>.from(
-                      TeamMemberModel.convertFromJson(jsonAppData['data']['team_members'])),
+                  : List<TeamMemberModel>.from(TeamMemberModel.convertFromJson(
+                      jsonAppData['data']['team_members'])),
               pnToken: jsonAppData['data']['pn_token'],
               coachUid: jsonAppData['data']['coach_uid'],
               unreadmessages: jsonAppData['data']['unreadmessages']);
@@ -149,10 +152,12 @@ class ApiUser {
             initialized: true,
             roles: _user['data']['roles'] == null
                 ? RoleModel.defaultRole()
-                : List<RoleModel>.from(RoleModel.convertFromJson(_user['data']['roles'])),
+                : List<RoleModel>.from(
+                    RoleModel.convertFromJson(_user['data']['roles'])),
             personalTeamId: _user['data']['personal_team_id'],
             teamCoachId: _user['data']['team_coach_id'],
-            teamMembers: TeamMemberModel.convertFromJson(_user['data']['team_members']?.toString()),
+            teamMembers: TeamMemberModel.convertFromJson(
+                _user['data']['team_members']?.toString()),
             pnToken: _user['data']['pn_token'],
             coachUid: _user['data']['coach_uid'],
             unreadmessages: _user['data']['unreadmessages'] ?? false);
@@ -169,7 +174,8 @@ class ApiUser {
             roles: RoleModel.convertFromJson(jsonResponse['roles']),
             personalTeamId: jsonResponse['personal_team_id'] ?? 0,
             teamCoachId: jsonResponse['team_coach_id'] ?? 0,
-            teamMembers: TeamMemberModel.convertFromJson(jsonResponse['team_members'].toString()),
+            teamMembers: TeamMemberModel.convertFromJson(
+                jsonResponse['team_members'].toString()),
             pnToken: jsonResponse['pn_token'],
             coachUid: jsonResponse['coach_uid'] ?? '',
             unreadmessages: jsonResponse['unreadmessages'] ?? false);
@@ -177,7 +183,8 @@ class ApiUser {
     }
   }
 
-  factory ApiUser.fromStorage(String _user, String? appConfig, String? appToken) {
+  factory ApiUser.fromStorage(
+      String _user, String? appConfig, String? appToken) {
     final dynamic userFromStorage = jsonDecode(_user);
     return ApiUser(
         uid: userFromStorage['uid'],
@@ -191,7 +198,8 @@ class ApiUser {
         roles: RoleModel.convertFromJson(userFromStorage['roles'].toString()),
         personalTeamId: userFromStorage['personalTeamId'],
         teamCoachId: userFromStorage['teamCoachId'],
-        teamMembers: TeamMemberModel.convertFromJson(userFromStorage['teamMembers'].toString()),
+        teamMembers: TeamMemberModel.convertFromJson(
+            userFromStorage['teamMembers'].toString()),
         pnToken: userFromStorage['pnToken'],
         coachUid: userFromStorage['coachUid'],
         unreadmessages: userFromStorage['unreadmessages'] ?? false);

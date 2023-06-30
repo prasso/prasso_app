@@ -1,16 +1,16 @@
 // Dart imports:
 
+// Project imports:
+import 'package:delegate_app/app_widgets/sign_in/sign_in_page.dart';
+import 'package:delegate_app/app_widgets/top_level_providers.dart';
+import 'package:delegate_app/routing/router.dart' as _rtr;
+import 'package:delegate_app/services/prasso_api_repository.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/mockito.dart';
-// Project imports:
-import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
-import 'package:prasso_app/app_widgets/top_level_providers.dart';
-import 'package:prasso_app/routing/router.dart' as _rtr;
-import 'package:prasso_app/services/prasso_api_repository.dart';
 
 import 'mocks.dart';
 
@@ -28,7 +28,8 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            prassoApiService.overrideWithProvider(Provider<PrassoApiRepository?>((ref) => mockPrassoAuth)),
+            prassoApiService.overrideWithProvider(
+                Provider<PrassoApiRepository?>((ref) => mockPrassoAuth)),
           ],
           child: Consumer(builder: (context, watch, __) {
             return MaterialApp(
@@ -55,7 +56,8 @@ void main() {
     testWidgets('email & password navigation', (tester) async {
       await pumpSignInPage(tester);
 
-      final emailPasswordButton = find.byKey(SignInPageContents.emailPasswordButtonKey);
+      final emailPasswordButton =
+          find.byKey(SignInPageContents.emailPasswordButtonKey);
       expect(emailPasswordButton, findsOneWidget);
 
       await tester.tap(emailPasswordButton);

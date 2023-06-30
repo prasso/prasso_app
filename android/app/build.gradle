@@ -35,7 +35,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.faxt.prasso"
+        applicationId "com.prasso.delegate"
         minSdkVersion 29
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
@@ -52,7 +52,7 @@ android {
                 } else {
                     build_type = "debug"
                 }
-                outputFileName = "Prasso_" + versionName + "_[" + new Date().format('dd-MM-yyyy') + "]_" + build_type + ".apk"
+                outputFileName = "Delegate_" + versionName + "_[" + new Date().format('dd-MM-yyyy') + "]_" + build_type + ".apk"
             }
         }
     }

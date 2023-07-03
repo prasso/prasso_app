@@ -87,6 +87,7 @@ class PrassoApiRepository {
       }
     } else {
       //we were signing out new users who have never registered here thus added userIsSigningIn
+      //dont do this if we are navigating to login.
       if (!userIsSigningIn && !userIsRegistering) {
         signOut();
       }
@@ -139,6 +140,9 @@ class PrassoApiRepository {
             'firebase_uid': usr.user!.uid
           }));
       if (res.statusCode == 200) {
+        // Save email to shared preferences
+        await sharedPreferencesServiceProvider.saveloginID(email);
+
         doBuildTabs = true; //do the build tabs after login
         await _parseReturnCallReload(res.body);
       } else {

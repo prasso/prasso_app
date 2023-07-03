@@ -11,6 +11,8 @@ class EmailPasswordSignInPage extends HookConsumerWidget {
     final EmailPasswordSignInModel _thismodel =
         ref.watch(emailPasswordSigninViewModelProvider);
 
+    _thismodel.initEmail();
+
     return EmailPasswordSignInPageContents(
         model: _thismodel, onSignedIn: onSignedIn);
   }
@@ -61,11 +63,25 @@ class _EmailPasswordSignInPageContentsState
   EmailPasswordSignInModel get model => widget.model;
 
   @override
+  void initState() {
+    super.initState();
+    _emailController.text = model.email;
+    model.addListener(_onModelChanged);
+  }
+
+  @override
   void dispose() {
     _node.dispose();
+    model.removeListener(_onModelChanged);
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _onModelChanged() {
+    setState(() {
+      _emailController.text = model.email;
+    });
   }
 
   void _showSignInError(EmailPasswordSignInModel model, dynamic exception) {

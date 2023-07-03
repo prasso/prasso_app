@@ -1,6 +1,7 @@
 library email_password_sign_in_ui;
 
 // Dart imports:
+import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:math';
 

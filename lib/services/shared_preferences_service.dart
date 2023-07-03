@@ -13,6 +13,24 @@ class SharedPreferencesService {
   static const onboardingCompleteKey = 'onboardingComplete';
   static const introCompleteKey = 'introComplete';
   static const unreadMessagesKey = 'unreadMessages';
+  static const loginIDkey = 'loginID';
+
+  String getloginID() {
+    final String? email = sharedPreferences!.getString(loginIDkey);
+    if (email != null) {
+      return email;
+    }
+    return '';
+  }
+
+  Future<bool> saveloginID(String? loginID) async {
+    if (loginID == null) {
+      await sharedPreferences!.setString(loginIDkey, '');
+      return true;
+    }
+    await sharedPreferences!.setString(loginIDkey, loginID);
+    return true;
+  }
 
   String? getUserData() {
     final String? userData = sharedPreferences!.getString(userDataKey);
@@ -29,7 +47,8 @@ class SharedPreferencesService {
       await setIntroComplete();
       await setOnboardingComplete();
     } else {
-      await sharedPreferences!.setString(userDataKey, userData.replaceAll('"', '&quote;'));
+      await sharedPreferences!
+          .setString(userDataKey, userData.replaceAll('"', '&quote;'));
     }
     return true;
   }
@@ -44,7 +63,8 @@ class SharedPreferencesService {
   }
 
   Future<bool> saveAppData(String appData) async {
-    await sharedPreferences!.setString(appDataKey, appData.replaceAll('"', '&quote;'));
+    await sharedPreferences!
+        .setString(appDataKey, appData.replaceAll('"', '&quote;'));
     return true;
   }
 
@@ -54,12 +74,14 @@ class SharedPreferencesService {
   }
 
   Future<bool> saveUserToken(String userToken) async {
-    await sharedPreferences!.setString(userTokenKey, userToken.replaceAll('"', ''));
+    await sharedPreferences!
+        .setString(userTokenKey, userToken.replaceAll('"', ''));
     return true;
   }
 
   Future<bool> saveAccessToken(String accessToken) async {
-    await sharedPreferences!.setString(accessTokenKey, accessToken.replaceAll('"', ''));
+    await sharedPreferences!
+        .setString(accessTokenKey, accessToken.replaceAll('"', ''));
     return true;
   }
 
@@ -72,13 +94,15 @@ class SharedPreferencesService {
     if (thirdPartyToken == null) {
       await sharedPreferences!.setString(thirdPartyTokenKey, '');
     } else {
-      await sharedPreferences!.setString(thirdPartyTokenKey, thirdPartyToken.replaceAll('"', ''));
+      await sharedPreferences!
+          .setString(thirdPartyTokenKey, thirdPartyToken.replaceAll('"', ''));
     }
     return true;
   }
 
   String getthirdPartyToken() {
-    final String? thirdPartyToken = sharedPreferences!.getString(thirdPartyTokenKey);
+    final String? thirdPartyToken =
+        sharedPreferences!.getString(thirdPartyTokenKey);
     if (thirdPartyToken != null) {
       final restoredjson = thirdPartyToken.replaceAll('"', '');
       return restoredjson;
@@ -94,7 +118,8 @@ class SharedPreferencesService {
     await sharedPreferences!.setBool(onboardingCompleteKey, false);
   }
 
-  bool isOnboardingComplete() => sharedPreferences!.getBool(onboardingCompleteKey) ?? false;
+  bool isOnboardingComplete() =>
+      sharedPreferences!.getBool(onboardingCompleteKey) ?? false;
 
   Future<void> setIntroComplete() async {
     await sharedPreferences!.setBool(introCompleteKey, true);
@@ -104,7 +129,8 @@ class SharedPreferencesService {
     await sharedPreferences!.setBool(introCompleteKey, false);
   }
 
-  bool isIntroComplete() => sharedPreferences!.getBool(introCompleteKey) ?? true;
+  bool isIntroComplete() =>
+      sharedPreferences!.getBool(introCompleteKey) ?? true;
 
   bool getUnreadMessages() {
     final bool? unreadMessages = sharedPreferences!.getBool(unreadMessagesKey);

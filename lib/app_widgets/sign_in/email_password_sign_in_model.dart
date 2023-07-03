@@ -40,6 +40,17 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> initEmail() async {
+    if (email.isNotEmpty) {
+      return;
+    }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferencesService sharedPreferencesServiceProvider =
+        SharedPreferencesService(prefs);
+    email = sharedPreferencesServiceProvider.getloginID();
+    notifyListeners();
+  }
+
   Future<bool> submit(BuildContext context) async {
     try {
       updateWith(submitted: true);
@@ -93,6 +104,7 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
       isLoading: false,
       submitted: false,
     );
+    initEmail();
   }
 
   void updateWith({
@@ -102,7 +114,13 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     bool? isLoading,
     bool? submitted,
   }) {
-    this.email = email ?? this.email;
+    if (email != null) {
+      this.email = email;
+    } else {
+      if (this.email == '') {
+        initEmail();
+      }
+    }
     this.password = password ?? this.password;
     this.formType = formType ?? this.formType;
     this.isLoading = isLoading ?? this.isLoading;

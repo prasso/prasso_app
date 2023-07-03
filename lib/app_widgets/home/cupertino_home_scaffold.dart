@@ -20,10 +20,12 @@ class CupertinoHomeScaffold extends StatefulHookConsumerWidget {
   const CupertinoHomeScaffold({Key? key}) : super(key: key);
 
   @override
-  CupertinoHomeScaffoldPageState createState() => CupertinoHomeScaffoldPageState();
+  CupertinoHomeScaffoldPageState createState() =>
+      CupertinoHomeScaffoldPageState();
 }
 
-class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold> {
+class CupertinoHomeScaffoldPageState
+    extends ConsumerState<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
   CupertinoHomeScaffoldViewModel? vm;
 
@@ -31,7 +33,8 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
     if (tabItem == vm.currentTab) {
       // pop to first route
       if (mounted) {
-        setState(() => vm.navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst));
+        setState(() => vm.navigatorKeys[tabItem]!.currentState!
+            .popUntil((route) => route.isFirst));
       }
     } else {
       if (mounted) {
@@ -75,7 +78,8 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
       } else {
         if (Navigator.of(context).canPop()) {
           SchedulerBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pop(); // Takes you back to the sign-in screen.
+            Navigator.of(context)
+                .pop(); // Takes you back to the sign-in screen.
           });
         } else {
           SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -84,6 +88,8 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
               arguments: () => Navigator.of(context).pop(),
             );
           });
+
+          return Container();
         }
       }
     }
@@ -136,6 +142,7 @@ class CupertinoHomeScaffoldPageState extends ConsumerState<CupertinoHomeScaffold
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
+    properties
+        .add(DiagnosticsProperty<CupertinoHomeScaffoldViewModel>('vm', vm));
   }
 }

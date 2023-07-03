@@ -113,9 +113,9 @@ class _PrassoCoreState extends State<PrassoCore> {
       print('onMessage: $message');
 
       const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'Prasso',
-        'Prasso Android',
-        channelDescription: 'Prasso Android Channel',
+        'Delegate',
+        'Delegate Android',
+        channelDescription: 'Delegate Android Channel',
         importance: Importance.max,
         priority: Priority.high,
       ); // Android

@@ -86,6 +86,7 @@ class CupertinoHomeScaffoldPageState
               arguments: () => Navigator.of(context).pop(),
             );
           });
+          return Container();
         }
       }
     }

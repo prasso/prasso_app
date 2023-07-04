@@ -2,14 +2,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:delegate_app/routing/router.dart';
 // Project imports:
 import 'package:delegate_app/utils/prasso_themedata.dart';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 // Package imports:
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -73,6 +71,8 @@ class AppRunWebView extends StatelessWidget {
             ]*/
         ),
         body: WebView(
+          userAgent:
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
           initialUrl: selectedUrl,
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (webViewController) {
@@ -94,7 +94,7 @@ class AppRunWebView extends StatelessWidget {
           navigationDelegate: (navigation) async {
             debugPrint('selectedUrl: $selectedUrl');
             debugPrint('extraHeaderInfo: $extraHeaderInfo');
-            if (navigation.url.contains('login')) {
+            /*if (navigation.url.contains('login')) {
               SchedulerBinding.instance.addPostFrameCallback((_) {
                 Navigator.of(context, rootNavigator: true).pushNamed(
                   Routes.emailPasswordSignInPage,
@@ -102,7 +102,7 @@ class AppRunWebView extends StatelessWidget {
                 );
               });
               return NavigationDecision.prevent;
-            }
+            }*/
 
             return NavigationDecision.navigate;
           },

@@ -31,13 +31,13 @@ class AppRunListTile extends StatelessWidget {
   Future<void> _showWebViewWithUrl(String pageTitle, String pageUrl,
       String extraHeaderInfo, BuildContext context) async {
     //show the webview with this url.
-    await Navigator.of(context)
-        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
-            builder: (dynamic context) => AppRunWebView(
-                  title: pageTitle,
-                  selectedUrl: pageUrl,
-                  extraHeaderInfo: extraHeaderInfo,
-                )) as Route<MaterialPageRoute<String>>);
+    await Navigator.of(context).push(MaterialPageRoute<String>(
+      builder: (dynamic context) => AppRunWebView(
+        title: pageTitle,
+        selectedUrl: pageUrl,
+        extraHeaderInfo: extraHeaderInfo,
+      ),
+    ));
   }
 
   @override

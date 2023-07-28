@@ -67,11 +67,10 @@ class AccountPage extends HookConsumerWidget {
 
   static Future<void> _showProfileEditor(
       BuildContext context, ApiUser? user) async {
-    await Navigator.of(context)
-        .push<MaterialPageRoute<String>>(MaterialPageRoute<EditUserProfile>(
+    await Navigator.of(context).push<String>(MaterialPageRoute<String>(
       builder: (dynamic context) => const EditUserProfile(),
       fullscreenDialog: true,
-    ) as Route<MaterialPageRoute<String>>);
+    ));
   }
 
   @override

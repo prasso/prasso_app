@@ -113,10 +113,39 @@ class PrassoApiRepository {
     final String _signinUrl = _apiServer + Strings.signinUrl;
 
     userIsSigningIn = true;
+    UserCredential? usr;
+    bool userNeedsToRegister = false;
+    try {
+      usr = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+    } catch (e) {
+      if (e is FirebaseAuthException) {
+        if (e.code == 'user-not-found') {
+          showErrorToast(Strings.pleaseRegister);
+          userNeedsToRegister = true;
+          print('Email not found at Firebase');
 
-    final UserCredential usr = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-    if (usr.user != null) {
+          ///if the user exists on api side but not at firebase, they need to register.
+        } else {
+          if (e.code == 'unauthorized') {
+            userIsSigningIn = false;
+            showErrorToast(e.message!);
+
+            print('Email already in use');
+            // Show an appropriate message to the user
+          } else {
+            print('An error occurred: ${e.message}');
+            // Show a general error message
+            showErrorToast('An error occurred: ${e.message}');
+          }
+        }
+      } else {
+        // Handle other types of exceptions
+        print('An error occurred: $e');
+        showErrorToast('An error occurred: $e');
+      }
+    }
+    if (usr != null && usr.user != null) {
       String? _pnToken = '';
       final apiuser = ApiUser.fromAPIJson(
         usr.user,
@@ -130,6 +159,7 @@ class PrassoApiRepository {
       } else {
         _pnToken = apiuser.pnToken;
       }
+
       final dynamic res = await http.post(Uri.parse(Uri.encodeFull(_signinUrl)),
           headers: _setHeaders(),
           body: jsonEncode(<String, String?>{
@@ -150,6 +180,9 @@ class PrassoApiRepository {
       }
     } else {
       userIsSigningIn = false;
+      if (userNeedsToRegister) {
+        throw Exception(Strings.pleaseRegister);
+      }
       throw Exception('User name or Password was not recognized.');
     }
 
@@ -311,7 +344,9 @@ class PrassoApiRepository {
   ///
   Future<bool> getAppConfig(ApiUser? user) async {
     final userToken = sharedPreferencesServiceProvider.getUserToken();
-
+    if (userToken == null || userToken.isEmpty || userToken == 'null') {
+      return false;
+    }
     final clientAppUrl = _apiServer + _configUrl + userToken.toString();
     developer.log(
       'reload config data',
@@ -322,6 +357,9 @@ class PrassoApiRepository {
         headers: _setHeaders());
     if (res.statusCode == 200) {
       final appConfig = res.body.toString();
+      if (appConfig.isEmpty || appConfig == 'null') {
+        return false;
+      }
       unawaited(sharedPreferencesServiceProvider.saveAppData(appConfig));
       cupertinoHomeScaffoldVM.defaultTabsJson = appConfig;
       if (doBuildTabs) {
@@ -348,7 +386,9 @@ class PrassoApiRepository {
       final UserCredential fbusr = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      _userUid = fbusr.user != null ? fbusr.user!.uid : '';
+      if (fbusr.user != null) {
+        _userUid = fbusr.user!.uid;
+      }
       unawaited(_firebaseMessaging.subscribeToTopic('all'));
     } catch (e) {
       // if user is registering and we get a message from firebase that user exists, then we will try to log them in instead

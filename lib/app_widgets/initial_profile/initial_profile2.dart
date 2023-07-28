@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Package imports:
 import 'package:image_picker/image_picker.dart';
-import 'package:loading_overlay/loading_overlay.dart';
+import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
 // Project imports:
 import 'package:prasso_app/app_widgets/initial_profile/create_profile_input_model.dart';
 import 'package:prasso_app/app_widgets/initial_profile/profile_model.dart';
@@ -17,10 +17,14 @@ import 'package:prasso_app/utils/prasso_themedata.dart';
 
 DateTime selectedDate = DateTime(2000, 1, 1);
 String? fromClass;
+final ProfileModel _profileModel = ProfileModel();
 
 class InitialProfile extends ConsumerStatefulWidget {
-  InitialProfile(String className) {
+  InitialProfile(String className, EditUserProfileViewModel profileViewModel) {
     fromClass = className;
+    _profileModel.email = profileViewModel.email;
+    _profileModel.photoURL = profileViewModel.photoURL;
+    _profileModel.displayName = profileViewModel.displayName;
   }
 
   @override
@@ -29,30 +33,16 @@ class InitialProfile extends ConsumerStatefulWidget {
 }
 
 class InitialProfilePageState extends ConsumerState<InitialProfile> {
-  InitialProfilePageState() {
-    if (fromClass == Strings.fromClassEditUserProfile) {
-      _isApiRequired = true;
-    } else {
-      _isApiRequired = false;
-    }
-  }
+  InitialProfilePageState();
 
   static final TextEditingController _firsNameTextController =
       TextEditingController();
   static final TextEditingController _lastNameTextController =
       TextEditingController();
 
-  bool _isApiRequired = false;
-  bool _isApiFinished = false;
-  final ProfileModel? _profileModel = ProfileModel();
-  bool _isProgressLoading = false;
-
   @override
   void initState() {
     super.initState();
-    if (_isApiRequired) {
-      callFetchProfileData();
-    }
   }
 
   @override
@@ -70,55 +60,23 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
     return _setViews(ref, context);
   }
 
-  // Get Profile API
-  Future<bool> callFetchProfileData() async {
-    setState(() {
-      _isApiFinished = true;
-    });
-    return true;
-  }
-
   Widget _setViews(WidgetRef ref, BuildContext context) {
-    if (_isApiRequired) {
-      if (_isApiFinished) {
-        if (_profileModel != null) {
-          if (_profileModel?.statusCode == 200 &&
-              _profileModel?.message == null) {
-            return LoadingOverlay(
-              isLoading: _isProgressLoading,
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: _buildProfileData(ref, context, _profileModel!),
-              ),
-            );
-          } else if (_profileModel?.statusCode == 401 ||
-              _profileModel?.statusCode == 404) {
-            showErrorToast('Authorization has been denied for this request');
-            return Container();
-          } else if (_profileModel != null && _profileModel?.message != null) {
-            return Text(_profileModel!.message!);
-          } else {
-            return const Text('Something went wrong!!');
-          }
-        } else {
-          return const Text('No data!!!');
-        }
-      } else {
-        return const Center(child: CircularProgressIndicator());
-      }
-    } else {
-      if (_profileModel != null) {
-        return _buildProfileData(ref, context, _profileModel!);
-      } else {
-        return const Text('No data!!!');
-      }
-    }
+    return _buildProfileData(ref, context, _profileModel);
   }
 
   void setInitialValues(ProfileModel profileModel) {
-    if (profileModel.firstName != null) {
-      _firsNameTextController.text = profileModel.firstName!;
-      _lastNameTextController.text = profileModel.lastName!;
+    if (profileModel.firstName == null && _profileModel.displayName != null) {
+      final List<String> _names = _profileModel.displayName!.split(' ');
+      _firsNameTextController.text = _names.first;
+      if (_names.length > 1) {
+        _lastNameTextController.text = _names.sublist(1).join(' ');
+      }
+    } else {
+      if (profileModel.firstName != null) {
+        _firsNameTextController.text = profileModel.firstName!;
+        _lastNameTextController.text =
+            profileModel.lastName ?? profileModel.lastName!;
+      }
     }
   }
 
@@ -174,9 +132,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
       createProfileInputModel.lastName = _lastNameTextController.text;
     }
 
-    setState(() {
-      _isProgressLoading = true;
-    });
+    setState(() {});
     createProfileApi(ref, context, createProfileInputModel);
   }
 
@@ -187,9 +143,7 @@ class InitialProfilePageState extends ConsumerState<InitialProfile> {
     final result = await _profileViewModel.createProfileAPI(
         ref, createProfileInputModel, context);
     print(result);
-    setState(() {
-      _isProgressLoading = false;
-    });
+    setState(() {});
     if (result != null) {
       showSuccessToast('Saved successfully');
       await PrassoApiRepository.instance.cupertinoHomeScaffoldVM

@@ -78,6 +78,16 @@ class _EmailPasswordSignInPageContentsState
     super.dispose();
   }
 
+  void updateEmail(String email2) {
+    // Store old cursor position
+    final TextSelection textSelection = _emailController.selection;
+
+    model.updateEmail(email2);
+
+    // Restore old cursor position
+    _emailController.selection = textSelection;
+  }
+
   void _onModelChanged() {
     setState(() {
       _emailController.text = model.email;
@@ -190,7 +200,7 @@ class _EmailPasswordSignInPageContentsState
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.emailAddress,
       keyboardAppearance: Brightness.light,
-      onChanged: model.updateEmail,
+      onChanged: updateEmail,
       onEditingComplete: _emailEditingComplete,
       inputFormatters: <TextInputFormatter>[
         model.emailInputFormatter,

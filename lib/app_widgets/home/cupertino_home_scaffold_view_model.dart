@@ -208,13 +208,12 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
   Future<bool> showWebViewWithUrl(String pageTitle, String pageUrl,
       String extraHeaderInfo, BuildContext context) async {
     //show the webview with this url.
-    await Navigator.of(context)
-        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
-            builder: (dynamic context) => AppRunWebView(
-                  title: pageTitle,
-                  selectedUrl: pageUrl,
-                  extraHeaderInfo: extraHeaderInfo,
-                )) as Route<MaterialPageRoute<String>>);
+    await Navigator.of(context).push<String>(MaterialPageRoute<String>(
+        builder: (dynamic context) => AppRunWebView(
+              title: pageTitle,
+              selectedUrl: pageUrl,
+              extraHeaderInfo: extraHeaderInfo,
+            )));
     return true;
   }
 

@@ -1,4 +1,3 @@
-Here is an updated README with sections on contributing and dependencies/prerequisites:
 
 # Prasso App
 
@@ -8,7 +7,7 @@ Prasso App is a mobile app framework that allows you to quickly build and custom
 
 With Prasso App, you can:
 
-- Assemble a mobile app from web pages built with various "low code" site builders like Prasso.io, Bubble, Appgyver, etc.
+- Assemble a mobile app from web pages built with various "low code" site builders like [Prasso.io](https://prasso.io), Bubble, Appgyver, etc.
 - View your app design on both iOS and Android.   
 - Make changes to the design and see them update in real-time on your device.
 - Use it as a tool for rapidly prototyping app ideas before investing in full development.
@@ -51,7 +50,7 @@ We welcome contributions to Prasso App! To contribute:
 - Make your changes and test them thoroughly
 - Submit a pull request describing your changes
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full details on how to contribute.
+See [Contributing.md](Contributing.md) for full details on how to contribute.
 
 ## Dependencies
 
@@ -62,7 +61,7 @@ Prasso App requires the following to run:
 - Firebase project configured for authentication and database
 - Prasso API endpoint
 
-See [DEPENDENCIES.md](DEPENDENCIES.md) for full details on dependencies.
+See [Dependencies.md](Dependencies.md) for full details on dependencies.
 
 ## Summary
 

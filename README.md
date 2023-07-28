@@ -1,3 +1,5 @@
+Here is an updated README with sections on contributing and dependencies/prerequisites:
+
 # Prasso App
 
 Prasso App is a mobile app framework that allows you to quickly build and customize your own mobile app using "low code" web pages.
@@ -7,14 +9,14 @@ Prasso App is a mobile app framework that allows you to quickly build and custom
 With Prasso App, you can:
 
 - Assemble a mobile app from web pages built with various "low code" site builders like Prasso.io, Bubble, Appgyver, etc.
-- View your app design on both iOS and Android.  
+- View your app design on both iOS and Android.   
 - Make changes to the design and see them update in real-time on your device.
 - Use it as a tool for rapidly prototyping app ideas before investing in full development.
 
 ## How it works
 
 - Everything starts with a Prasso site, like prasso.io. This is configured in the Prasso admin tool.
-- Sites have Teams, Users, and Apps associated with them.  
+- Sites have Teams, Users, and Apps associated with them.   
 - When a user logs into the mobile app, it pulls their app configuration based on the Team they belong to.
 - The app configuration consists of Tabs, which are just URLs to web pages.
 - These web pages can be built using various "no code" site builders, allowing you to quickly throw together an app.
@@ -25,10 +27,10 @@ With Prasso App, you can:
 To use Prasso App:
 
 1. Set up a Prasso site with the Prasso API enabled.
-2. Create Teams, Users, and Apps on the site using the admin tool.  
+2. Create Teams, Users, and Apps on the site using the admin tool.   
 3. Assign Users to Teams and configure App Tabs.
 4. Download the Flutter project and follow the setup steps.
-5. Build the app and install on your device.  
+5. Build the app and install on your device.   
 6. Log in with your User credentials and start viewing your no code app!
 
 ## Customizing
@@ -36,9 +38,31 @@ To use Prasso App:
 The project includes instructions on:
 
 - Changing the app name, identifier, images, etc.
-- Setting up Firebase authentication and database. 
+- Setting up Firebase authentication and database.  
 - Modifying the theme colors and branding.
 - Updating the onboarding flow for your app.
+
+## Contributing
+
+We welcome contributions to Prasso App! To contribute:
+
+- Fork the repository
+- Create a new branch for your changes
+- Make your changes and test them thoroughly
+- Submit a pull request describing your changes
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full details on how to contribute.
+
+## Dependencies
+
+Prasso App requires the following to run:
+
+- Flutter SDK
+- Android SDK/Xcode (for mobile development)
+- Firebase project configured for authentication and database
+- Prasso API endpoint
+
+See [DEPENDENCIES.md](DEPENDENCIES.md) for full details on dependencies.
 
 ## Summary
 

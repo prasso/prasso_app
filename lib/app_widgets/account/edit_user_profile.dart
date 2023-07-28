@@ -16,11 +16,10 @@ class EditUserProfile extends HookConsumerWidget {
   const EditUserProfile({Key? key}) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
-    await Navigator.of(context)
-        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
+    await Navigator.of(context).push<String>(MaterialPageRoute<String>(
       builder: (dynamic context) => const EditUserProfile(),
       fullscreenDialog: true,
-    ) as Route<MaterialPageRoute<String>>);
+    ));
   }
 
   @override
@@ -44,7 +43,7 @@ class EditUserProfile extends HookConsumerWidget {
           ),
         ],
       ),
-      body: InitialProfile(Strings.fromClassEditUserProfile),
+      body: InitialProfile(Strings.fromClassEditUserProfile, _viewmodel),
       backgroundColor: Theme.of(context).colorScheme.background,
     );
   }

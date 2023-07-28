@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:prasso_app/app_widgets/Onboarding/slider_model.dart';
+import 'package:prasso_app/app_widgets/account/edit_user_profile_viewmodel.dart';
 import 'package:prasso_app/app_widgets/initial_profile/initial_profile2.dart';
 import 'package:prasso_app/common_widgets/custom_buttons.dart';
 import 'package:prasso_app/constants/strings.dart';
@@ -41,7 +42,7 @@ class IntroPage extends HookConsumerWidget {
       return _showVideoIntroScreen(ref, context, introViewModel);
     } else {
       introViewModel.index = slides.length - 1;
-      return _showProfileEditorScreen(context, introViewModel);
+      return _showProfileEditorScreen(context, introViewModel, ref);
     }
   }
 
@@ -101,7 +102,8 @@ class IntroPage extends HookConsumerWidget {
   }
 
   Widget _showProfileEditorScreen(
-      BuildContext context, IntroViewModel introViewModel) {
+      BuildContext context, IntroViewModel introViewModel, WidgetRef ref) {
+    final _viewmodel = ref.watch(editUserProfileViewModel);
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(5.0),
@@ -114,7 +116,8 @@ class IntroPage extends HookConsumerWidget {
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
-            Expanded(child: InitialProfile(Strings.fromClassIntroPage)),
+            Expanded(
+                child: InitialProfile(Strings.fromClassIntroPage, _viewmodel)),
             const SizedBox(height: 20.0),
           ],
         ),

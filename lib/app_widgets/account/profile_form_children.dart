@@ -17,11 +17,10 @@ class ProfileFormChildren extends HookConsumerWidget {
   const ProfileFormChildren({Key? key}) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
-    await Navigator.of(context)
-        .push<MaterialPageRoute<String>>(MaterialPageRoute<String>(
+    await Navigator.of(context).push<String>(MaterialPageRoute<String>(
       builder: (dynamic context) => const ProfileFormChildren(),
       fullscreenDialog: true,
-    ) as Route<MaterialPageRoute<String>>);
+    ));
   }
 
   @override

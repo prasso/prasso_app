@@ -41,8 +41,11 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   }
 
   Future<void> initEmail() async {
-    if (email.isNotEmpty) {
+    if (email.isNotEmpty || email == ' ') {
       return;
+    }
+    if (email.startsWith(' ')) {
+      email = email.trim();
     }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final SharedPreferencesService sharedPreferencesServiceProvider =
@@ -115,6 +118,9 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     bool? submitted,
   }) {
     if (email != null) {
+      if (email.startsWith(' ')) {
+        email = email.trim();
+      }
       this.email = email;
     } else {
       if (this.email == '') {

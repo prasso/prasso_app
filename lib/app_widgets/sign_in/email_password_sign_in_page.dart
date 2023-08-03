@@ -84,8 +84,25 @@ class _EmailPasswordSignInPageContentsState
 
     model.updateEmail(email2);
 
-    // Restore old cursor position
-    _emailController.selection = textSelection;
+    if (email2 == ' ') {
+      //select it all
+      _emailController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: email2.length,
+      );
+    } else {
+      // Check if the old cursor position is still valid
+      if (textSelection.baseOffset <= _emailController.text.length &&
+          textSelection.extentOffset <= _emailController.text.length) {
+        // Restore old cursor position
+        _emailController.selection = textSelection;
+      } else {
+        // If not valid, place the cursor at the end of the text
+        _emailController.selection = TextSelection.fromPosition(
+          TextPosition(offset: _emailController.text.length),
+        );
+      }
+    }
   }
 
   void _onModelChanged() {

@@ -442,6 +442,8 @@ class PrassoApiRepository {
         }));
 
     if (res.statusCode == 200) {
+      await sharedPreferencesServiceProvider.saveloginID(email);
+
       await _parseReturnCallReload(res.body);
 
       userIsSigningIn = userIsRegistering = false;

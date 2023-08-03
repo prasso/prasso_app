@@ -28,6 +28,7 @@ class CupertinoHomeScaffoldPageState
     extends ConsumerState<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
   CupertinoHomeScaffoldViewModel? vm;
+  static bool isNavigatingToLogin = false;
 
   void _select(CupertinoHomeScaffoldViewModel vm, int index, TabItem tabItem) {
     if (tabItem == vm.currentTab) {
@@ -46,7 +47,9 @@ class CupertinoHomeScaffoldPageState
   /// onChangedApplication is here to update the tabs when the user changes Jan18
   void _onChangedApplication() {
     if (mounted) {
-      setState(() {});
+      setState(() {
+        isNavigatingToLogin = false;
+      });
     }
   }
 
@@ -64,6 +67,8 @@ class CupertinoHomeScaffoldPageState
 
   @override
   Widget build(BuildContext context) {
+    if (isNavigatingToLogin) return blankScreen();
+
     final authService = ref.read(prassoApiService);
     final usr = authService?.currentUser;
 
@@ -82,6 +87,7 @@ class CupertinoHomeScaffoldPageState
                 .pop(); // Takes you back to the sign-in screen.
           });
         } else {
+          isNavigatingToLogin = true;
           SchedulerBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushNamed(
               Routes.emailPasswordSignInPage,
@@ -104,18 +110,7 @@ class CupertinoHomeScaffoldPageState
     }
 
     if (vm!.tabs.length < 2) {
-      return const Scaffold(
-          body: Center(
-              child: Padding(
-        padding: EdgeInsets.all(28.0),
-        child: Text(
-          'A default app may not be setup for this login yet. If you have setup your app, please contact support. Otherwise, please restart this app.',
-          style: TextStyle(
-            fontSize: 24.0,
-            color: PrassoColors.primary,
-          ),
-        ),
-      )));
+      return blankScreen();
     }
 
     return CupertinoTabScaffold(
@@ -137,6 +132,23 @@ class CupertinoHomeScaffoldPageState
         );
       },
     );
+  }
+
+  Widget blankScreen() {
+    return Scaffold(
+        body: Center(
+            child: Padding(
+      padding: const EdgeInsets.all(28.0),
+      child: Text(
+        isNavigatingToLogin
+            ? ' '
+            : 'A default app may not be setup for this login yet. If you have setup your app, please contact support. Otherwise, please restart this app.',
+        style: const TextStyle(
+          fontSize: 24.0,
+          color: PrassoColors.primary,
+        ),
+      ),
+    )));
   }
 
   @override

@@ -20,7 +20,7 @@ class SharedPreferencesService {
     if (email != null) {
       return email;
     }
-    return '';
+    return ' '; //not an empty string because we need to avoid returning to this repeatedly
   }
 
   Future<bool> saveloginID(String? loginID) async {

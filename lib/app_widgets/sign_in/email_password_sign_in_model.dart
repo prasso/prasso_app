@@ -36,6 +36,9 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailPasswordSignInFormType get formType => _formType;
 
   set formType(EmailPasswordSignInFormType value) {
+    if (value == _formType) {
+      return;
+    }
     _formType = value;
     notifyListeners();
   }
@@ -100,6 +103,9 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
   void updatePassword(String password) => updateWith(password: password);
 
   void updateFormType(EmailPasswordSignInFormType? formType) {
+    if (formType == _formType) {
+      return;
+    }
     updateWith(
       email: '',
       password: '',
@@ -128,7 +134,9 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
       }
     }
     this.password = password ?? this.password;
-    this.formType = formType ?? this.formType;
+    if (formType != null && this.formType != formType) {
+      this.formType = formType;
+    }
     this.isLoading = isLoading ?? this.isLoading;
     this.submitted = submitted ?? this.submitted;
     notifyListeners();

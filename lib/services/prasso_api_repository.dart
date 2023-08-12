@@ -389,7 +389,6 @@ class PrassoApiRepository {
       if (fbusr.user != null) {
         _userUid = fbusr.user!.uid;
       }
-      unawaited(_firebaseMessaging.subscribeToTopic('all'));
     } catch (e) {
       // if user is registering and we get a message from firebase that user exists, then we will try to log them in instead
       userIsRegistering = false;

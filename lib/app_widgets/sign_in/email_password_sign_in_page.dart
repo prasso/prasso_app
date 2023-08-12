@@ -8,6 +8,13 @@ class EmailPasswordSignInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //make sure the formtype set here corresponds with the formtype in the model
+    //if not, the model will be updated to the formtype set here
+    if (formType != null) {
+      ref
+          .read(emailPasswordSigninViewModelProvider.notifier)
+          .updateFormType(formType!);
+    }
     final EmailPasswordSignInModel _thismodel =
         ref.watch(emailPasswordSigninViewModelProvider);
 
@@ -84,11 +91,11 @@ class _EmailPasswordSignInPageContentsState
 
     model.updateEmail(email2);
 
-    if (email2 == ' ') {
+    if (_emailController.text == ' ') {
       //select it all
       _emailController.selection = TextSelection(
         baseOffset: 0,
-        extentOffset: email2.length,
+        extentOffset: _emailController.text.length,
       );
     } else {
       // Check if the old cursor position is still valid

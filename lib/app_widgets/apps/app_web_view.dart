@@ -77,6 +77,16 @@ class AppRunWebView extends StatelessWidget {
               'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
           initialUrl: selectedUrl,
           javascriptMode: JavascriptMode.unrestricted,
+          onWebResourceError: (error) async {
+            debugPrint('...------Error--');
+            debugPrint(error.description);
+
+            //go to login
+            await Navigator.of(context, rootNavigator: true).pushNamed(
+              Routes.emailPasswordSignInPage,
+              arguments: () => Navigator.of(context).pop(),
+            );
+          },
           onWebViewCreated: (webViewController) {
             if (extraHeaderInfo != '') {
               //if extra header info isn't json we need to ignore it
@@ -96,13 +106,7 @@ class AppRunWebView extends StatelessWidget {
           navigationDelegate: (navigation) async {
             debugPrint('selectedUrl: $selectedUrl');
             debugPrint('extraHeaderInfo: $extraHeaderInfo');
-            if (navigation.url.contains('login')) {
-              SchedulerBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context, rootNavigator: true).pushNamed(
-                  Routes.emailPasswordSignInPage,
-                  arguments: () => Navigator.of(context).pop(),
-                );
-              });
+            
               return NavigationDecision.prevent;
             }
 

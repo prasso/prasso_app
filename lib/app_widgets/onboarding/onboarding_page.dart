@@ -25,6 +25,7 @@ class OnboardingPage extends HookConsumerWidget {
               title: pageTitle,
               selectedUrl: pageUrl,
               extraHeaderInfo: '',
+              sharedPreferencesServiceProvider: null,
             )));
   }
 

@@ -7,9 +7,7 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:prasso_app/app_widgets/account/account_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_pdf_view.dart';
-import 'package:prasso_app/app_widgets/apps/app_run_page.dart';
 import 'package:prasso_app/app_widgets/apps/app_web_view.dart';
-import 'package:prasso_app/app_widgets/apps/apps_page.dart';
 import 'package:prasso_app/app_widgets/more/more_page.dart';
 import 'package:prasso_app/constants/keys.dart';
 import 'package:prasso_app/constants/strings.dart';
@@ -79,18 +77,20 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
         subscriptionRequired: false),
   };
   Map<TabItem, WidgetBuilder?> widgetBuilders = {
-    TabItem.position1: (_) => AppsPage(),
-    TabItem.position2: (_) => AppRunPage(),
+    TabItem.position1: (_) => AccountPage(),
+    TabItem.position2: (_) => AccountPage(),
     TabItem.position3: (_) => AccountPage(),
     TabItem.position4: (_) => AppRunWebView(
           title: '',
           selectedUrl: '',
           extraHeaderInfo: '{}',
+          sharedPreferencesServiceProvider: null,
         ),
     TabItem.positionOverflow: (_) => AppRunWebView(
           title: '',
           selectedUrl: '',
           extraHeaderInfo: '{}',
+          sharedPreferencesServiceProvider: null,
         ),
   };
 
@@ -213,6 +213,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
               title: pageTitle,
               selectedUrl: pageUrl,
               extraHeaderInfo: extraHeaderInfo,
+              sharedPreferencesServiceProvider:
+                  sharedPreferencesServiceProvider,
             )));
     return true;
   }
@@ -334,12 +336,6 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
       return (_) => MorePage();
     }
 
-    if (actionString == 'AppsPage()') {
-      return (_) => AppsPage();
-    }
-    if (actionString == 'AppRunPage.create') {
-      return (_) => AppRunPage();
-    }
     if (actionString.startsWith('http')) {
       if (actionString.endsWith('.pdf')) {
         return (_) => AppRunPdfView(title: t1.title, urlPDFPath: actionString);
@@ -348,6 +344,8 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
               title: t1.title,
               selectedUrl: actionString,
               extraHeaderInfo: extraHeaderInfo,
+              sharedPreferencesServiceProvider:
+                  sharedPreferencesServiceProvider,
             );
       }
     }

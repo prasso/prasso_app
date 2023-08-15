@@ -32,7 +32,8 @@ class CupertinoTabViewRouter {
           builder: (dynamic _) => AppRunWebView(
               title: app!.pageTitle,
               selectedUrl: app.pageUrl,
-              extraHeaderInfo: app.extraHeaderInfo),
+              extraHeaderInfo: app.extraHeaderInfo,
+              sharedPreferencesServiceProvider: null),
           settings: settings,
           fullscreenDialog: false,
         );

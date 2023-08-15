@@ -11,8 +11,8 @@ class Strings {
   static const String apiUrl = 'API_URL';
   static const String appId = 'appId';
 
-  //static const String prodUrl = 'https://prasso.io/api/';
-  static const String prodUrl = 'http://localhost:8000/api/';
+  static const String prodUrl = 'https://prasso.io/api/';
+  //static const String prodUrl = 'http://localhost:8000/api/';
 
   static const String awsIdentityPool = 'AWS_IDENTITY_POOL';
   static const String awsRegion = 'AWS_REGION';

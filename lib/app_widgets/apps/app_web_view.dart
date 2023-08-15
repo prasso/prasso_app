@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:prasso_app/routing/router.dart';
+import 'package:prasso_app/services/shared_preferences_service.dart';
 // Project imports:
 import 'package:prasso_app/utils/prasso_themedata.dart';
 // Package imports:
@@ -17,6 +17,7 @@ class AppRunWebView extends StatelessWidget {
   final String? title;
   final String? selectedUrl;
   final String? extraHeaderInfo;
+  final SharedPreferencesService? sharedPreferencesServiceProvider;
 
   final Completer<WebViewController> controllerCompleter =
       Completer<WebViewController>();
@@ -24,7 +25,8 @@ class AppRunWebView extends StatelessWidget {
   AppRunWebView(
       {required this.title,
       required this.selectedUrl,
-      required this.extraHeaderInfo});
+      required this.extraHeaderInfo,
+      required this.sharedPreferencesServiceProvider});
 
   Future<void> plugHeadersIn() async {
     final WebViewController controller = await controllerCompleter.future;
@@ -65,7 +67,7 @@ class AppRunWebView extends StatelessWidget {
                   Strings.reload,
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: PrassoColors.lightGray,
+                    color: GoGoColors.lightGray,
                   ),
                 ),
                 onPressed: () => _reloadConfig(context),
@@ -73,13 +75,11 @@ class AppRunWebView extends StatelessWidget {
             ]*/
         ),
         body: WebView(
-          userAgent:
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
           initialUrl: selectedUrl,
           javascriptMode: JavascriptMode.unrestricted,
           onWebResourceError: (error) async {
-            debugPrint('...------Error--');
-            debugPrint(error.description);
+            print('...------Error--');
+            print(error.description);
 
             //go to login
             await Navigator.of(context, rootNavigator: true).pushNamed(
@@ -94,6 +94,15 @@ class AppRunWebView extends StatelessWidget {
               try {
                 headers = Map<String, String>.from(
                     json.decode(extraHeaderInfo ?? '{}'));
+                //check for Authorization: Bearer and put in the current access token.
+                if (headers.containsKey('Authorization')) {
+                  final String? userToken =
+                      sharedPreferencesServiceProvider?.getUserToken();
+
+                  if (userToken != null) {
+                    headers['Authorization'] = 'Bearer $userToken';
+                  }
+                }
               } on FormatException catch (e) {
                 print('The provided header string is not valid JSON: $e');
               }
@@ -104,9 +113,9 @@ class AppRunWebView extends StatelessWidget {
             controllerCompleter.complete(webViewController);
           },
           navigationDelegate: (navigation) async {
-            debugPrint('selectedUrl: $selectedUrl');
+            debugPrint('navigationDelegate called: $navigation.url');
             debugPrint('extraHeaderInfo: $extraHeaderInfo');
-            
+            if (navigation.url.contains('login')) {
               return NavigationDecision.prevent;
             }
 
@@ -123,5 +132,7 @@ class AppRunWebView extends StatelessWidget {
     properties.add(StringProperty('extraHeaderInfo', extraHeaderInfo));
     properties.add(DiagnosticsProperty<Completer<WebViewController>>(
         'controllerCompleter', controllerCompleter));
+    properties.add(DiagnosticsProperty<SharedPreferencesService>(
+        'sharedPreferencesServiceProvider', sharedPreferencesServiceProvider));
   }
 }

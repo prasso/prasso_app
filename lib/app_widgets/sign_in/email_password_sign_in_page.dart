@@ -8,13 +8,6 @@ class EmailPasswordSignInPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //make sure the formtype set here corresponds with the formtype in the model
-    //if not, the model will be updated to the formtype set here
-    if (formType != null) {
-      ref
-          .read(emailPasswordSigninViewModelProvider.notifier)
-          .updateFormType(formType!);
-    }
     final EmailPasswordSignInModel _thismodel =
         ref.watch(emailPasswordSigninViewModelProvider);
 
@@ -178,6 +171,9 @@ class _EmailPasswordSignInPageContentsState
               print('User is null');
               return;
             }
+
+            //update the model form type with no notifications. for logout redirection
+            model.formType = EmailPasswordSignInFormType.signIn;
             await navigateIntroPages();
           }
           if (widget.onSignedIn != null && mounted) {

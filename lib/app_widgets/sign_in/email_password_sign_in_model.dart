@@ -35,21 +35,20 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
 
   EmailPasswordSignInFormType get formType => _formType;
 
+  // no notify listeners, use updateWith to get notifications
   set formType(EmailPasswordSignInFormType value) {
-    if (value == _formType) {
+    if (value == _formType || isLoading) {
       return;
     }
     _formType = value;
-    notifyListeners();
   }
 
   Future<void> initEmail() async {
     if (email.isNotEmpty || email == ' ') {
       return;
     }
-    if (email.startsWith(' ')) {
-      email = email.trim();
-    }
+    email = email.trim();
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final SharedPreferencesService sharedPreferencesServiceProvider =
         SharedPreferencesService(prefs);
@@ -98,12 +97,20 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     }
   }
 
-  void updateEmail(String email) => updateWith(email: email);
+  void updateEmail(String email) {
+    if (email == ' ') {
+      return;
+    }
+    final _email2 = email.trim();
+    this.email = _email2;
+
+    notifyListeners();
+  }
 
   void updatePassword(String password) => updateWith(password: password);
 
   void updateFormType(EmailPasswordSignInFormType? formType) {
-    if (formType == _formType) {
+    if (this.formType == formType || isLoading) {
       return;
     }
     updateWith(
@@ -124,9 +131,8 @@ class EmailPasswordSignInModel with EmailAndPasswordValidators, ChangeNotifier {
     bool? submitted,
   }) {
     if (email != null) {
-      if (email.startsWith(' ')) {
-        email = email.trim();
-      }
+      email = email.trim();
+
       this.email = email;
     } else {
       if (this.email == '') {

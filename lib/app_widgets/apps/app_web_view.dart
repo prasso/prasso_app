@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:prasso_app/routing/router.dart';
+import 'package:prasso_app/services/prasso_api_repository.dart';
 import 'package:prasso_app/services/shared_preferences_service.dart';
 // Project imports:
 import 'package:prasso_app/utils/prasso_themedata.dart';
@@ -101,6 +102,7 @@ class AppRunWebView extends StatelessWidget {
 
                   if (userToken != null) {
                     headers['Authorization'] = 'Bearer $userToken';
+                    headers['X-Authorization'] = headers['Authorization']!;
                   }
                 }
               } on FormatException catch (e) {
@@ -113,9 +115,9 @@ class AppRunWebView extends StatelessWidget {
             controllerCompleter.complete(webViewController);
           },
           navigationDelegate: (navigation) async {
-            debugPrint('navigationDelegate called: $navigation.url');
-            debugPrint('extraHeaderInfo: $extraHeaderInfo');
+            debugPrint('navigationDelegate called: ${navigation.url}');
             if (navigation.url.contains('login')) {
+              showErrorToast('Site requests login. Please login to continue');
               return NavigationDecision.prevent;
             }
 

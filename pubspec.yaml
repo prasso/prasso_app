@@ -2,7 +2,7 @@ name: prasso_app
 description: best start to a new app
 publish_to: 'none' 
 
-version: 1.0.8+23
+version: 1.0.8+1080026 #1.0.8+23
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

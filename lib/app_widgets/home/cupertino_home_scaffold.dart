@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,13 @@ import 'package:prasso_app/models/tab_item.dart';
 import 'package:prasso_app/routing/cupertino_tab_view_router.dart';
 import 'package:prasso_app/routing/router.dart';
 import 'package:prasso_app/utils/prasso_themedata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../common_widgets/alert_dialogs.dart';
+import '../../constants/keys.dart';
+import '../../constants/strings.dart';
+import '../../services/prasso_api_repository.dart';
+import '../../services/shared_preferences_service.dart';
 
 @immutable
 class CupertinoHomeScaffold extends StatefulHookConsumerWidget {
@@ -136,19 +145,61 @@ class CupertinoHomeScaffoldPageState
 
   Widget blankScreen() {
     return Scaffold(
-        body: Center(
-            child: Padding(
-      padding: const EdgeInsets.all(28.0),
-      child: Text(
-        isNavigatingToLogin
-            ? ' '
-            : 'A default app may not be setup for this login yet. If you have setup your app, please contact support. Otherwise, please restart this app.',
-        style: const TextStyle(
-          fontSize: 24.0,
-          color: PrassoColors.primary,
+      appBar: AppBar(
+        title: const Text(Strings.appName,
+            style: TextStyle(color: PrassoColors.lightGray)),
+        actions: <Widget>[
+          const SizedBox(height: 8),
+          TextButton(
+            key: const Key(Keys.logout),
+            child: const Text(
+              Strings.logout,
+              style: TextStyle(
+                fontSize: 18.0,
+                color: PrassoColors.lightGray,
+              ),
+            ),
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              final SharedPreferencesService sharedPreferencesServiceProvider =
+                  SharedPreferencesService(prefs);
+              try {
+                await sharedPreferencesServiceProvider.saveUserToken('');
+                await sharedPreferencesServiceProvider.setthirdPartyToken('');
+                await PrassoApiRepository.instance.signOut();
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context, rootNavigator: true).pushNamed(
+                    Routes.emailPasswordSignInPage,
+                    arguments: () => Navigator.of(context).pop(),
+                  );
+                });
+              } catch (e) {
+                unawaited(showExceptionAlertDialog(
+                  context: context,
+                  title: Strings.logoutFailed,
+                  exception: e,
+                ));
+              }
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(28.0),
+          child: Text(
+            isNavigatingToLogin
+                ? ' '
+                : 'A default app may not be setup for this login yet. If you have setup your app, please contact support. Otherwise, please restart this app.',
+            style: const TextStyle(
+              fontSize: 24.0,
+              color: PrassoColors.primary,
+            ),
+          ),
         ),
       ),
-    )));
+    );
   }
 
   @override

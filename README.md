@@ -28,9 +28,29 @@ To use Prasso App:
 1. Set up a Prasso site with the Prasso API enabled.
 2. Create Teams, Users, and Apps on the site using the admin tool.   
 3. Assign Users to Teams and configure App Tabs.
-4. Download the Flutter project and follow the setup steps.
+4. Download the Flutter project and follow the setup steps in section Installation
 5. Build the app and install on your device.   
 6. Log in with your User credentials and start viewing your no code app!
+
+## Installation
+
+Install Flutter
+Clone Prasso_app
+Run the following in the base folder
+    flutter pub get
+Change to ios directory
+     cd ios
+Run pod install
+Bobbi@Bobbis-MacBook-Pro ios % pod install
+
+    * when having issues with xcode compiling, try this
+Quit xcode
+ rm -Rf ios/Flutter/Flutter.framework
+ rm -Rf ios/Pods
+ rm -Rf ios/.symlinks
+ flutter clean
+ flutter run
+Once the project successfully run on the simulator,  I will open the workspace and run the project using xcode
 
 ## Customizing
 

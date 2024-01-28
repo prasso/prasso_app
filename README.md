@@ -41,6 +41,11 @@ Run the following in the base folder
 Change to ios directory
      cd ios
 Run pod install
+get firebase configuration files and add them
+    prasso_app/ios/Runner/GoogleService-Info.plist
+    prasso_app/android/app/google-services.json
+
+
 Bobbi@Bobbis-MacBook-Pro ios % pod install
 
     * when having issues with xcode compiling, try this

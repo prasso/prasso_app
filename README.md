@@ -3,6 +3,7 @@
 
 Prasso App is a mobile app framework that allows you to quickly build and customize your own mobile app using "low code" web pages.
 
+
 ## What it does
 
 With Prasso App, you can:
@@ -46,15 +47,17 @@ get firebase configuration files and add them
     prasso_app/android/app/google-services.json
 
 
-Bobbi@Bobbis-MacBook-Pro ios % pod install
+``` pod install ```
 
     * when having issues with xcode compiling, try this
 Quit xcode
+```
  rm -Rf ios/Flutter/Flutter.framework
  rm -Rf ios/Pods
  rm -Rf ios/.symlinks
  flutter clean
  flutter run
+ ```
 Once the project successfully run on the simulator,  I will open the workspace and run the project using xcode
 
 ## Customizing
@@ -66,6 +69,10 @@ The project includes instructions on:
 - Modifying the theme colors and branding.
 - Updating the onboarding flow for your app.
 
+For customizing details:
+- [Customizing](docs/customizing.md)
+
+
 ## Contributing
 
 We welcome contributions to Prasso App! To contribute:
@@ -75,7 +82,7 @@ We welcome contributions to Prasso App! To contribute:
 - Make your changes and test them thoroughly
 - Submit a pull request describing your changes
 
-See [Contributing.md](Contributing.md) for full details on how to contribute.
+See [Contributing.md](docs/Contributing.md) for full details on how to contribute.
 
 ## Dependencies
 
@@ -86,7 +93,7 @@ Prasso App requires the following to run:
 - Firebase project configured for authentication and database
 - Prasso API endpoint
 
-See [Dependencies.md](Dependencies.md) for full details on dependencies.
+See [docs/Dependencies.md](Dependencies.md) for full details on dependencies.
 
 ## Summary
 

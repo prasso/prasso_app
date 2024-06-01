@@ -34,7 +34,7 @@ factory RoleModel.fromMap(Map<String, dynamic> data, int modelId) {
     );
   }
 static List<RoleModel> convertFromJson(String? json) {
-    if (json == null || json == 'null') return [];
+    if (json == null || json == 'null' || json == '[]') return RoleModel.defaultRole();
 
     final List<dynamic> alldata = jsonDecode(json) as List<dynamic>;
 

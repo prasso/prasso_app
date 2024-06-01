@@ -82,9 +82,13 @@ class PrassoApiRepository {
       userIsSigningIn = false;
       appConfig = sharedPreferencesServiceProvider.getAppData();
       personalAppToken = sharedPreferencesServiceProvider.getUserToken();
+
+      // appConfig will be null if user is newly registered and on their own team
+      // for this case, we want them to see a Getting Started screen.
       if (appConfig != '') {
-        return ApiUser.fromStorage(savedUser, appConfig, personalAppToken);
+        return ApiUser.fromStorage(savedUser, appConfig??'', personalAppToken);
       }
+      
     } else {
       //we were signing out new users who have never registered here thus added userIsSigningIn
       if (!userIsSigningIn && !userIsRegistering) {

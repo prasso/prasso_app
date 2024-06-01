@@ -30,7 +30,7 @@ class TeamMemberModel {
   }
 
   static List<TeamMemberModel> convertFromJson(String? json) {
-    if (json == null || json == 'null') return [];
+    if (json == null || json == 'null' || json == '[]') return [];
 
     final List<dynamic> alldata = jsonDecode(json) as List<dynamic>;
 

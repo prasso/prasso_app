@@ -26,26 +26,36 @@ class RoleModel {
     return defaultRoles;
   }
 
-  factory RoleModel.fromMap(Map<String, dynamic> data, int modelId) {
+factory RoleModel.fromMap(Map<String, dynamic> data, int modelId) {
     return RoleModel(
-        modelId: modelId,
-        userId: data['user_id'].toInt(),
-        roleId: data['role_id'].toInt());
+      modelId: modelId,
+      userId: data['user_id'] != null ? data['user_id'] as int : 0,  // Provide a default value or handle null case as needed
+      roleId: data['role_id'] != null ? data['role_id'] as int : 0,  // Provide a default value or handle null case as needed
+    );
   }
-
-  static List<RoleModel> convertFromJson(String? json) {
+static List<RoleModel> convertFromJson(String? json) {
     if (json == null || json == 'null') return [];
 
-    final alldata = List<dynamic>.from(jsonDecode(json));
+    final List<dynamic> alldata = jsonDecode(json) as List<dynamic>;
 
     final List<RoleModel> roleObjs = [];
     for (final role in alldata) {
-      if (role != null && role.containsKey('id') == true) {
-        roleObjs.add(
-            RoleModel.fromData(role['id'], role['user_id'], role['role_id']));
-      } else {
-        roleObjs.add(RoleModel.fromData(
-            role['modelId'], role['userId'], role['roleId']));
+      if (role != null && role is Map<String, dynamic>) {
+        int modelId;
+        int userId;
+        int roleId;
+
+        if (role.containsKey('id')) {
+          modelId = role['id'] != null ? role['id'] as int : 0;
+          userId = role['user_id'] != null ? role['user_id'] as int : 0;
+          roleId = role['role_id'] != null ? role['role_id'] as int : 0;
+        } else {
+          modelId = role['modelId'] != null ? role['modelId'] as int : 0;
+          userId = role['userId'] != null ? role['userId'] as int : 0;
+          roleId = role['roleId'] != null ? role['roleId'] as int : 0;
+        }
+
+        roleObjs.add(RoleModel.fromData(modelId, userId, roleId));
       }
     }
 

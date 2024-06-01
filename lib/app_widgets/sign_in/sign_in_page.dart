@@ -83,7 +83,7 @@ class SignInPageContents extends ConsumerWidget {
         centerTitle: true,
         title: Text(
           title,
-          style: const TextStyle(color: PrassoColors.lightGray),
+          style: const TextStyle(color: PrassoColors.black),
         ),
       ),
       backgroundColor: PrassoColors.lightGray,

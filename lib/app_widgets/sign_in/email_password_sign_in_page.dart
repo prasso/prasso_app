@@ -210,6 +210,7 @@ class _EmailPasswordSignInPageContentsState
     return TextField(
       key: const Key('email'),
       controller: _emailController,
+      style: TextStyle(color: Theme.of(context).primaryColorDark),
       decoration: InputDecoration(
         labelText: EmailPasswordSignInStrings.emailLabel,
         hintText: EmailPasswordSignInStrings.emailHint,
@@ -232,6 +233,7 @@ class _EmailPasswordSignInPageContentsState
     return TextField(
       key: const Key('password'),
       controller: _passwordController,
+      style: TextStyle(color: Theme.of(context).primaryColorDark),
       decoration: InputDecoration(
         labelText: model.passwordLabelText,
         errorText: model.passwordErrorText,
@@ -310,9 +312,9 @@ class _EmailPasswordSignInPageContentsState
           centerTitle: true,
           title: Text(
             model.title!,
-            style: TextStyle(color: Theme.of(context).colorScheme.background),
+            style: const TextStyle(color: Colors.black),
           )),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: Center(
           child: LayoutBuilder(builder: (context, constraints) {

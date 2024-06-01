@@ -232,8 +232,9 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     if (isInitializing || defaultTabsJson == '') {
       return;
     }
-    final dynamic alldata = jsonDecode(defaultTabsJson!);
-    final tabslist = List.from(alldata['tabs']);
+    final alldata = jsonDecode(defaultTabsJson!);
+    final List<dynamic> tabslist = List.from(alldata['tabs'] as Iterable<dynamic>);
+
     buildAllTabs(tabslist);
   }
 
@@ -277,27 +278,20 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     moreItems = [];
 
     for (int i = 0; i < tabsFromAPI.length; i++) {
-      final TabItemData t1 = TabItemData(
-          key: UniqueKey().toString(),
-          title: tabsFromAPI[i]['label'],
-          icon: getIconUsingPrefix(name: tabsFromAPI[i]['icon']),
-          iconImageFileName: tabsFromAPI[i]['icon'],
-          pageUrl: tabsFromAPI[i]['page_url'],
-          pageTitle: tabsFromAPI[i]['page_title'],
-          extraHeaderInfo: tabsFromAPI[i]['request_header'],
-          isActive: true,
-          sortOrder: tabsFromAPI[i]['sort_order'],
-          parent: (tabsFromAPI[i]['page_url'] == Strings.morePageUrl)
-              ? 0
-              : tabsFromAPI[i]['parent'],
-          subscriptionRequired: false
-
-          //         fill these in
-/*
-      @required this.iconImageFileName,
-      @required this.isActive,
-      @required this.subscriptionRequired});*/
-          );
+       final Map<String, dynamic> tab = tabsFromAPI[i] as Map<String, dynamic>;
+    final TabItemData t1 = TabItemData(
+      key: UniqueKey().toString(),
+      title: tab['label'] as String?,
+      icon: getIconUsingPrefix(name: tab['icon'] as String),
+      iconImageFileName: tab['icon'] as String?,
+      pageUrl: tab['page_url'] as String?,
+      pageTitle: tab['page_title'] as String?,
+      extraHeaderInfo: tab['request_header'] as String?,
+      isActive: true,
+      sortOrder: tab['sort_order'] as int?,
+      parent: (tab['page_url'] == Strings.morePageUrl) ? 0 : tab['parent'] as int?,
+      subscriptionRequired: false,
+    );
 
       final int position = allTabs.length;
       /*if (position <= TabItem.values.length && t1.parent == 0) {

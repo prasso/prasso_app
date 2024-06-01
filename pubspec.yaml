@@ -11,23 +11,23 @@ environment:
 dependencies:
 
   cached_network_image: ^3.2.0
-  cloud_firestore: 4.8.0
-  cloud_firestore_platform_interface: 5.15.0
-  cloud_functions: 4.3.2
-  cupertino_icons: ^1.0.4
-  device_info_plus: ^9.0.2
+  cloud_firestore: ^4.17.5
+  #cloud_firestore_platform_interface: 5.15.0
+  cloud_functions: ^4.7.6
+  cupertino_icons: ^1.0.6
+  device_info_plus: ^10.1.0
   extended_image: any
-  firebase_auth: 4.6.2
-  firebase_core: 2.13.1
-  firebase_messaging: 14.6.2
-  firebase_storage: 11.2.2
+  firebase_auth: ^4.20.0
+  firebase_core: ^2.32.0
+  firebase_messaging: ^14.9.4
+  firebase_storage:  ^11.7.7
   flutter:
     sdk: flutter  
   flutter_cache_manager: any
   flutter_cached_pdfview: any
   flutter_hooks: any
   flutter_image_compress: any
-  flutter_local_notifications: ^9.2.0
+  flutter_local_notifications: ^17.1.2
   # https://stackoverflow.com/questions/62476108/how-to-load-and-present-a-pdf-file-from-the-web-in-flutter
   flutter_native_timezone: ^2.0.0
   flutter_pdfview: ^1.0.1

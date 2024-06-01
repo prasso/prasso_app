@@ -29,16 +29,16 @@ class AppModel {
   factory AppModel.fromMap(Map<String, dynamic> data, String documentId) {
 
 
-    return AppModel(
-        documentId,
-        data['page_title'].toString(),
-        data['page_url'].toString(),
-        data['icon'].toString(),
-        data['label'].toString(),
-        data['extra_header_info'],
-        int.parse(data['sort_order'].toString()));
+   return AppModel(
+      documentId,
+      data['page_title']?.toString(),
+      data['page_url']?.toString(),
+      data['icon']?.toString(),
+      data['label']?.toString(),
+      data['extra_header_info']?.toString(),
+      data['sort_order'] != null ? int.parse(data['sort_order'].toString()) : 1
+    );
   }
-
   Map<String, dynamic> toMap() {
     return {
       'page_title': pageTitle,

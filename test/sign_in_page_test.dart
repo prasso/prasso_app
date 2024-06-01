@@ -1,10 +1,9 @@
 // Dart imports:
-
-// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 // Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:prasso_app/app_widgets/sign_in/sign_in_page.dart';
@@ -14,9 +13,10 @@ import 'package:prasso_app/services/prasso_api_repository.dart';
 
 import 'mocks.dart';
 
+@GenerateMocks([PrassoApiRepository, NavigatorObserver])
 void main() {
   group('sign-in page', () {
-    MockPrassoAuth? mockPrassoAuth;
+    late MockPrassoAuth mockPrassoAuth;
     late MockNavigatorObserver mockNavigatorObserver;
 
     setUp(() {
@@ -28,7 +28,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            prassoApiService.overrideWithProvider(Provider<PrassoApiRepository?>((ref) => mockPrassoAuth)),
+            prassoApiService.overrideWithProvider(
+              Provider<PrassoApiRepository?>((ref) => mockPrassoAuth),
+            ),
           ],
           child: Consumer(builder: (context, watch, __) {
             return MaterialApp(
@@ -49,7 +51,7 @@ void main() {
         ),
       );
       // didPush is called once when the widget is first built
-      verify(mockNavigatorObserver.didPush(any, any)).called(1);
+      verify(mockNavigatorObserver.didPush(any as Route<dynamic>, any as Route<dynamic>?)).called(1);
     }
 
     testWidgets('email & password navigation', (tester) async {
@@ -61,7 +63,7 @@ void main() {
       await tester.tap(emailPasswordButton);
       await tester.pumpAndSettle();
 
-      verify(mockNavigatorObserver.didPush(any, any)).called(1);
+      verify(mockNavigatorObserver.didPush(any as Route<dynamic>, any as Route<dynamic>?)).called(1);
     });
   });
 }

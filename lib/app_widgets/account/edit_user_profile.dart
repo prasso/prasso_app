@@ -32,7 +32,7 @@ class EditUserProfile extends HookConsumerWidget {
       appBar: AppBar(
         elevation: 2.0,
         title: Text(_viewmodel.usr == null ? Strings.newuser : Strings.edituser,
-            style: TextStyle(color: Theme.of(context).colorScheme.background)),
+            style: TextStyle(color: Theme.of(context).colorScheme.surface)),
         actions: <Widget>[
           TextButton(
             child: const Text(
@@ -44,7 +44,7 @@ class EditUserProfile extends HookConsumerWidget {
         ],
       ),
       body: InitialProfile(Strings.fromClassEditUserProfile, _viewmodel),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
     );
   }
 

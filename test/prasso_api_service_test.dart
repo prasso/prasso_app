@@ -34,7 +34,7 @@ void main() {
       final appdata = data['data']['app_data'].toString();
       final dynamic alldata = jsonDecode(appdata);
 
-      final tabslist = List.from(alldata['tabs']);
+      final tabslist = List.from(alldata['tabs'] as Iterable<dynamic>);
 
       final CupertinoHomeScaffoldViewModel model = CupertinoHomeScaffoldViewModel(SharedPreferencesService(null));
       model.buildAllTabs(tabslist);

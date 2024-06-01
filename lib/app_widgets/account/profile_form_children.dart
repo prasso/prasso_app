@@ -26,16 +26,16 @@ class ProfileFormChildren extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _viewmodel = ref.watch(editUserProfileViewModel);
-    final auth = ref.watch<PrassoApiRepository>(prassoApiService);
+    final auth = ref.watch(prassoApiService);
     final database =
-        ref.watch<ProviderListenable<FirestoreDatabase>>(databaseProvider);
+        ref.watch(databaseProvider);
 
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 15),
-          child: _buildForm(_viewmodel, context, auth, database),
+          child: _buildForm(_viewmodel, context, auth!, database!),
         ),
       ),
     );

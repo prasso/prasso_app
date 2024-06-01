@@ -11,8 +11,8 @@ class SegmentedControl<T> extends StatelessWidget {
   });
   final Widget header;
   final T value;
-  final Map<T, Widget> children;
-  final ValueChanged<T>? onValueChanged;
+  final Map<Object, Widget> children;
+  final ValueChanged<Object>? onValueChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,8 @@ class SegmentedControl<T> extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<T>('value', value));
-    properties.add(DiagnosticsProperty<Map<T, Widget>>('children', children));
-    properties.add(ObjectFlagProperty<ValueChanged<T>>.has(
+    properties.add(DiagnosticsProperty<Map<Object, Widget>>('children', children));
+    properties.add(ObjectFlagProperty<ValueChanged<Object>>.has(
         'onValueChanged', onValueChanged));
   }
 }

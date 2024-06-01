@@ -94,24 +94,25 @@ class ApiUser {
           return ApiUser(
               uid: usr.uid,
               email: usr.email,
-              displayName: jsonAppData['data']['name'],
-              photoURL: jsonAppData['data']['photoURL'],
-              appConfig: appConfig,
-              appToken: jsonAppData['data']['token'],
-              thirdPartyToken: jsonAppData['data']['your_health_token'] ?? '',
+              displayName: jsonAppData['data']['name'] as String?,
+              photoURL: jsonAppData['data']['photoURL'] as String?,
+              appConfig: appConfig as String?,
+              appToken: jsonAppData['data']['token'] as String?,
+              thirdPartyToken: jsonAppData['data']['your_health_token'] as String? ?? '',
               initialized: true,
               roles: jsonAppData['data']['roles'] == null
                   ? RoleModel.defaultRole()
-                  : List<RoleModel>.from(RoleModel.convertFromJson(jsonAppData['data']['roles'])),
-              personalTeamId: jsonAppData['data']['personal_team_id'],
-              teamCoachId: jsonAppData['data']['team_coach_id'],
+                  : RoleModel.convertFromJson(jsonAppData['data']['roles'] as String),
+                          
+              personalTeamId: jsonAppData['data']['personal_team_id'] as int?,
+              teamCoachId: jsonAppData['data']['team_coach_id'] as int?,
               teamMembers: jsonAppData['data']['team_members'] == null
                   ? defaultTeamMembers()
-                  : List<TeamMemberModel>.from(
-                      TeamMemberModel.convertFromJson(jsonAppData['data']['team_members'])),
-              pnToken: jsonAppData['data']['pn_token'],
-              coachUid: jsonAppData['data']['coach_uid'],
-              unreadmessages: jsonAppData['data']['unreadmessages']);
+                  : TeamMemberModel.convertFromJson(jsonAppData['data']['team_members'] as String),
+              pnToken: jsonAppData['data']['pn_token'] as String?,
+              coachUid: jsonAppData['data']['coach_uid'] as String?,
+              unreadmessages: jsonAppData['data']['unreadmessages'] as bool?,
+            );
         }
       }
       return ApiUser(
@@ -135,66 +136,79 @@ class ApiUser {
         return _user;
       }
 
-      final dynamic jsonResponse = jsonDecode(_user);
+      final dynamic jsonResponse = jsonDecode(_user as String);
       if (jsonResponse['data'] != null) {
-        final String jsonusr = jsonEncode(_user);
+        final Map<String, dynamic> data = jsonResponse['data'] as Map<String, dynamic>;
         return ApiUser(
-            uid: _user['data']['uid'].toString(),
-            email: _user['data']['email'],
-            displayName: _user['data']['name'],
-            photoURL: _user['data']['photoURL'].toString(),
-            appConfig: jsonusr,
-            appToken: _user['data']['token'],
-            thirdPartyToken: _user['data']['your_health_token'] ?? '',
-            initialized: true,
-            roles: _user['data']['roles'] == null
-                ? RoleModel.defaultRole()
-                : List<RoleModel>.from(RoleModel.convertFromJson(_user['data']['roles'])),
-            personalTeamId: _user['data']['personal_team_id'],
-            teamCoachId: _user['data']['team_coach_id'],
-            teamMembers: TeamMemberModel.convertFromJson(_user['data']['team_members']?.toString()),
-            pnToken: _user['data']['pn_token'],
-            coachUid: _user['data']['coach_uid'],
-            unreadmessages: _user['data']['unreadmessages'] ?? false);
+          uid: data['uid'].toString(),
+          email: data['email'] as String?,
+          displayName: data['name'] as String?,
+          photoURL: data['photoURL'] as String?,
+          appConfig: jsonEncode(data),
+          appToken: data['token'] as String?,
+          thirdPartyToken: data['your_health_token'] as String? ?? '',
+          initialized: true,
+          roles: data['roles'] == null
+              ? RoleModel.defaultRole()
+              : RoleModel.convertFromJson(data['roles'] as String?),
+          personalTeamId: data['personal_team_id'] as int?,
+          teamCoachId: data['team_coach_id'] as int?,
+          teamMembers: data['team_members'] == null
+              ? defaultTeamMembers()
+              : TeamMemberModel.convertFromJson(data['team_members'] as String?),
+          pnToken: data['pn_token'] as String?,
+          coachUid: data['coach_uid'] as String?,
+          unreadmessages: data['unreadmessages'] as bool? ?? false,
+        );
       } else {
         return ApiUser(
-            uid: jsonResponse['uid'].toString(),
-            email: jsonResponse['email'],
-            displayName: jsonResponse['displayName'] ?? jsonResponse['name'],
-            photoURL: jsonResponse['photoURL'],
-            appConfig: jsonResponse['appConfig'] ?? appConfig,
-            appToken: jsonResponse['appToken'] ?? appToken,
-            thirdPartyToken: jsonResponse['thirdPartyToken'] ?? '',
-            initialized: true,
-            roles: RoleModel.convertFromJson(jsonResponse['roles']),
-            personalTeamId: jsonResponse['personal_team_id'] ?? 0,
-            teamCoachId: jsonResponse['team_coach_id'] ?? 0,
-            teamMembers: TeamMemberModel.convertFromJson(jsonResponse['team_members'].toString()),
-            pnToken: jsonResponse['pn_token'],
-            coachUid: jsonResponse['coach_uid'] ?? '',
-            unreadmessages: jsonResponse['unreadmessages'] ?? false);
+          uid: jsonResponse['uid'].toString(),
+          email: jsonResponse['email'] as String?,
+          displayName: jsonResponse['displayName'] as String? ?? jsonResponse['name'] as String?,
+          photoURL: jsonResponse['photoURL'] as String?,
+          appConfig: jsonResponse['appConfig'] as String?,
+          appToken: jsonResponse['appToken'] as String?,
+          thirdPartyToken: jsonResponse['thirdPartyToken'] as String? ?? '',
+          initialized: true,
+          roles: jsonResponse['roles'] == null
+              ? RoleModel.defaultRole()
+              : RoleModel.convertFromJson(jsonResponse['roles'] as String?),
+          personalTeamId: jsonResponse['personal_team_id'] as int? ?? 0,
+          teamCoachId: jsonResponse['team_coach_id'] as int? ?? 0,
+          teamMembers: jsonResponse['team_members'] == null
+              ? defaultTeamMembers()
+              : TeamMemberModel.convertFromJson(jsonResponse['team_members'] as String),
+          pnToken: jsonResponse['pn_token'] as String?,
+          coachUid: jsonResponse['coach_uid'] as String? ?? '',
+          unreadmessages: jsonResponse['unreadmessages'] as bool? ?? false,
+        );
       }
     }
   }
 
-  factory ApiUser.fromStorage(String _user, String? appConfig, String? appToken) {
-    final dynamic userFromStorage = jsonDecode(_user);
+    factory ApiUser.fromStorage(String _user, String? appConfig, String? appToken) {
+    final Map<String, dynamic> userFromStorage = jsonDecode(_user) as Map<String, dynamic>;
     return ApiUser(
-        uid: userFromStorage['uid'],
-        email: userFromStorage['email'],
-        displayName: userFromStorage['displayName'],
-        photoURL: userFromStorage['photoURL'],
-        appConfig: appConfig,
-        appToken: appToken,
-        thirdPartyToken: userFromStorage['thirdPartyToken'],
-        initialized: true,
-        roles: RoleModel.convertFromJson(userFromStorage['roles'].toString()),
-        personalTeamId: userFromStorage['personalTeamId'],
-        teamCoachId: userFromStorage['teamCoachId'],
-        teamMembers: TeamMemberModel.convertFromJson(userFromStorage['teamMembers'].toString()),
-        pnToken: userFromStorage['pnToken'],
-        coachUid: userFromStorage['coachUid'],
-        unreadmessages: userFromStorage['unreadmessages'] ?? false);
+      uid: userFromStorage['uid'] as String,
+      email: userFromStorage['email'] as String?,
+      displayName: userFromStorage['displayName'] as String?,
+      photoURL: userFromStorage['photoURL'] as String?,
+      appConfig: appConfig,
+      appToken: appToken,
+      thirdPartyToken: userFromStorage['thirdPartyToken'] as String?,
+      initialized: true,
+      roles: userFromStorage['roles'] == null
+          ? RoleModel.defaultRole()
+          : RoleModel.convertFromJson(userFromStorage['roles'] as String),
+      personalTeamId: userFromStorage['personalTeamId'] as int?,
+      teamCoachId: userFromStorage['teamCoachId'] as int?,
+      teamMembers: userFromStorage['teamMembers'] == null
+          ? []
+          : TeamMemberModel.convertFromJson(userFromStorage['teamMembers'] as String),
+    pnToken: userFromStorage['pnToken'] as String?,
+      coachUid: userFromStorage['coachUid'] as String?,
+      unreadmessages: userFromStorage['unreadmessages'] as bool? ?? false,
+    );
   }
 
   static List<TeamMemberModel> defaultTeamMembers() {

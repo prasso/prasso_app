@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'dart:io' show Platform;
 
 // Package imports:
 import 'package:firebase_core/firebase_core.dart';
@@ -97,38 +98,51 @@ class _PrassoCoreState extends State<PrassoCore> {
     await _flutterLocalNotificationsPlugin.cancelAll();
   }
 
+Future<void> initializeNotifications() async {
+  if (Platform.isAndroid || Platform.isIOS) {
+    const initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    const initializationSettingsIOS = DarwinInitializationSettings();
+
+    const initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    await _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings
+    );
+  } else {
+    // Handle web platform or other platforms if needed
+    print('Local notifications are not supported on this platform');
+  }
+}
   @override
   void initState() {
-    const initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initializationSettingsIOS = IOSInitializationSettings();
-    const initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+    initializeNotifications();
 
     super.initState();
 
-    FirebaseMessaging.onMessage.listen((message) async {
-      print('onMessage: $message');
+    if (!kIsWeb) {
+      FirebaseMessaging.onMessage.listen((message) async {
+        print('onMessage: $message');
 
-      const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'Prasso',
-        'Prasso Android',
-        channelDescription: 'Prasso Android Channel',
-        importance: Importance.max,
-        priority: Priority.high,
-      ); // Android
+        const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+          'Prasso',
+          'Prasso Android',
+          channelDescription: 'Prasso Android Channel',
+          importance: Importance.max,
+          priority: Priority.high,
+        ); // Android
 
-      const iOSPlatformChannelSpecifics = IOSNotificationDetails(); // IOS
+        const iOSPlatformChannelSpecifics = DarwinNotificationDetails(); // IOS
 
-      const platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics,
-          iOS: iOSPlatformChannelSpecifics);
-      await _flutterLocalNotificationsPlugin.show(0, message.data['title'],
-          message.data['body'], platformChannelSpecifics);
-    });
-
-    if (!kIsWeb) getFCMToken();
+        const platformChannelSpecifics = NotificationDetails(
+            android: androidPlatformChannelSpecifics,
+            iOS: iOSPlatformChannelSpecifics);
+        await _flutterLocalNotificationsPlugin.show(0, message.data['title']?.toString(),
+            message.data['body']?.toString(), platformChannelSpecifics);
+      });
+      getFCMToken();
+    }
   }
 }

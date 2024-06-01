@@ -11,8 +11,12 @@ class TeamMemberModel {
   }
 
   factory TeamMemberModel.fromMap(Map<String, dynamic> data) {
-    return TeamMemberModel(data['uid'].toInt(), data['id'].toInt());
+    return TeamMemberModel(
+      data['uid'] != null ? data['uid'].toString() : '',
+      data['id'] != null ? data['id'] as int : 0,
+    );
   }
+
 
   Map<String, dynamic> toMap() {
     return {'uid': firebaseUid, 'id': userId};
@@ -28,20 +32,26 @@ class TeamMemberModel {
   static List<TeamMemberModel> convertFromJson(String? json) {
     if (json == null || json == 'null') return [];
 
-    final alldata = List<dynamic>.from(jsonDecode(json));
+    final List<dynamic> alldata = jsonDecode(json) as List<dynamic>;
 
-    final List<TeamMemberModel> roleObjs = [];
+    final List<TeamMemberModel> teamMemberObjs = [];
     for (final tm in alldata) {
-      if (tm['firebaseUid'] != null) {
-        roleObjs.add(
-            TeamMemberModel.fromJson(tm['firebaseUid'], tm['userId'].toInt()));
-      }
-      if (tm['uid'] != null) {
-        roleObjs.add(TeamMemberModel.fromJson(tm['uid'], tm['id'].toInt()));
+      if (tm is Map<String, dynamic>) {
+        if (tm.containsKey('firebaseUid')) {
+          teamMemberObjs.add(TeamMemberModel(
+            tm['firebaseUid'] != null ? tm['firebaseUid'].toString() : '',
+            tm['userId'] != null ? tm['userId'] as int : 0,
+          ));
+        } else if (tm.containsKey('uid')) {
+          teamMemberObjs.add(TeamMemberModel(
+            tm['uid'] != null ? tm['uid'].toString() : '',
+            tm['id'] != null ? tm['id'] as int : 0,
+          ));
+        }
       }
     }
 
-    return roleObjs;
+    return teamMemberObjs;
   }
 
   @override

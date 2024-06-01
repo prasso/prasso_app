@@ -66,27 +66,24 @@ class ProfileModel {
     }
   }
   ProfileModel.fromJson(Map<String, dynamic> json) {
-    id = json['Id'] is int ? int.parse(json['Id']) : null;
-    fkUserId = json['fkUserId'] is int ? int.parse(json['fkUserId']) : null;
-    userName = json['UserName'] is String ? json['UserName'].toString() : null;
-    firstName =
-        json['FirstName'] is String ? json['FirstName'].toString() : null;
-    lastName = json['LastName'] is String ? json['LastName'].toString() : null;
-    address1 = json['Address1'] is String ? json['Address1'].toString() : null;
-    address2 = json['Address2'] is String ? json['Address2'].toString() : null;
-    city = json['City'] is String ? json['City'].toString() : null;
-    zip = json['Zip'] is String ? json['Zip'].toString() : null;
-    state = json['State'] is String ? json['State'].toString() : null;
-    phone = json['Phone'] is String ? json['Phone'].toString() : null;
-    email = json['Email'] is String ? json['Email'].toString() : null;
+  id = json['Id'] as int?;
+  fkUserId = json['fkUserId'] as int?;
+  userName = json['UserName'] as String?;
+  firstName = json['FirstName'] as String?;
+  lastName = json['LastName'] as String?;
+  address1 = json['Address1'] as String?;
+  address2 = json['Address2'] as String?;
+  city = json['City'] as String?;
+  zip = json['Zip'] as String?;
+  state = json['State'] as String?;
+  phone = json['Phone'] as String?;
+  email = json['Email'] as String?;
+  
+  createdDate = json['CreatedDate'] as String?;
+  isNewUser = json['isNewUser'] as bool?;
+  message = json['Message'] as String?;
+}
 
-    createdDate =
-        json['CreatedDate'] is String ? json['CreatedDate'].toString() : null;
-    isNewUser = json['isNewUser'] is bool
-        ? bool.fromEnvironment(json['isNewUser'])
-        : null;
-    message = json['Message'] is String ? json['Message'].toString() : null;
-  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

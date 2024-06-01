@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 final ThemeData prassoThemeData = ThemeData(
     scaffoldBackgroundColor: PrassoColors.lightGray[500],
     colorScheme: ColorScheme(
-        background: PrassoColors.lightGray[500]!,
         primary: PrassoColors.brightGreen,
         secondary: PrassoColors.brightOrange,
         surface: PrassoColors.lightGray[500]!,
@@ -12,7 +11,6 @@ final ThemeData prassoThemeData = ThemeData(
         onSecondary: PrassoColors.lightGray[500]!,
         onSurface: PrassoColors.lightGray[500]!,
         onError: PrassoColors.lightGray[500]!,
-        onBackground: PrassoColors.lightGray[500]!,
         brightness: Brightness.light),
     appBarTheme: AppBarTheme(
       foregroundColor: PrassoColors.lightGray[500],

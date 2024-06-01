@@ -20,7 +20,7 @@ class AppRunPdfView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(title!, style: TextStyle(color: Theme.of(context).colorScheme.background)),
+        title: Text(title!, style: TextStyle(color: Theme.of(context).colorScheme.surface)),
       ),
       body: const PDF().cachedFromUrl(
         urlPDFPath,

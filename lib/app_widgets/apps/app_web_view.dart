@@ -33,7 +33,8 @@ class AppRunWebView extends StatelessWidget {
     final WebViewController controller = await controllerCompleter.future;
 
     final Map<String, String> headers =
-        Map<String, String>.from(json.decode(extraHeaderInfo!));
+    Map<String, String>.from(json.decode(extraHeaderInfo!) as Map);
+
     await controller.loadUrl(selectedUrl!, headers: headers);
   }
 
@@ -93,8 +94,9 @@ class AppRunWebView extends StatelessWidget {
               //if extra header info isn't json we need to ignore it
               Map<String, String> headers = {};
               try {
-                headers = Map<String, String>.from(
-                    json.decode(extraHeaderInfo ?? '{}'));
+                headers =
+                    Map<String, String>.from(json.decode(extraHeaderInfo ?? '{}') as Map);
+
                 //check for Authorization: Bearer and put in the current access token.
                 if (headers.containsKey('Authorization')) {
                   final String? userToken =

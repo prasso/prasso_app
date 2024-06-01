@@ -7,7 +7,7 @@ import 'package:prasso_app/models/app.dart';
 void main() {
   group('fromMap', () {
     test('null data', () {
-      final app = AppModel.fromMap(null, 'abc');
+      final app = AppModel.fromMap({'':''}, 'abc');
       expect(app, null);
     });
     test('app with all properties', () {

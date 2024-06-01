@@ -13,6 +13,7 @@ Future<void> showExceptionAlertDialog({
     );
 
 String? _message(dynamic exception) {
+  try {
   if (exception is FirebaseException) {
     return exception.message;
   }
@@ -22,6 +23,28 @@ String? _message(dynamic exception) {
   print(exception.toString());
 
   return exception.message.toString();
+
+} catch (e) {
+  if (e is NoSuchMethodError) {
+    print('NoSuchMethodError: ${e.toString()}');
+    return e.toString();
+  } else if (e is TypeError) {
+    print('TypeError: ${e.toString()}');
+  } else if (e is Exception) {
+    // General exception handling
+    // Check if it has a message property
+    try {
+      // This checks if the exception has a message property
+      var message = (e as dynamic).message;
+      print('Exception: $message');
+    } catch (_) {
+      print('Exception: ${e.toString()}');
+    }
+  } else {
+    // Catch any other type of error
+    print('Error: ${e.toString()}');
+  }
+}
 }
 
 // TODO: Revisit this

@@ -173,7 +173,7 @@ class PrassoApiRepository {
         await sharedPreferencesServiceProvider.saveloginID(email);
 
         doBuildTabs = true; //do the build tabs after login
-        await _parseReturnCallReload(res.body);
+        await _parseReturnCallReload(res.body as String);
       } else {
         userIsSigningIn = false;
         throw Exception(res.body);
@@ -443,7 +443,7 @@ class PrassoApiRepository {
     if (res.statusCode == 200) {
       await sharedPreferencesServiceProvider.saveloginID(email);
 
-      await _parseReturnCallReload(res.body);
+      await _parseReturnCallReload(res.body as String);
 
       userIsSigningIn = userIsRegistering = false;
     } else {
@@ -474,7 +474,7 @@ class PrassoApiRepository {
 
     if (res.statusCode == 200) {
       doBuildTabs = true; //do the build tabs after saveuserprofile
-      await _parseReturnCallReload(res.body);
+      await _parseReturnCallReload(res.body as String);
       return true;
     } else {
       print('error running saveUserProfileData: $res.body');

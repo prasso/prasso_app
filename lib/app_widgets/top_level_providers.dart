@@ -28,12 +28,13 @@ final profilePicUrlState =
 final userChangesProvider =
     StreamProvider<ApiUser>((ref) => ref.watch(prassoApiService)!.userChanges());
 
+
 final databaseProvider = Provider<FirestoreDatabase?>((ref) {
-  final usr = ref.watch(prassoApiService)!.currentUser;
+  final usr = ref.watch(prassoApiService)?.currentUser;
   if (usr != null) {
     return FirestoreDatabase(uid: usr.uid);
   }
-  return null;
+  return null; // or provide a default instance as needed
 });
 
 final loggerProvider = Provider<Logger>((ref) => Logger(

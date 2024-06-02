@@ -206,16 +206,23 @@ class _EmailPasswordSignInPageContentsState
     _passwordController.clear();
   }
 
-  Widget _buildEmailField() {
+  Widget _buildEmailField(BuildContext context) {
     return TextField(
       key: const Key('email'),
       controller: _emailController,
       style: TextStyle(color: Theme.of(context).primaryColorDark),
       decoration: InputDecoration(
         labelText: EmailPasswordSignInStrings.emailLabel,
+        labelStyle: TextStyle(color: Colors.grey[700]),
         hintText: EmailPasswordSignInStrings.emailHint,
         errorText: model.emailErrorText,
         enabled: !model.isLoading,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey[300]!, width: 1.0), // Light gray border
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey[400]!, width: 1.0), // Slightly darker gray border on focus
+        ),
       ),
       autocorrect: false,
       textInputAction: TextInputAction.next,
@@ -229,15 +236,22 @@ class _EmailPasswordSignInPageContentsState
     );
   }
 
-  Widget _buildPasswordField() {
+  Widget _buildPasswordField(BuildContext context) {
     return TextField(
       key: const Key('password'),
       controller: _passwordController,
       style: TextStyle(color: Theme.of(context).primaryColorDark),
       decoration: InputDecoration(
         labelText: model.passwordLabelText,
+        labelStyle: TextStyle(color: Colors.grey[700]),
         errorText: model.passwordErrorText,
         enabled: !model.isLoading,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey[300]!, width: 1.0), // Light gray border
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey[400]!, width: 1.0), // Slightly darker gray border on focus
+        ),
         suffixIcon: InkWell(
           onTap: _passwordToggle,
           child: Icon(
@@ -265,11 +279,11 @@ class _EmailPasswordSignInPageContentsState
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           const SizedBox(height: 10.0),
-          _buildEmailField(),
+          _buildEmailField(context),
           if (model.formType !=
               EmailPasswordSignInFormType.forgotPassword) ...<Widget>[
             const SizedBox(height: 10.0),
-            _buildPasswordField(),
+            _buildPasswordField(context),
           ],
           const SizedBox(height: 10.0),
           FormSubmitButton(

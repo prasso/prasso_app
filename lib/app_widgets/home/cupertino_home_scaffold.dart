@@ -28,7 +28,6 @@ class CupertinoHomeScaffoldPageState
     extends ConsumerState<CupertinoHomeScaffold> {
   CupertinoHomeScaffoldPageState();
   CupertinoHomeScaffoldViewModel? vm;
-  static bool isNavigatingToLogin = false;
 
   void _select(CupertinoHomeScaffoldViewModel vm, int index, TabItem tabItem) {
     if (tabItem == vm.currentTab) {
@@ -44,14 +43,6 @@ class CupertinoHomeScaffoldPageState
     }
   }
 
-  /// onChangedApplication is here to update the tabs when the user changes Jan18
-  void _onChangedApplication() {
-    if (mounted) {
-      setState(() {
-        isNavigatingToLogin = false;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -60,14 +51,12 @@ class CupertinoHomeScaffoldPageState
 
   @override
   void dispose() {
-    vm?.removeListener(_onChangedApplication);
-    vm?.hasChangedEvent = false;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isNavigatingToLogin) return blankScreen();
+    vm = ref.watch(cupertinoHomeScaffoldVMProvider);
 
     final authService = ref.read(prassoApiService);
     final usr = authService?.currentUser;
@@ -87,7 +76,6 @@ class CupertinoHomeScaffoldPageState
                 .pop(); // Takes you back to the sign-in screen.
           });
         } else {
-          isNavigatingToLogin = true;
           SchedulerBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushNamed(
               Routes.emailPasswordSignInPage,
@@ -95,21 +83,14 @@ class CupertinoHomeScaffoldPageState
             );
           });
 
-          return Container();
+          vm!.setNavigatingToLogin(newvalue:true);
         }
       }
     }
 
     //if we haven't transitioned to the sign in screen after loading the user
     //then we need to make sure the tabs are built
-    vm = ref.watch(cupertinoHomeScaffoldVMProvider);
-
-    if (!vm!.hasChangedEvent) {
-      vm!.addListener(_onChangedApplication);
-      vm!.hasChangedEvent = true;
-    }
-
-    if (vm!.tabs.length < 2) {
+    if (vm!.isNavigatingToLogin || vm!.tabs.length < 2) {
       return blankScreen();
     }
 
@@ -126,7 +107,6 @@ class CupertinoHomeScaffoldPageState
       tabBuilder: (context, index) {
         final item = TabItem.values[index];
         return CupertinoTabView(
-          // navigatorKey: vm.navigatorKeys[item],
           builder: (context) => vm!.widgetBuilders[item]!(context),
           onGenerateRoute: CupertinoTabViewRouter.generateRoute,
         );
@@ -135,12 +115,15 @@ class CupertinoHomeScaffoldPageState
   }
 
   Widget blankScreen() {
-    return Scaffold(
-        body: Center(
+
+    return  Container(
+      color: Colors.white, // Set the background color to white
+      child: Stack(
+        children: [Center(
             child: Padding(
       padding: const EdgeInsets.all(28.0),
       child: Text(
-        isNavigatingToLogin
+         vm!.isNavigatingToLogin
             ? ' '
             : 'A default app may not be setup for this login yet. If you have setup your app, please contact support. Otherwise, please restart this app.',
         style: const TextStyle(
@@ -148,7 +131,7 @@ class CupertinoHomeScaffoldPageState
           color: PrassoColors.primary,
         ),
       ),
-    )));
+    ))]));
   }
 
   @override

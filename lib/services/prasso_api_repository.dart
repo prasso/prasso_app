@@ -232,11 +232,14 @@ class PrassoApiRepository {
     unawaited(
         sharedPreferencesServiceProvider.saveUserToken(personalAppToken!));
     cupertinoHomeScaffoldVM.defaultTabsJson = appConfig;
+
+    cupertinoHomeScaffoldVM.currentTab = TabItem.position1;
+    cupertinoHomeScaffoldVM.setNavigatingToLogin(newvalue: false);
     if (doBuildTabs) {
       cupertinoHomeScaffoldVM.doBuildTabs = true;
       doBuildTabs = false;
     }
-    cupertinoHomeScaffoldVM.currentTab = TabItem.position1;
+
     return user;
   }
 
@@ -347,9 +350,9 @@ class PrassoApiRepository {
   /// this code retrieves the app tabs, these are also retrieved in signInWithEmailandPassword
   ///
   Future<bool> getAppConfig(ApiUser? user) async {
-    final userToken = sharedPreferencesServiceProvider.getUserToken();
+    var userToken = sharedPreferencesServiceProvider.getUserToken();
     if (userToken == null || userToken.isEmpty || userToken == 'null') {
-      return false;
+      userToken = 'not-loggedin';
     }
     final clientAppUrl = _apiServer + _configUrl + userToken.toString();
     developer.log(
@@ -446,7 +449,7 @@ class PrassoApiRepository {
 
     if (res.statusCode == 200) {
       await sharedPreferencesServiceProvider.saveloginID(email);
-
+      
       await _parseReturnCallReload(res.body as String);
 
       userIsSigningIn = userIsRegistering = false;

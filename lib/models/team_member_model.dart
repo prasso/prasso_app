@@ -10,13 +10,18 @@ class TeamMemberModel {
     return TeamMemberModel('', 0);
   }
 
-  factory TeamMemberModel.fromMap(Map<String, dynamic> data) {
+  /*factory TeamMemberModel.fromMap(Map<String, dynamic> data) {
     return TeamMemberModel(
       data['uid'] != null ? data['uid'].toString() : '',
       data['id'] != null ? data['id'] as int : 0,
     );
+  }*/
+factory TeamMemberModel.fromMap(Map<String, dynamic> map) {
+    return TeamMemberModel(
+      map['uid'] as String?,
+      map['id'] as int?
+    );
   }
-
 
   Map<String, dynamic> toMap() {
     return {'uid': firebaseUid, 'id': userId};

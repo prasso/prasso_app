@@ -51,6 +51,7 @@ void main() {
         ),
       );
       // didPush is called once when the widget is first built
+      // ignore: cast_from_null_always_fails
       verify(mockNavigatorObserver.didPush(any as Route<dynamic>, any as Route<dynamic>?)).called(1);
     }
 
@@ -63,6 +64,7 @@ void main() {
       await tester.tap(emailPasswordButton);
       await tester.pumpAndSettle();
 
+      // ignore: cast_from_null_always_fails
       verify(mockNavigatorObserver.didPush(any as Route<dynamic>, any as Route<dynamic>?)).called(1);
     });
   });

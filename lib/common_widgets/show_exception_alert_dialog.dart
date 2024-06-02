@@ -35,7 +35,7 @@ String? _message(dynamic exception) {
     // Check if it has a message property
     try {
       // This checks if the exception has a message property
-      var message = (e as dynamic).message;
+      final message = (e as dynamic).message;
       print('Exception: $message');
     } catch (_) {
       print('Exception: ${e.toString()}');
@@ -44,6 +44,7 @@ String? _message(dynamic exception) {
     // Catch any other type of error
     print('Error: ${e.toString()}');
   }
+  return '';
 }
 }
 

@@ -139,14 +139,12 @@ class _EmailPasswordSignInPageContentsState
   }
 
   Future<void> navigateToHome() async {
-    final navigator = Navigator.of(context);
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      // fetch data
-      navigator.pushNamed(
-        Routes.homePage,
-        arguments: () => navigator.pop(),
-      );
-    });
+        Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+          Routes.homePage,
+          (route) => false, // Remove all routes
+        );
+      });
   }
 
   Future<void> _submit(BuildContext context) async {
@@ -178,8 +176,9 @@ class _EmailPasswordSignInPageContentsState
           }
           if (widget.onSignedIn != null && mounted) {
             widget.onSignedIn!();
-            await navigateToHome();
           }
+          await navigateToHome();
+          
         }
       }
     } catch (e) {

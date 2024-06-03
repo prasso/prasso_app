@@ -69,6 +69,26 @@ class ApiUser {
   final String? coachUid;
   final bool? unreadmessages;
 
+  ApiUser._fromParsedJson(Map<String, dynamic> data, this.appConfig, this.appToken)
+      : uid = data[kUidKey].toString(),
+        email = data[kEmailKey] as String?,
+        displayName = data[kNameKey] as String?,
+        photoURL = data[kPhotoURLKey] as String?,
+        thirdPartyToken = data[kYourHealthTokenKey] as String? ?? kEmptyString,
+        initialized = true,
+        roles = data[kRolesKey] == null
+            ? RoleModel.defaultRole()
+            : RoleModel.convertFromJson(data[kRolesKey] as String?),
+        personalTeamId = data[kPersonalTeamIdKey] as int?,
+        teamCoachId = data[kTeamCoachIdKey] as int?,
+        teamMembers = data[kTeamMembersKey] == null
+            ? defaultTeamMembers()
+            : _teamMembersFromJson(data[kTeamMembersKey]),
+        pnToken = data[kPnTokenKey] as String?,
+        coachUid = data[kCoachUidKey] as String?,
+        unreadmessages = data[kUnreadMessagesKey] as bool? ?? false;
+
+
   factory ApiUser.fromLocatorUpdated(ApiUser? user, EditUserProfileViewModel vm) {
     return ApiUser(
         uid: user == null ? kEmptyString : user.uid,
@@ -87,24 +107,40 @@ class ApiUser {
         unreadmessages: vm.unreadmessages);
   }
 
-  factory ApiUser.fromAPIJson(dynamic _user, String? appConfig, String? appToken) {
+  factory ApiUser.fromStorage(String _user, String? appConfig, String? appToken) {
+    final Map<String, dynamic> userFromStorage = jsonDecode(_user) as Map<String, dynamic>;
+    return ApiUser._fromParsedJson(userFromStorage, appConfig, appToken);
+  }
+
+  factory ApiUser.fromJsonResponse(String _user, String? appConfig, String? appToken) {
+    final  jsonResponse = jsonDecode(_user );
+    if (jsonResponse[kDataKey] != null) {
+      final Map<String, dynamic> data = jsonResponse[kDataKey] as Map<String, dynamic>;
+      return ApiUser._fromParsedJson(data, appConfig, appToken);
+    } else {
+      return ApiUser._fromParsedJson(jsonResponse as Map<String, dynamic>, appConfig, appToken);
+    }
+  }
+
+ factory ApiUser.fromAPI(dynamic _user, String? appConfig, String? appToken) {
     if (_user == null) {
       return ApiUser(
-          uid: kEmptyString,
-          email: null,
-          photoURL: null,
-          displayName: null,
-          appConfig: appConfig,
-          appToken: appToken,
-          thirdPartyToken: null,
-          initialized: false,
-          roles: null,
-          personalTeamId: null,
-          teamCoachId: null,
-          teamMembers: null,
-          pnToken: null,
-          coachUid: null,
-          unreadmessages: null);
+        uid: kEmptyString,
+        email: null,
+        photoURL: null,
+        displayName: null,
+        appConfig: appConfig,
+        appToken: appToken,
+        thirdPartyToken: null,
+        initialized: false,
+        roles: null,
+        personalTeamId: null,
+        teamCoachId: null,
+        teamMembers: null,
+        pnToken: null,
+        coachUid: null,
+        unreadmessages: null,
+      );
     }
 
     if (_user is User) {
@@ -113,125 +149,51 @@ class ApiUser {
       if (!(appConfig?.isEmpty ?? true)) {
         final dynamic jsonAppData = jsonDecode(appConfig!);
         if (jsonAppData != null && jsonAppData.containsKey(kDataKey) == true) {
-          return ApiUser(
-              uid: usr.uid,
-              email: usr.email,
-              displayName: jsonAppData[kDataKey][kNameKey] as String?,
-              photoURL: jsonAppData[kDataKey][kPhotoURLKey] as String?,
-              appConfig: appConfig as String?,
-              appToken: jsonAppData[kDataKey][kTokenKey] as String?,
-              thirdPartyToken: jsonAppData[kDataKey][kYourHealthTokenKey] as String? ?? kEmptyString,
-              initialized: true,
-              roles: jsonAppData[kDataKey][kRolesKey] == null
-                  ? RoleModel.defaultRole()
-                  : RoleModel.convertFromJson(jsonAppData[kDataKey][kRolesKey] as String),
-                          
-              personalTeamId: jsonAppData[kDataKey][kPersonalTeamIdKey] as int?,
-              teamCoachId: jsonAppData[kDataKey][kTeamCoachIdKey] as int?,
-              teamMembers: jsonAppData[kDataKey][kTeamMembersKey] == null
-                  ? defaultTeamMembers()
-                  : TeamMemberModel.convertFromJson(jsonAppData[kDataKey][kTeamMembersKey] as String),
-              pnToken: jsonAppData[kDataKey][kPnTokenKey] as String?,
-              coachUid: jsonAppData[kDataKey][kCoachUidKey] as String?,
-              unreadmessages: jsonAppData[kDataKey][kUnreadMessagesKey] as bool?,
-            );
+          return ApiUser._fromParsedJson(
+            {
+              kUidKey: usr.uid,
+              kEmailKey: usr.email,
+              kNameKey: jsonAppData[kDataKey][kNameKey] as String?,
+              kPhotoURLKey: jsonAppData[kDataKey][kPhotoURLKey] as String?,
+              kTokenKey: jsonAppData[kDataKey][kTokenKey] as String?,
+              kYourHealthTokenKey: jsonAppData[kDataKey][kYourHealthTokenKey] as String? ?? kEmptyString,
+              kRolesKey: jsonAppData[kDataKey][kRolesKey] as String?,
+              kPersonalTeamIdKey: jsonAppData[kDataKey][kPersonalTeamIdKey] as int?,
+              kTeamCoachIdKey: jsonAppData[kDataKey][kTeamCoachIdKey] as int?,
+              kTeamMembersKey: jsonAppData[kDataKey][kTeamMembersKey] as String?,
+              kPnTokenKey: jsonAppData[kDataKey][kPnTokenKey] as String?,
+              kCoachUidKey: jsonAppData[kDataKey][kCoachUidKey] as String?,
+              kUnreadMessagesKey: jsonAppData[kDataKey][kUnreadMessagesKey] as bool?,
+            },
+            appConfig,
+            appToken,
+          );
         }
       }
       return ApiUser(
-          uid: usr.uid,
-          email: usr.email,
-          displayName: usr.displayName,
-          photoURL: usr.photoURL,
-          appConfig: appConfig,
-          appToken: appToken,
-          thirdPartyToken: kEmptyString,
-          initialized: false,
-          roles: RoleModel.defaultRole(),
-          personalTeamId: 0,
-          teamCoachId: 0,
-          teamMembers: defaultTeamMembers(),
-          pnToken: kEmptyString,
-          coachUid: kEmptyString,
-          unreadmessages: false);
+        uid: usr.uid,
+        email: usr.email,
+        displayName: usr.displayName,
+        photoURL: usr.photoURL,
+        appConfig: appConfig,
+        appToken: appToken,
+        thirdPartyToken: kEmptyString,
+        initialized: false,
+        roles: RoleModel.defaultRole(),
+        personalTeamId: 0,
+        teamCoachId: 0,
+        teamMembers: defaultTeamMembers(),
+        pnToken: kEmptyString,
+        coachUid: kEmptyString,
+        unreadmessages: false,
+      );
+    } else if (_user is ApiUser) {
+      return _user;
     } else {
-      if (_user is ApiUser) {
-        return _user;
-      }
-
-      final dynamic jsonResponse = jsonDecode(_user as String);
-      if (jsonResponse[kDataKey] != null) {
-        final Map<String, dynamic> data = jsonResponse[kDataKey] as Map<String, dynamic>;
-        return ApiUser(
-          uid: data[kUidKey].toString(),
-          email: data[kEmailKey] as String?,
-          displayName: data[kNameKey] as String?,
-          photoURL: data[kPhotoURLKey] as String?,
-          appConfig: jsonEncode(data),
-          appToken: data[kTokenKey] as String?,
-          thirdPartyToken: data[kYourHealthTokenKey] as String? ?? kEmptyString,
-          initialized: true,
-          roles: data[kRolesKey] == null
-              ? RoleModel.defaultRole()
-              : RoleModel.convertFromJson(data[kRolesKey] as String?),
-          personalTeamId: data[kPersonalTeamIdKey] as int?,
-          teamCoachId: data[kTeamCoachIdKey] as int?,
-          teamMembers: data[kTeamMembersKey] == null
-              ? defaultTeamMembers()
-              : _teamMembersFromJson(data[kTeamMembersKey] as dynamic),
-          pnToken: data[kPnTokenKey] as String?,
-          coachUid: data[kCoachUidKey] as String?,
-          unreadmessages: data[kUnreadMessagesKey] as bool? ?? false,
-        );
-      } else {
-        return ApiUser(
-          uid: jsonResponse[kUidKey].toString(),
-          email: jsonResponse[kEmailKey] as String?,
-          displayName: jsonResponse[kDisplayNameKey] as String? ?? jsonResponse[kNameKey] as String?,
-          photoURL: jsonResponse[kPhotoURLKey] as String?,
-          appConfig: jsonResponse[kAppConfigKey] as String?,
-          appToken: jsonResponse[kAppTokenKey] as String?,
-          thirdPartyToken: jsonResponse[kThirdPartyTokenKey] as String? ?? kEmptyString,
-          initialized: true,
-          roles: jsonResponse[kRolesKey] == null
-              ? RoleModel.defaultRole()
-              : RoleModel.convertFromJson(jsonResponse[kRolesKey] as String?),
-          personalTeamId: jsonResponse[kPersonalTeamIdKey] as int? ?? 0,
-          teamCoachId: jsonResponse[kTeamCoachIdKey] as int? ?? 0,
-          teamMembers: jsonResponse[kTeamMembersKey] == null
-              ? defaultTeamMembers()
-              : _teamMembersFromJson(jsonResponse[kTeamMembersKey] as dynamic),
-          pnToken: jsonResponse[kPnTokenKey] as String?,
-          coachUid: jsonResponse[kCoachUidKey] as String? ?? kEmptyString,
-          unreadmessages: jsonResponse[kUnreadMessagesKey] as bool? ?? false,
-        );
-      }
+      throw ArgumentError('Invalid user type');
     }
   }
 
-    factory ApiUser.fromStorage(String _user, String? appConfig, String? appToken) {
-    final Map<String, dynamic> userFromStorage = jsonDecode(_user) as Map<String, dynamic>;
-    return ApiUser(
-      uid: userFromStorage[kUidKey] as String,
-      email: userFromStorage[kEmailKey] as String?,
-      displayName: userFromStorage[kDisplayNameKey] as String?,
-      photoURL: userFromStorage[kPhotoURLKey] as String?,
-      appConfig: appConfig,
-      appToken: appToken,
-      thirdPartyToken: userFromStorage[kThirdPartyTokenKey] as String?,
-      initialized: true,
-      roles: userFromStorage[kRolesKey] == null
-          ? RoleModel.defaultRole()
-          : RoleModel.convertFromJson(userFromStorage[kRolesKey] as String),
-      personalTeamId: userFromStorage[kPersonalTeamIdKey] as int?,
-      teamCoachId: userFromStorage[kTeamCoachIdKey] as int?,
-      teamMembers: userFromStorage[kTeamMembersKey] == null
-          ? []
-          : TeamMemberModel.convertFromJson(userFromStorage[kTeamMembersKey] as String),
-    pnToken: userFromStorage[kPnTokenKey] as String?,
-      coachUid: userFromStorage[kCoachUidKey] as String?,
-      unreadmessages: userFromStorage[kUnreadMessagesKey] as bool? ?? false,
-    );
-  }
 
   static List<TeamMemberModel> defaultTeamMembers() {
     final List<TeamMemberModel> defaultTeamMembers = [];

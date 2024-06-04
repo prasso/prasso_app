@@ -59,8 +59,10 @@
          - Click on the "Sign-in method" tab.		
          - Enable the "Email/Password" sign-in method.		
      That's it! Now your users can sign in to your Firebase app using their email and password.		
- 18. Update the images for both Google and Firebase. Use apetools (https://apetools.webprofusion.com/#/tools/imagegorilla) and pass an existing PNG to update the images.		
- 19. Once you have downloaded the apetools image package, place the images into your app's assets folder and replace the existing Prasso images. Use Android Studio and XCode's built-in resource editors for this step to ensure the index files are correctly updated.		
+ 18. Update the images for both Google and Firebase. Couple options here. 
+ 1. Use apetools (https://apetools.webprofusion.com/#/tools/imagegorilla) and pass an existing PNG to update the images. Using ApeTools requires you to download the apetools image package, place the images into your app's assets folder and replace the existing Prasso images. Use Android Studio and XCode's built-in resource editors for this step to ensure the index files are correctly updated.	
+ 2. use a package like https://pub.dev/packages/flutter_launcher_icons to generate from a specific image.	
+ 19. 	
  20. Modify the welcome screen in `lib/app_widgets/onboarding/intro_page.dart` to include content specific to your app's needs.		
  21. Modify the name of the app (CFBundleName) in ios/Flutter/AppFrameworkInfo.plist, ios/Runner/Info.plist.		
  22. Insert the correct Firebase configuration data into lib/main.dart		

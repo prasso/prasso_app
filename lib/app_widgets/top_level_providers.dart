@@ -14,7 +14,7 @@ final sharedPreferencesService =
     Provider<SharedPreferencesService>((ref) => SharedPreferencesService(null));
 
 final cupertinoHomeScaffoldVMProvider =
-    Provider<CupertinoHomeScaffoldViewModel>((ref) =>
+    ChangeNotifierProvider<CupertinoHomeScaffoldViewModel>((ref) =>
         CupertinoHomeScaffoldViewModel.initializeFromLocalStorage(
             ref.watch(sharedPreferencesService)));
 

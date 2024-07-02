@@ -34,9 +34,9 @@ class AccountPage extends HookConsumerWidget {
       await sharedPreferencesServiceProvider.setthirdPartyToken('');
       await PrassoApiRepository.instance.signOut();
       SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context, rootNavigator: true).pushNamed(
+        Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
           Routes.emailPasswordSignInPage,
-          arguments: () => Navigator.of(context).pop(),
+          (route) => false, // Remove all routes
         );
       });
     } catch (e) {

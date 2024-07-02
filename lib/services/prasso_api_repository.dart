@@ -151,7 +151,7 @@ class PrassoApiRepository {
     }
     if (usr != null && usr.user != null) {
       String? _pnToken = '';
-      final apiuser = ApiUser.fromAPIJson(
+      final apiuser = ApiUser.fromAPI(
         usr.user,
         appConfig,
         personalAppToken,
@@ -210,14 +210,14 @@ class PrassoApiRepository {
         ? data['data']['thirdPartyToken'].toString()
         : null;
 
-    ApiUser user = ApiUser.fromAPIJson(
+    ApiUser user = ApiUser.fromJsonResponse(
         jsonEncode(data['data']), appConfig, personalAppToken);
 
     //update unreadmessages in the user from storage
     final unreadMessages = sharedPreferencesServiceProvider.getUnreadMessages();
     if (unreadMessages) {
       data['data']['unreadmessages'] = true;
-      user = ApiUser.fromAPIJson(
+      user = ApiUser.fromJsonResponse(
           jsonEncode(data['data']), appConfig, personalAppToken);
     }
     final firestoreDatabase = FirestoreDatabase(uid: user.uid);
@@ -232,11 +232,14 @@ class PrassoApiRepository {
     unawaited(
         sharedPreferencesServiceProvider.saveUserToken(personalAppToken!));
     cupertinoHomeScaffoldVM.defaultTabsJson = appConfig;
+
+    cupertinoHomeScaffoldVM.currentTab = TabItem.position1;
+    cupertinoHomeScaffoldVM.setNavigatingToLogin(newvalue: false);
     if (doBuildTabs) {
       cupertinoHomeScaffoldVM.doBuildTabs = true;
       doBuildTabs = false;
     }
-    cupertinoHomeScaffoldVM.currentTab = TabItem.position1;
+
     return user;
   }
 
@@ -246,13 +249,12 @@ class PrassoApiRepository {
     return _pipeStreamChanges(_firebaseAuth.authStateChanges());
   }
 
-  //TODO: User Changes Provider should not notify of user changes during a build process
-  //how to fix that
+
   // this method is key to the screen changes during IntroPages
   Stream<ApiUser> userChanges() {
     return _firebaseAuth
         .userChanges()
-        .map((user) => ApiUser.fromAPIJson(user, appConfig, personalAppToken));
+        .map((user) => ApiUser.fromAPI(user, appConfig, personalAppToken));
   }
 
   Stream<ApiUser?> _pipeStreamChanges(Stream<User?> stream) {
@@ -260,7 +262,7 @@ class PrassoApiRepository {
       if (delegateUser == null) {
         return null;
       }
-      return ApiUser.fromAPIJson(delegateUser, appConfig, personalAppToken);
+      return ApiUser.fromAPI(delegateUser, appConfig, personalAppToken);
     });
 
     late StreamController<ApiUser?> streamController;
@@ -283,8 +285,11 @@ class PrassoApiRepository {
       Uri.parse(Uri.encodeFull(_signoutUrl)),
       headers: _setHeaders(),
     );
-    unawaited(_firebaseAuth.signOut());
 
+    //clear app config, it is loaded at login and this app should not persist it. 
+    //this functionality is unique to the Prasso app
+    unawaited(sharedPreferencesServiceProvider.saveAppData(''));
+   
     unawaited(sharedPreferencesServiceProvider.saveUserData(null));
 
     return res;
@@ -347,9 +352,9 @@ class PrassoApiRepository {
   /// this code retrieves the app tabs, these are also retrieved in signInWithEmailandPassword
   ///
   Future<bool> getAppConfig(ApiUser? user) async {
-    final userToken = sharedPreferencesServiceProvider.getUserToken();
+    var userToken = sharedPreferencesServiceProvider.getUserToken();
     if (userToken == null || userToken.isEmpty || userToken == 'null') {
-      return false;
+      userToken = 'not-loggedin';
     }
     final clientAppUrl = _apiServer + _configUrl + userToken.toString();
     developer.log(
@@ -446,7 +451,7 @@ class PrassoApiRepository {
 
     if (res.statusCode == 200) {
       await sharedPreferencesServiceProvider.saveloginID(email);
-
+      
       await _parseReturnCallReload(res.body as String);
 
       userIsSigningIn = userIsRegistering = false;
@@ -530,7 +535,7 @@ class PrassoApiRepository {
 
       userdata['photoURL'] = data['data']['photoURL'];
 
-      final user = ApiUser.fromAPIJson(
+      final user = ApiUser.fromJsonResponse(
           jsonEncode(userdata), appConfig, personalAppToken);
 
       final firestoreDatabase = FirestoreDatabase(uid: user.uid);

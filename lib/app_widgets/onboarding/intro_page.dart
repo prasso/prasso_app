@@ -12,12 +12,8 @@ import 'intro_viewmodel.dart';
 
 class IntroPage extends HookConsumerWidget {
   Future<void> onNext(WidgetRef ref, BuildContext context) async {
-    final IntroViewModel introViewModel = ref.read(introViewModelProvider);
+    final introViewModel = ref.watch(introViewModelProvider);
     await introViewModel.incrementIntro();
-
-    //this trick is to reload the screen since it was navigated to directly and the view model state change is not initiating a redraw
-    // ignore: invalid_use_of_protected_member
-    (context as Element).reassemble();
   }
 
   final List<SliderModel> slides = [

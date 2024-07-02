@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 // Flutter imports:
 import 'package:flutter/cupertino.dart';
@@ -30,10 +31,14 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     _setdefaults();
   }
   static bool isDisposed = true;
-  bool hasChangedEvent = false;
   bool isInitializing = false;
-  bool doBuildTabs = false;
+  bool doBuildTabs = false;  
+  bool isNavigatingToLogin = false;
 
+void setNavigatingToLogin({required bool newvalue}) {
+    isNavigatingToLogin = newvalue;
+    doBuildTabs = true;
+}
   final CupertinoTabController tabController = CupertinoTabController();
   final SharedPreferencesService sharedPreferencesServiceProvider;
 
@@ -116,7 +121,6 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     final _vm = CupertinoHomeScaffoldViewModel(sharedPreferencesService);
     _vm.isInitializing = true;
     isDisposed = false;
-    _vm.currentTab = TabItem.position1;
     _vm.isInitializing = false;
     return _vm;
   }
@@ -238,7 +242,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     buildAllTabs(tabslist);
   }
 
-  void buildTabs({bool? tryagain}) {
+  void buildTabs() {
     try {
       final List<BottomNavigationBarItem> rt = [];
       allTabs.forEach((key, value) {
@@ -248,9 +252,12 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
       });
       tabs = rt;
     } catch (e) {
-      if (tryagain!) {
-        _setdefaults();
-      }
+            developer.log(
+        'buildTabs log data',
+        name: 'prasso.app.buildTabs',
+        error: e.toString(),
+      );
+      rethrow;
     }
     notifyListeners();
   }
@@ -294,15 +301,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
     );
 
       final int position = allTabs.length;
-      /*if (position <= TabItem.values.length && t1.parent == 0) {
-        if ((position > 3 && t1.pageUrl != Strings.morePageUrl) || t1.parent! > 0) {
-          moreItems.add(t1);
-        } else {
-          allTabs[TabItem.values[position]] = t1;
-          widgetBuilders[TabItem.values[position]] = _actionFromString(t1);
-        }
 
-      }*/
       if (position <= TabItem.values.length && t1.parent == 0) {
         allTabs[TabItem.values[position]] = t1;
 
@@ -313,7 +312,7 @@ class CupertinoHomeScaffoldViewModel extends ChangeNotifier {
       }
     }
 
-    buildTabs(tryagain: true);
+    buildTabs();
   }
 
   WidgetBuilder? _actionFromString(TabItemData t1) {

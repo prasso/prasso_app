@@ -42,6 +42,9 @@ Change to ios directory
      cd ios
 Run pod install
 Bobbi@Bobbis-MacBook-Pro ios % pod install
+Setup your Firebase, required to run the app. 
+    ios:  ios/Runner/GoogleService-Info.plist
+    android: android/app/google-services.json
 
     * when having issues with xcode compiling, try this
 Quit xcode
